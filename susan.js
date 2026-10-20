@@ -108,7 +108,8 @@ function build() {
       if (img) {
         g.save(); roundRect(g, 24, 24, W - 48, 380, 22); g.clip();
         const k = Math.max((W - 48) / img.width, 380 / img.height);
-        g.drawImage(img, W / 2 - (img.width * k) / 2, 24 + 190 - (img.height * k) / 2, img.width * k, img.height * k);
+        const focus = Number(b.dataset.focus ?? 0.5); // how far down the photo the food sits, so the 2:1 strip doesn't cut it
+        g.drawImage(img, W / 2 - (img.width * k) / 2, 24 - (img.height * k - 380) * focus, img.width * k, img.height * k);
         g.restore();
       }
       g.fillStyle = INK; g.textBaseline = "alphabetic";

@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="dark light">
+  <meta name="color-scheme" content="light">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#d5c8b2">
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#d5c8b2">
   <title>Qitao Shi | Software and cooking</title>
   <meta name="description" content="Computer science student who builds software and cooks. Projects are served like recipes.">
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=28">
+  <link rel="stylesheet" href="style.css?v=31">
   <script>document.documentElement.className = "js";</script>
   <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
   <script src="script.js?v=3" defer></script>
-  <script type="module" src="susan.js"></script>
+  <script type="module" src="susan.js?v=2"></script>
   <!-- fetch the 3D libraries and models in parallel instead of one after another -->
   <link rel="modulepreload" href="vendor/three.module.min.js">
   <link rel="modulepreload" href="vendor/loaders/GLTFLoader.js">
@@ -58,16 +58,16 @@
           <button class="pick" aria-pressed="true" data-title="Tennis Match Projection Model" data-stack="Python, Pandas, Scikit-Learn" data-href="tennis.html" data-img="img/tennis.jpg">Tennis model</button>
           <button class="pick" aria-pressed="false" data-title="Side Quests" data-stack="Dart, Flutter, Firebase" data-href="side-quests.html" data-img="img/side-quests.jpg">Side Quests</button>
           <button class="pick" aria-pressed="false" data-title="Ray Tracer" data-stack="C#" data-href="ray-tracer.html" data-img="img/ray-tracer.jpg">Ray Tracer</button>
-          <button class="pick" aria-pressed="false" data-title="Salt Bread (Shio Pan)" data-stack="Bread, Japanese, Baking" data-href="salt-bread.html" data-img="img/salt-bread.jpg">Salt bread</button>
+          <button class="pick" aria-pressed="false" data-title="Salt Bread (Shio Pan)" data-stack="Bread, Japanese, Baking" data-href="salt-bread.html" data-img="img/salt-bread.jpg" data-focus="0.8">Salt bread</button>
         </div>
       </div>
     </div>
 
     <section id="projects">
       <div class="wrap">
-        <h2 class="reveal">What's Cooking</h2>
+        <h2 class="reveal">What’s Cooking</h2>
         <div class="projects">
-          <article class="card feature reveal">
+          <article class="card feature">
             <p class="order-no"><span>Order 01</span><span>Machine learning</span></p>
             <a class="frame browser" href="tennis.html"><img src="img/tennis.jpg" alt="The Projector, a web app showing a predicted tennis match winner" width="1400" height="958"></a>
             <h3>Tennis Match Projection Model</h3>
@@ -75,14 +75,14 @@
             <ul class="tags"><li>Python</li><li>Pandas</li><li>Scikit-Learn</li></ul>
             <a class="more" href="tennis.html">View recipe</a>
           </article>
-          <article class="card reveal">
+          <article class="card">
             <p class="order-no"><span>Order 02</span><span>Mobile</span></p>
             <a class="frame levels" href="side-quests.html" aria-label="Side Quests: level artwork, a seedling grows into a tree"><figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure><figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure><figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure><figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure></a>
             <h3>Side Quests</h3>
             <ul class="tags"><li>Dart</li><li>Flutter</li><li>Firebase</li></ul>
             <a class="more" href="side-quests.html">View recipe</a>
           </article>
-          <article class="card reveal">
+          <article class="card">
             <p class="order-no"><span>Order 03</span><span>Graphics</span></p>
             <a class="frame" href="ray-tracer.html"><img src="img/ray-tracer.jpg" alt="A ray traced rabbit inside a red, green and blue box" width="1100" height="813"></a>
             <h3>Ray Tracer</h3>
@@ -97,10 +97,10 @@
       <div class="wrap">
         <h2 class="reveal">In the Kitchen</h2>
         <div class="kitchen">
-          <figure class="reveal"><a href="focaccia.html"><img src="img/focaccia.jpg" alt="Fresh focaccia on a plate" width="900" height="895" loading="lazy"></a><figcaption><a href="focaccia.html">Fresh focaccia</a></figcaption></figure>
-          <figure class="reveal"><a href="dumplings.html"><img src="img/dumplings.jpg" alt="Folded dumplings on baking paper" width="900" height="895" loading="lazy"></a><figcaption><a href="dumplings.html">Dumplings</a></figcaption></figure>
-          <figure class="reveal"><a href="salt-bread.html"><img src="img/salt-bread.jpg" alt="Two salt bread rolls in a bowl" width="1200" height="946" loading="lazy"></a><figcaption><a href="salt-bread.html">Salt bread</a></figcaption></figure>
-          <figure class="reveal"><a href="seared-pork.html"><img src="img/pork.jpg" alt="Seared pork with orange sauce on a white plate" width="900" height="895" loading="lazy"></a><figcaption><a href="seared-pork.html">Seared pork with orange sauce</a></figcaption></figure>
+          <figure><a href="focaccia.html"><img src="img/focaccia.jpg" alt="Fresh focaccia on a plate" width="900" height="895" loading="lazy"></a><figcaption><a href="focaccia.html">Fresh focaccia</a></figcaption></figure>
+          <figure><a href="dumplings.html"><img src="img/dumplings.jpg" alt="Folded dumplings on baking paper" width="900" height="895" loading="lazy"></a><figcaption><a href="dumplings.html">Dumplings</a></figcaption></figure>
+          <figure><a href="salt-bread.html"><img src="img/salt-bread.jpg" style="object-position:50% 100%" alt="Three salt bread rolls in a bowl" width="901" height="1200" loading="lazy"></a><figcaption><a href="salt-bread.html">Salt bread</a></figcaption></figure>
+          <figure><a href="seared-pork.html"><img src="img/pork.jpg" alt="Seared pork with orange sauce on a white plate" width="900" height="895" loading="lazy"></a><figcaption><a href="seared-pork.html">Seared pork with orange sauce</a></figcaption></figure>
         </div>
       </div>
     </section>

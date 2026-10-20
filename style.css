@@ -12,7 +12,7 @@
   --line: rgb(42 38 38 / .35);
   --accent: #eba445;
   --on-accent: #232649;
-  --card: #ffffff;
+  --card: var(--thermal);
   --ink-faint: rgb(35 38 73 / .35);
   --ink-rule: rgb(35 38 73 / .1);
   --ink-tint: rgb(35 38 73 / .08);
@@ -138,7 +138,6 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 /* projects: one featured, two smaller */
 .projects { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 2.5rem; align-items: start; }
 .card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; }
-/* each project image sits slightly askew on its recipe card; it straightens on hover */
 .card .frame { position: relative; display: block; overflow: hidden; border-radius: 4px; }
 .card .browser { box-shadow: none; }
 .card h3 { margin: 1rem 0 .6rem; font-size: 1.4rem; }
@@ -151,9 +150,12 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 .kitchen { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; }
 .kitchen figure { margin: 0; }
 .kitchen img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius); }
+/* photos too tall to crop square without cutting food: shown whole over a blurred copy of themselves (page sets --photo) */
+.kitchen .whole { position: relative; display: block; overflow: hidden; border-radius: var(--radius); background: var(--photo) center / cover; }
+.kitchen .whole::before { content: ""; position: absolute; inset: -24px; background: inherit; filter: blur(18px) brightness(.92); }
+.kitchen .whole img { position: relative; object-fit: contain; border-radius: 0; }
 .kitchen figcaption { margin-top: .6rem; font-size: .9rem; color: var(--muted); }
 
-/* projects: order tickets clipped to the kitchen pass, each torn off differently */
 /* projects: order tickets pushed into an aluminium channel rail, like a restaurant pass.
    The rail face is 22px; tickets start right under its lip, and a shadow on their top edge reads as tucked in */
 .rail {
@@ -230,10 +232,15 @@ footer { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--surface); }
 .recipe-meta { display: flex; gap: 1.5rem; margin: 1rem 0; font-weight: 600; }
 .recipe-body { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; padding-block: 2rem; }
 .recipe-body h2, .notes h2 { font-size: 1.75rem; margin-bottom: 1rem; }
-.ingredients { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 2rem 1rem; }
+.ingredients { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: 2rem 1rem; }
+/* column count follows the item count so every row is full (or nearly): 1-3 sit in one row, 5/6/9 go in threes, 4/7/8 in fours */
+.ingredients:has(> li:last-child:nth-child(1)) { grid-template-columns: minmax(0, 12rem); } /* a lone item sits under the heading, not adrift mid-column */
+.ingredients:has(> li:last-child:nth-child(2)) { --cols: 2; }
+.ingredients:has(> li:last-child:nth-child(3)), .ingredients:has(> li:last-child:nth-child(5)),
+.ingredients:has(> li:last-child:nth-child(6)), .ingredients:has(> li:last-child:nth-child(9)) { --cols: 3; }
 .ingredients li { display: flex; flex-direction: column; align-items: center; gap: .75rem; text-align: center; font-size: .95rem; line-height: 1.35; }
-.ingredients img { width: 100%; aspect-ratio: 1; object-fit: contain; mix-blend-mode: multiply; } /* white photo backgrounds drop out against the beige */
-.ingredients img[src$=".svg"] { padding: 22%; } /* logos read better smaller than product shots */
+.ingredients img { width: 100%; max-width: 10rem; aspect-ratio: 1; object-fit: contain; mix-blend-mode: multiply; } /* white photo backgrounds drop out against the beige */
+.ingredients img[src$=".svg"] { width: 80%; max-width: 8rem; } /* logos read better smaller than product shots */
 .entry .ingredients { margin-bottom: 1.25rem; }
 .method { counter-reset: step; display: grid; gap: 1rem; }
 .method li { counter-increment: step; display: grid; grid-template-columns: 2rem 1fr; gap: 1rem; }
@@ -244,11 +251,11 @@ footer { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--surface); }
 .notes { padding-block: 1rem 4rem; max-width: 60ch; }
 
 /* motion: only when the visitor allows it */
-.js .reveal { opacity: 0; translate: 0 24px; transition: opacity .7s cubic-bezier(.16, 1, .3, 1), translate .7s cubic-bezier(.16, 1, .3, 1); }
+.js .reveal { opacity: 0; translate: 0 24px; transition: opacity .7s var(--ease-out), translate .7s var(--ease-out); }
 .js .reveal.in { opacity: 1; translate: none; }
 @keyframes rise { from { opacity: 0; translate: 0 20px; } }
 @media (prefers-reduced-motion: no-preference) {
-  .hero-copy > * { animation: rise .8s cubic-bezier(.16, 1, .3, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms); }
+  .hero-copy > * { animation: rise .8s var(--ease-out) backwards; animation-delay: calc(var(--i, 0) * 70ms); }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -260,6 +267,10 @@ footer { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--surface); }
 /* below 768px everything collapses to one column */
 @media (max-width: 768px) {
   .projects, .entry, .recipe-body { grid-template-columns: 1fr; }
+  /* phones: four across is too tight for captions, so 4 and 8 go in pairs and 7 goes in threes with the last one centred */
+  .ingredients:has(> li:last-child:nth-child(4)), .ingredients:has(> li:last-child:nth-child(8)) { --cols: 2; }
+  .ingredients:has(> li:last-child:nth-child(7)) { --cols: 3; }
+  .ingredients > li:last-child:nth-child(7) { grid-column: 2; }
   .hero { grid-template-columns: 1fr; gap: 2rem; }
   .card.feature { grid-row: auto; }
   .kitchen { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -339,7 +350,6 @@ footer { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--surface); }
 .project .section-head { margin-bottom: 3rem; }
 .project .recipe-body section > h2 { margin-bottom: 3rem; line-height: 38px; } /* matches the toggle's height so both columns start level */
 .project .view-toggle { font-weight: 400; }
-.project .ingredients { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem 1rem; }
 .project .ingredients li { font-size: .8rem; }
 .project .method { gap: 2.5rem; }
 .project .method li { grid-template-columns: 3rem 1fr; gap: 1rem; font-size: 1.25rem; line-height: 1.3; }
@@ -374,5 +384,4 @@ footer { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--surface); }
   .nav ul { gap: .7rem; font-size: .85rem; }
   .nav ul a { padding-inline: 0; } /* tap height stays 44px; only the side padding goes */
   .nav .btn { padding: .5rem .75rem; font-size: .72rem; }
-  .project .ingredients { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
