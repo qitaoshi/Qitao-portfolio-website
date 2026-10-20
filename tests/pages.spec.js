@@ -7,6 +7,7 @@ const pages = {
   "salt-bread.html": /Salt Bread/,
   "side-quests.html": /Side Quests/,
   "tennis.html": /Tennis/,
+  "wayform.html": /Wayform/,
 };
 
 for (const [path, title] of Object.entries(pages)) {
@@ -29,4 +30,22 @@ test("internal links resolve", async ({ page, request }) => {
   for (const href of hrefs) {
     expect((await request.get(href)).status(), href).toBe(200);
   }
+});
+
+test("projects rail drags with a mouse without clicking through", async ({ page }) => {
+  await page.setViewportSize({ width: 1000, height: 900 });
+  await page.goto("projects.html");
+  const rail = page.locator(".rail");
+  // start the drag on a button: dragging must scroll, not follow the link
+  const btn = page.locator("#tennis .btn-accent");
+  const b = await btn.boundingBox();
+  await page.mouse.move(b.x + 10, b.y + 10);
+  await page.mouse.down();
+  await page.mouse.move(b.x - 300, b.y + 10, { steps: 10 });
+  await page.mouse.up();
+  await expect(page).toHaveURL(/projects\.html$/);
+  await expect.poll(() => rail.evaluate((r) => r.scrollLeft)).toBeGreaterThan(100);
+  // a plain click still follows the link
+  await page.locator("#side-quests .btn-accent").click();
+  await expect(page).toHaveURL(/side-quests\.html$/);
 });
