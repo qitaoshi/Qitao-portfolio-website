@@ -70,7 +70,7 @@ h1, h2, h3, .brand { font-family: "Bagel Fat One", system-ui, sans-serif; font-w
   .btn-accent:hover { background: transparent; color: var(--text); }
   .pick:hover { border-color: var(--text); }
   .view-toggle:hover { background: var(--text); color: var(--bg); }
-  .card .frame:hover img { scale: 1.03; }
+  .card .frame:hover { rotate: 0deg; }
 }
 .btn-accent { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
@@ -105,8 +105,9 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 /* projects: one featured, two smaller */
 .projects { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2.5rem; align-items: start; }
 .card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius); }
-.card .frame { display: block; overflow: hidden; border-radius: var(--radius); }
-.card .frame img { transition: scale .3s cubic-bezier(.23, 1, .32, 1); }
+/* each project image sits slightly askew on its recipe card; it straightens on hover */
+.card .frame { position: relative; display: block; overflow: visible; border-radius: var(--radius); rotate: -1.5deg; transition: rotate .3s cubic-bezier(.23, 1, .32, 1); }
+.card:nth-child(2) .frame { rotate: 1.2deg; }
 .card h3 { margin: 1rem 0 .6rem; font-size: 1.4rem; }
 .card p { margin-bottom: .75rem; color: var(--muted); max-width: 46ch; }
 .card.feature { grid-row: span 2; }
@@ -170,10 +171,10 @@ footer { padding-block: clamp(4rem, 8vw, 6rem); background: var(--surface); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .js .reveal { opacity: 1; translate: none; transition: none; }
-  .card .frame img { transition: none; }
+  .card .frame { transition: none; }
 }
 
-@media (pointer: coarse) { .pick, .nav .btn { min-height: 44px; } }
+@media (pointer: coarse) { .pick, .nav .btn, .view-toggle, .brand, .mail { min-height: 44px; } .view-toggle, .brand, .mail { display: inline-flex; align-items: center; } }
 
 /* below 768px everything collapses to one column */
 @media (max-width: 768px) {
@@ -183,9 +184,9 @@ footer { padding-block: clamp(4rem, 8vw, 6rem); background: var(--surface); }
   .kitchen { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* recipe cards on the home page: index cards with a red top rule */
+/* recipe cards on the home page: ruled index cards */
 .card {
-  padding: 1rem 1rem 1.25rem; background-color: #ffffff; color: var(--text); border-top: 4px solid var(--accent); border-radius: var(--radius);
+  padding: 1rem 1rem 1.25rem; background-color: #ffffff; color: var(--text); border-radius: var(--radius);
   box-shadow: 0 14px 30px rgb(0 0 0 / .22);
   background-image: repeating-linear-gradient(transparent 0 31px, rgb(35 38 73 / .1) 31px 32px);
 }
@@ -195,14 +196,6 @@ footer { padding-block: clamp(4rem, 8vw, 6rem); background: var(--surface); }
 .card .tags li { border-color: rgb(35 38 73 / .35); }
 .card .tags::before { content: "Ingredients"; flex-basis: 100%; font: 700 .72rem/1 "Public Sans", sans-serif; letter-spacing: .12em; text-transform: uppercase; opacity: .65; }
 .card .more, .kitchen .more { display: inline-block; margin-top: .75rem; padding-block: .5rem; font-weight: 700; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .3em; }
-
-/* the pantry: skills as labelled jars */
-.pantry { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem 1.25rem; }
-.jar { position: relative; display: flex; flex-direction: column; gap: .4rem; padding: 1.6rem 1rem 1rem; border: 2px solid var(--line); border-radius: 12px 12px 18px 18px; }
-.jar::before { content: ""; position: absolute; left: 18%; right: 18%; top: -12px; height: 12px; background: var(--line); border-radius: 5px 5px 0 0; }
-.jar .label { padding: .55rem .6rem; background: #ffffff; color: var(--text); border-radius: 6px; font: 400 1.15rem/1.1 "Bagel Fat One", sans-serif; text-align: center; }
-.jar small { color: var(--muted); text-align: center; font-size: .8rem; }
-.jar:nth-child(odd) { margin-top: .75rem; }
 
 /* ingredients: grid / list toggle (button added by script.js) */
 .section-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
@@ -218,10 +211,84 @@ footer { padding-block: clamp(4rem, 8vw, 6rem); background: var(--surface); }
 /* project images: screenshots sit in a browser window, Side Quests shows its level-up art */
 .browser { position: relative; padding-top: 28px; overflow: hidden; border-radius: var(--radius); background: #f4f1ec; box-shadow: var(--shadow); }
 .browser::before { content: ""; position: absolute; top: 10px; left: 14px; width: 8px; height: 8px; border-radius: 50%; background: #e0675a; box-shadow: 14px 0 #e6b84a, 28px 0 #6cbf6a; }
-.browser img { border-radius: 0; }
+.browser img { border-radius: 0 0 var(--radius) var(--radius); }
 .levels { display: grid; grid-template-columns: repeat(2, 1fr); gap: .5rem; padding: 1rem; border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); }
 .levels figure { margin: 0; text-align: center; }
 .levels img { width: 100%; border-radius: 0; }
 .levels figcaption { font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .card .levels { display: grid; padding: .5rem; grid-template-columns: repeat(4, 1fr); box-shadow: none; }
 .card .levels img { aspect-ratio: 1; }
+
+/* project pages: stacked header with the photo underneath, like a recipe page */
+.project-head { padding-block: 3rem 2rem; }
+.project-head .kicker { color: var(--muted); font-size: clamp(1.15rem, 2.2vw, 1.5rem); opacity: .75; }
+.project-head h1 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.08; margin-top: .25rem; }
+.project-head .intro { margin-top: 1.75rem; max-width: 46ch; font-size: 1.15rem; line-height: 1.55; }
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.75rem; }
+.chips li { padding: .45rem .9rem; border-radius: 999px; background: rgb(35 38 73 / .08); color: var(--muted); font-size: .85rem; font-weight: 600; }
+.project-head .cta { margin-top: 1.5rem; }
+.project-photo { max-width: 640px; margin-top: 2.5rem; }
+.project-photo > img { width: 100%; border-radius: var(--radius); }
+.project-photo .levels { box-shadow: none; }
+.more-projects { padding-block: 2rem 4rem; }
+.more-projects h2 { font-size: 1.75rem; }
+.view-toggle { text-decoration: none; }
+.more-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; max-width: 760px; }
+.more-card { display: flex; flex-direction: column; gap: .25rem; color: inherit; text-decoration: none; }
+.more-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); margin-bottom: .5rem; background: #fff; }
+.more-card small { color: var(--muted); }
+
+/* project pages, after cabagges.world recipe pages: narrow centred column, light sans type, lots of air */
+.project { max-width: calc(1024px + 2 * var(--pad)); }
+.project h1, .project h2 { font-family: "Public Sans", system-ui, sans-serif; font-weight: 400; }
+.project .project-head { padding-block: 5rem 4rem; }
+.project .project-head .kicker { font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1; opacity: .6; }
+.project .project-head h1 { font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1; margin-top: .5rem; }
+.project .project-head .intro { margin-top: 3rem; max-width: 460px; font-size: 1.25rem; line-height: 1.3; }
+.project .chips { margin-top: 2.5rem; }
+.project .chips li { padding: .6rem .9rem; border-radius: 12px; font-size: .8rem; font-weight: 400; }
+/* main photo and two extras as three equal tiles; each page sets --tile to suit its images */
+.project .project-photo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: none; margin-top: 2.5rem; }
+.project .project-photo > * { width: 100%; height: auto; aspect-ratio: var(--tile, 1); object-fit: cover; border-radius: 24px; overflow: hidden; background: #fff; }
+.project .project-photo .browser { display: flex; flex-direction: column; }
+.project .project-photo .browser img { flex: 1; min-height: 0; object-fit: cover; object-position: top; border-radius: 0; }
+.project .project-photo .levels { grid-template-rows: 1fr 1fr; align-items: center; }
+.project .project-photo .levels img { aspect-ratio: 1; object-fit: contain; }
+.project .recipe-body { gap: clamp(3rem, 11vw, 7.5rem); padding-block: 2rem 5rem; }
+.project .recipe-body h2, .project .notes h2, .project .more-projects h2 { font-size: 1.25rem; margin-bottom: 0; }
+.project .section-head { margin-bottom: 3rem; }
+.project .recipe-body section > h2 { margin-bottom: 3rem; line-height: 38px; } /* matches the toggle's height so both columns start level */
+.project .view-toggle { border-radius: 12px; font-weight: 400; }
+.project .ingredients { grid-template-columns: repeat(4, 1fr); gap: 2rem 1rem; }
+.project .ingredients li { font-size: .8rem; }
+.project .method { gap: 2.5rem; }
+.project .method li { grid-template-columns: 3rem 1fr; gap: 1rem; font-size: 1.25rem; line-height: 1.3; }
+.project .method li::before { display: block; width: auto; height: auto; background: none; color: inherit; font-weight: 400; font-size: 1rem; line-height: 1.6; }
+.project .notes { padding-block: 0 5rem; }
+.project .notes h2 { margin-bottom: 1.5rem; }
+.project .notes p { font-size: 1.25rem; line-height: 1.3; }
+.project .more-grid { grid-template-columns: repeat(4, 1fr); max-width: none; gap: 2rem; }
+.project .more-card { font-size: .875rem; }
+.project .more-card img { aspect-ratio: 3 / 4; border-radius: 24px; margin-bottom: .75rem; }
+@media (max-width: 768px) {
+  .project .more-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  /* photos become a swipeable row; the next tile peeks in so it reads as scrollable */
+  .project .project-photo {
+    display: flex; gap: .75rem; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;
+    margin-inline: calc(-1 * var(--pad)); padding-inline: var(--pad); scroll-padding-inline: var(--pad);
+  }
+  .project .project-photo::-webkit-scrollbar { display: none; }
+  .project .project-photo > * { flex: 0 0 82%; scroll-snap-align: start; }
+  .project .project-head { padding-block: 2rem 2.5rem; }
+  .project .project-head .intro { margin-top: 1.5rem; font-size: 1.1rem; }
+  .project .chips { margin-top: 1.5rem; }
+  .project .recipe-body { padding-block: 1rem 3rem; }
+  .project .section-head, .project .recipe-body section > h2 { margin-bottom: 1.5rem; }
+  .project .method { gap: 1.5rem; }
+  .project .method li { grid-template-columns: 1.5rem 1fr; gap: .5rem; font-size: 1.05rem; line-height: 1.45; }
+  .project .notes { padding-bottom: 3rem; }
+  .project .notes p { font-size: 1.05rem; line-height: 1.45; }
+  .nav { gap: .5rem 1rem; }
+  .nav ul { gap: .75rem; }
+  .project .ingredients { grid-template-columns: repeat(3, 1fr); }
+}

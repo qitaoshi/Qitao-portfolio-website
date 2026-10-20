@@ -10,11 +10,18 @@
   <meta name="description" content="Computer science student who builds software and cooks. Projects are served like recipes.">
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=8">
   <script>document.documentElement.className = "js";</script>
   <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
   <script src="script.js?v=2" defer></script>
   <script type="module" src="susan.js"></script>
+  <!-- fetch the 3D libraries and models in parallel instead of one after another -->
+  <link rel="modulepreload" href="vendor/three.module.min.js">
+  <link rel="modulepreload" href="vendor/loaders/GLTFLoader.js">
+  <link rel="preload" href="models/susan.glb" as="fetch" crossorigin>
+  <link rel="preload" href="models/teapot.glb" as="fetch" crossorigin>
+  <link rel="preload" href="models/teacup.glb" as="fetch" crossorigin>
+  <link rel="preload" href="models/chopsticks.glb" as="fetch" crossorigin>
 </head>
 <body>
   <header class="wrap nav">
@@ -80,21 +87,6 @@
             <a class="more" href="ray-tracer.html">View recipe</a>
           </article>
         </div>
-      </div>
-    </section>
-
-    <section id="pantry">
-      <div class="wrap">
-        <h2 class="reveal">The Pantry</h2>
-        <ul class="pantry">
-          <li class="jar reveal"><span class="label">Python</span><small>Tennis model</small></li>
-          <li class="jar reveal"><span class="label">Pandas</span><small>Tennis model</small></li>
-          <li class="jar reveal"><span class="label">Scikit-Learn</span><small>Tennis model</small></li>
-          <li class="jar reveal"><span class="label">Dart</span><small>Side Quests</small></li>
-          <li class="jar reveal"><span class="label">Flutter</span><small>Side Quests</small></li>
-          <li class="jar reveal"><span class="label">Firebase</span><small>Side Quests</small></li>
-          <li class="jar reveal"><span class="label">C#</span><small>Ray Tracer</small></li>
-        </ul>
       </div>
     </section>
 

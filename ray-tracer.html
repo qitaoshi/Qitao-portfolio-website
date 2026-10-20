@@ -10,7 +10,7 @@
   <meta name="description" content="A program that turns a 3D scene into a realistic image by simulating how rays of light travel and bounce, producing lighting, shadows and colour.">
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=8">
   <script>document.documentElement.className = "js";</script>
   <script src="script.js?v=2" defer></script>
 </head>
@@ -27,15 +27,16 @@
     <a class="btn" href="resume.pdf" download>Resume</a>
   </header>
 
-  <main class="wrap">
-    <div class="entry">
-      <img src="img/ray-tracer.jpg" alt="A ray traced rabbit inside a red, green and blue box" width="1100" height="813">
-      <div>
-        <h1 style="font-size:clamp(2rem,4vw,3.25rem);line-height:1.08">Ray Tracer</h1>
-        <p style="margin-top:1rem">A program that turns a 3D scene into a realistic image by simulating how rays of light travel and bounce, producing lighting, shadows and colour.</p>
-        <ul class="tags" style="margin-top:1rem"><li>Graphics</li></ul>
-        <div class="recipe-meta"><span>Serves: anyone with a 3D scene</span><span>Difficulty: Hard</span></div>
-        <div class="cta"><a class="btn btn-solid" href="#">GitHub</a></div>
+  <main class="wrap project">
+    <div class="project-head">
+      <p class="kicker">Graphics</p>
+      <h1>Ray Tracer</h1>
+      <p class="intro">A program that turns a 3D scene into a realistic image by simulating how rays of light travel and bounce, producing lighting, shadows and colour.</p>
+      <ul class="chips"><li>Serves: anyone with a 3D scene</li><li>Difficulty: Hard</li></ul>
+      <div class="cta"><a class="btn btn-solid" href="#">GitHub</a></div>
+      <div class="project-photo" style="--tile: 1"><img src="img/projects/ray-tracer-turntable.gif" alt="A ray traced rabbit and a mirrored sphere inside a red, green and blue box, seen from a camera circling the scene" width="600" height="600">
+        <img src="img/projects/ray-tracer-spheres.jpg" alt="An early test render: a mirrored sphere and a glass sphere inside the coloured box" width="400" height="400" loading="lazy">
+        <img src="img/projects/ray-tracer-first.jpg" alt="The first render: a shiny green sphere and two triangles casting hard shadows on a red floor" width="400" height="400" loading="lazy">
       </div>
     </div>
 
@@ -62,6 +63,13 @@
       <h2>Chef's Notes</h2>
       <p>Start with a single sphere and one light before adding anything else. If the shadows come out speckled, nudge each shadow ray slightly off the surface before firing it, so it does not hit the point it started from. Rendering is slow, so test on a small image first.</p>
     </div>
+    <section class="more-projects">
+      <div class="section-head"><h2>More Projects</h2><a class="view-toggle" href="projects.html">See all →</a></div>
+      <div class="more-grid">
+        <a class="more-card" href="tennis.html"><img src="img/projects/tennis-card.jpg" alt="" loading="lazy"><span>Tennis Match Projection Model</span><small>Machine Learning, Python</small></a>
+        <a class="more-card" href="side-quests.html"><img src="img/projects/side-quests-current.jpg" alt="" loading="lazy"><span>Side Quests</span><small>Mobile</small></a>
+      </div>
+    </section>
   </main>
 
   <footer id="contact">

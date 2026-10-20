@@ -10,7 +10,7 @@
   <meta name="description" content="A model that predicts ATP match outcomes from player stats, surface and recent form. Trained on historical match data and served through a simple web app for live what-if predictions.">
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=8">
   <script>document.documentElement.className = "js";</script>
   <script src="script.js?v=2" defer></script>
 </head>
@@ -27,15 +27,16 @@
     <a class="btn" href="resume.pdf" download>Resume</a>
   </header>
 
-  <main class="wrap">
-    <div class="entry">
-      <div class="browser"><img src="img/tennis.jpg" alt="The Projector, a web app showing a predicted tennis match winner" width="1400" height="958"></div>
-      <div>
-        <h1 style="font-size:clamp(2rem,4vw,3.25rem);line-height:1.08">Tennis Match Projection Model</h1>
-        <p style="margin-top:1rem">A model that predicts ATP match outcomes from player stats, surface and recent form. Trained on historical match data and served through a simple web app for live what-if predictions.</p>
-        <ul class="tags" style="margin-top:1rem"><li>Machine Learning</li><li>Python</li></ul>
-        <div class="recipe-meta"><span>Serves: tennis fans</span><span>Difficulty: Hard</span></div>
-        <div class="cta"><a class="btn btn-solid" href="#">GitHub</a></div>
+  <main class="wrap project">
+    <div class="project-head">
+      <p class="kicker">Machine Learning, Python</p>
+      <h1>Tennis Match Projection Model</h1>
+      <p class="intro">A model that predicts ATP match outcomes from player stats, surface and recent form. Trained on historical match data and served through a simple web app for live what-if predictions.</p>
+      <ul class="chips"><li>Serves: tennis fans</li><li>Difficulty: Hard</li></ul>
+      <div class="cta"><a class="btn btn-solid" href="#">GitHub</a></div>
+      <div class="project-photo" style="--tile: 4 / 3"><div class="browser"><img src="img/tennis.jpg" alt="The Projector, a web app showing a predicted tennis match winner" width="1400" height="958"></div>
+        <img src="img/projects/tennis-calibration.jpg" alt="Chart of predicted against observed match win rates on 7,598 held-out matches, closely following the diagonal" width="1600" height="1200" loading="lazy">
+        <img src="img/projects/tennis-ece.jpg" alt="Bar chart of calibration error for each betting market before and after recalibration" width="1600" height="1200" loading="lazy">
       </div>
     </div>
 
@@ -65,6 +66,13 @@
       <h2>Chef's Notes</h2>
       <p>Always split the matches by date, never at random. Letting future results slip into the training data makes the model look far better than it really is. Surface matters more than you would expect: a player's clay record says little about how they will go on grass.</p>
     </div>
+    <section class="more-projects">
+      <div class="section-head"><h2>More Projects</h2><a class="view-toggle" href="projects.html">See all →</a></div>
+      <div class="more-grid">
+        <a class="more-card" href="side-quests.html"><img src="img/projects/side-quests-current.jpg" alt="" loading="lazy"><span>Side Quests</span><small>Mobile</small></a>
+        <a class="more-card" href="ray-tracer.html"><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><span>Ray Tracer</span><small>Graphics</small></a>
+      </div>
+    </section>
   </main>
 
   <footer id="contact">

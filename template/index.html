@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f4ef">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#080f1f">
+  <title>Qitao Shi | Software and cooking</title>
+  <meta name="description" content="Computer science student who builds software and cooks. Spin the Lazy Susan to pick a project.">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script>document.documentElement.className = "js";</script>
+  <script type="importmap">{"imports":{"three":"../vendor/three.module.min.js"}}</script>
+  <script type="module" src="../susan.js"></script>
+</head>
+<body>
+  <header class="wrap nav">
+    <a class="brand" href="#top">Qitao Shi</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#kitchen">Kitchen</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <!-- TODO: add resume.pdf to the site root -->
+    <a class="btn" href="../resume.pdf" download>Resume</a>
+  </header>
+
+  <main id="top">
+    <div class="wrap hero">
+      <div class="hero-copy">
+        <h1 style="--i:0">I build software <em>and</em> cook dinner.</h1>
+        <p class="sub" style="--i:1">Computer science student. Spin the Lazy Susan to pick a project or a recipe.</p>
+        <div class="cta" style="--i:2">
+          <a class="btn btn-accent" id="now-link" href="../projects.html#tennis">Open project</a>
+          <a class="btn" href="#contact">Get in touch</a>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="susan" id="susan" tabindex="0" role="group" aria-label="Lazy Susan with four project cards. Drag it, or use the left and right arrow keys."></div>
+        <div class="now" aria-live="polite">
+          <h2 id="now-title">Tennis Match Projection Model</h2>
+          <ul class="tags" id="now-stack"><li>Python</li><li>Pandas</li><li>Scikit-Learn</li></ul>
+        </div>
+        <div class="picker" role="group" aria-label="Choose a project">
+          <button class="pick" aria-pressed="true" data-title="Tennis Match Projection Model" data-stack="Python, Pandas, Scikit-Learn" data-href="../projects.html#tennis" data-img="../img/tennis.jpg">Tennis model</button>
+          <button class="pick" aria-pressed="false" data-title="Side Quests" data-stack="Dart, Flutter, Firebase" data-href="../projects.html#side-quests" data-img="../img/side-quests.jpg">Side Quests</button>
+          <button class="pick" aria-pressed="false" data-title="Ray Tracer" data-stack="C#" data-href="../projects.html#ray-tracer" data-img="../img/ray-tracer.jpg">Ray Tracer</button>
+          <button class="pick" aria-pressed="false" data-title="Salt Bread (Shio Pan)" data-stack="Bread, Japanese, Baking" data-href="../salt-bread.html" data-img="../img/salt-bread.jpg">Salt bread</button>
+        </div>
+      </div>
+    </div>
+
+    <section id="work">
+      <div class="wrap">
+        <h2>Selected work</h2>
+        <div class="work">
+          <a class="item lead" href="../projects.html#tennis">
+            <img src="../img/tennis.jpg" alt="The Projector, a web app showing a predicted tennis match winner" width="1400" height="958" loading="lazy">
+            <div class="meta">
+              <h3>Tennis Match Projection Model</h3>
+              <p>Predicts ATP match outcomes from player stats, surface and recent form.</p>
+              <ul class="tags"><li>Python</li><li>Pandas</li><li>Scikit-Learn</li></ul>
+            </div>
+          </a>
+          <a class="item" href="../projects.html#side-quests">
+            <img src="../img/side-quests.jpg" alt="Ink drawing of a tree, the Side Quests artwork" width="1100" height="810" loading="lazy">
+            <div class="meta">
+              <h3>Side Quests</h3>
+              <ul class="tags"><li>Dart</li><li>Flutter</li><li>Firebase</li></ul>
+            </div>
+          </a>
+          <a class="item" href="../projects.html#ray-tracer">
+            <img src="../img/ray-tracer.jpg" alt="A ray traced rabbit inside a red, green and blue box" width="1100" height="813" loading="lazy">
+            <div class="meta">
+              <h3>Ray Tracer</h3>
+              <ul class="tags"><li>C#</li></ul>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="kitchen">
+      <div class="wrap">
+        <h2>In the kitchen</h2>
+        <p class="lede">What I cook when I'm not at a keyboard.</p>
+      </div>
+      <ul class="strip" tabindex="0" aria-label="Dishes I have cooked, scroll sideways">
+        <li><img src="../img/focaccia.jpg" alt="Fresh focaccia on a plate" width="900" height="895" loading="lazy"><span>Focaccia</span></li>
+        <li><img src="../img/dumplings.jpg" alt="Folded dumplings on baking paper" width="900" height="895" loading="lazy"><span>Dumplings</span></li>
+        <li><a href="../salt-bread.html"><img src="../img/salt-bread.jpg" alt="Two salt bread rolls in a bowl" width="1200" height="946" loading="lazy"><span>Salt bread, with recipe</span></a></li>
+        <li><img src="../img/pork.jpg" alt="Seared pork with orange sauce on a white plate" width="900" height="895" loading="lazy"><span>Seared pork, orange sauce</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="wrap">
+      <h2>Say hello.</h2>
+      <a class="mail" href="mailto:qitaoshi@gmail.com">qitaoshi@gmail.com</a>
+      <!-- TODO: replace # with your real profile URLs -->
+      <ul class="links"><li><a href="#">GitHub</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">Instagram</a></li></ul>
+    </div>
+  </footer>
+</body>
+</html>

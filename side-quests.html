@@ -10,7 +10,7 @@
   <meta name="description" content="A mobile app that gets friends off their phones and out on small real-world challenges, like visiting a local park or picking up a new hobby. Complete quests together to earn points and level up. Built in a team at VicHack.">
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=8">
   <script>document.documentElement.className = "js";</script>
   <script src="script.js?v=2" defer></script>
 </head>
@@ -27,20 +27,21 @@
     <a class="btn" href="resume.pdf" download>Resume</a>
   </header>
 
-  <main class="wrap">
-    <div class="entry">
-      <div class="levels" role="img" aria-label="Side Quests level artwork: a seedling grows into a flower and then a tree as you level up">
+  <main class="wrap project">
+    <div class="project-head">
+      <p class="kicker">Mobile</p>
+      <h1>Side Quests</h1>
+      <p class="intro">A mobile app that gets friends off their phones and out on small real-world challenges, like visiting a local park or picking up a new hobby. Complete quests together to earn points and level up. Built in a team at VicHack.</p>
+      <ul class="chips"><li>Prep: one hackathon</li><li>Serves: a team of 6</li><li>Difficulty: Medium</li></ul>
+      <div class="cta"><a class="btn btn-solid" href="#">GitHub</a></div>
+      <div class="project-photo" style="--tile: 3 / 4"><div class="levels" role="img" aria-label="Side Quests level artwork: a seedling grows into a flower and then a tree as you level up">
         <figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure>
         <figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure>
         <figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure>
         <figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure>
       </div>
-      <div>
-        <h1 style="font-size:clamp(2rem,4vw,3.25rem);line-height:1.08">Side Quests</h1>
-        <p style="margin-top:1rem">A mobile app that gets friends off their phones and out on small real-world challenges, like visiting a local park or picking up a new hobby. Complete quests together to earn points and level up. Built in a team at VicHack.</p>
-        <ul class="tags" style="margin-top:1rem"><li>Mobile</li></ul>
-        <div class="recipe-meta"><span>Prep: one hackathon</span><span>Serves: a team of 6</span><span>Difficulty: Medium</span></div>
-        <div class="cta"><a class="btn btn-solid" href="#">GitHub</a></div>
+        <img src="img/projects/side-quests-quests.jpg" alt="The Quests screen listing the current quest and two incomplete quests" width="600" height="800" loading="lazy">
+        <img src="img/projects/side-quests-current.jpg" alt="The home screen with the current quest, go outside and touch grass, and a cartoon dragon" width="600" height="800" loading="lazy">
       </div>
     </div>
 
@@ -69,6 +70,13 @@
       <h2>Chef's Notes</h2>
       <p>None of us had used Flutter or Firebase before VicHack, so much of the hackathon went into learning them on the fly, and getting six people set up on GitHub took longer than expected. Location tracking was the hardest part to get right and the part we were proudest of. The app went on to win three VicHack awards: Best Video Submission, Best Social Impact Project and Best Social Media Post.</p>
     </div>
+    <section class="more-projects">
+      <div class="section-head"><h2>More Projects</h2><a class="view-toggle" href="projects.html">See all →</a></div>
+      <div class="more-grid">
+        <a class="more-card" href="tennis.html"><img src="img/projects/tennis-card.jpg" alt="" loading="lazy"><span>Tennis Match Projection Model</span><small>Machine Learning, Python</small></a>
+        <a class="more-card" href="ray-tracer.html"><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><span>Ray Tracer</span><small>Graphics</small></a>
+      </div>
+    </section>
   </main>
 
   <footer id="contact">

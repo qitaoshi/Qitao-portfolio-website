@@ -43,8 +43,9 @@ function build() {
   const GLASS_H = 0.22; // thick enough that the glass top reads as the lazy susan
   const R = 2.7; // plate ring radius
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 3));
+  const small = matchMedia("(max-width: 768px)").matches; // phones: fewer pixels and a smaller shadow map keep the GPU from stalling
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, small ? 2 : 3));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -63,7 +64,7 @@ function build() {
   const key = new THREE.DirectionalLight(0xfff1dc, 2.4);
   key.position.set(-6, 12, 7);
   key.castShadow = true;
-  key.shadow.mapSize.set(2048, 2048);
+  key.shadow.mapSize.setScalar(small ? 1024 : 2048);
   Object.assign(key.shadow.camera, { left: -6, right: 6, top: 6, bottom: -6, near: 1, far: 40 });
   key.shadow.radius = 4;
   key.shadow.bias = -0.0005;
