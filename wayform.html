@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#d5c8b2">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#d5c8b2">
+  <title>Wayform | Qitao Shi</title>
+  <meta name="description" content="A macOS app and CLI that gives coding agents shared memory: the plan, the decisions and the reasons behind them, carried across teammates and across Claude Code, Cursor and Codex.">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=28">
+  <script>document.documentElement.className = "js";</script>
+  <script src="script.js?v=3" defer></script>
+</head>
+<body>
+  <header class="wrap nav">
+    <a class="brand" href="index.html">Qitao Shi</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="food.html">Food</a></li>
+        <li><a href="projects.html" aria-current="page">Projects</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="resume.pdf" download>Resume</a>
+  </header>
+
+  <main class="wrap project">
+    <div class="project-head">
+      <h1>Wayform</h1>
+      <p class="kicker">Developer tools · TypeScript</p>
+      <p class="intro">A macOS app and CLI that gives coding agents shared memory: the plan, the decisions and the reasons behind them. A decision made in one teammate's Claude Code session is already loaded when another opens Cursor or Codex.</p>
+      <ul class="chips"><li>Serves: teams that build with AI agents</li><li>Co-built with Skanda</li></ul>
+      <div class="cta"><a class="btn btn-solid" href="https://wayform.dev/">Visit wayform.dev</a></div>
+      <div class="project-photo" style="--tile: 3 / 2"><div class="browser"><img src="img/wayform.jpg" alt="The Wayform landing page: Agents are good. They could be better." width="1400" height="958"></div>
+        <img src="img/projects/wayform-plan.jpg" alt="A Wayform plan for inviting a team, showing an inherited decision to use GitHub identity" width="1200" height="800" loading="lazy">
+        <img src="img/projects/wayform-decisions.jpg" alt="Two teammates in different agents: a decision saved from Claude Code is reused in a fresh Codex session" width="900" height="600" loading="lazy">
+      </div>
+    </div>
+
+    <div class="recipe-body">
+      <section style="padding:0">
+        <h2>Ingredients</h2>
+        <ul class="ingredients">
+          <li><img src="img/stack/typescript.svg" alt="" loading="lazy">TypeScript</li>
+          <li><img src="img/stack/nodejs.svg" alt="" loading="lazy">Node.js</li>
+          <li><img src="img/stack/git.svg" alt="" loading="lazy">Git</li>
+          <li><img src="img/stack/cloudflare-workers.svg" alt="" loading="lazy">Cloudflare Workers</li>
+        </ul>
+      </section>
+      <section style="padding:0">
+        <h2>Method</h2>
+        <ol class="method">
+          <li>Write each settled decision as "we decided X because Y" into a private git repo the team owns. Commits are append-only, so git log doubles as the audit trail.</li>
+          <li>Serve that store through an MCP server, so Claude Code, Cursor and Codex all read and write the same decisions.</li>
+          <li>When a session starts, a hook loads every decision as context. A new chat already knows what the team ruled out.</li>
+          <li>Before a pull request opens, have the agent check the diff against the plan. Once it merges, the plan and its decisions join the shared memory.</li>
+          <li>If an action clashes with a recorded decision, stop and ask a person to make the call.</li>
+        </ol>
+      </section>
+    </div>
+
+    <div class="notes">
+      <h2>Chef's Notes</h2>
+      <p>Keep the writes curated: a decision and its reason, not every thought the agent had. That is what keeps the memory worth loading into every session. And don't rebuild what git already does well. Borrowing its history and consistency meant no vendor database holds the team's decisions.</p>
+    </div>
+    <section class="more-projects">
+      <div class="section-head"><h2>More Projects</h2><a class="view-toggle" href="projects.html">See all →</a></div>
+      <div class="more-grid">
+        <a class="more-card" href="tennis.html"><img src="img/projects/tennis-card.jpg" alt="" loading="lazy"><span>Tennis Match Projection Model</span><small>Machine Learning, Python</small></a>
+        <a class="more-card" href="side-quests.html"><img src="img/projects/side-quests-current.jpg" alt="" loading="lazy"><span>Side Quests</span><small>Mobile</small></a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="wrap">
+      <div class="ticket">
+        <h2>Contact</h2>
+        <a class="mail" href="mailto:qitaoshi@gmail.com">qitaoshi@gmail.com</a>
+        <!-- TODO: replace # with your real profile URLs -->
+        <ul class="lines"><li><a href="#">GitHub</a></li><li><a href="#">LinkedIn</a></li><li><a href="#">Instagram</a></li></ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
