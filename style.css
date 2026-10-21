@@ -77,6 +77,8 @@ a { color: inherit; text-decoration: none; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 h1, h2, h3, p { margin: 0; }
 h1, h2, h3, .brand { font-family: var(--font-display); font-weight: 400; }
+h1, h2, h3 { line-height: 1.15; } /* body's 1.6 leaves wrapped titles gaping */
+::selection { background: var(--accent); color: var(--on-accent); }
 
 .wrap { max-width: 1400px; margin: 0 auto; padding: 0 var(--pad); }
 
@@ -86,6 +88,7 @@ h1, h2, h3, .brand { font-family: var(--font-display); font-weight: 400; }
 .nav ul { display: flex; gap: 1.25rem; font-weight: 600; font-size: .9rem; }
 .nav ul a { display: inline-block; padding: .7rem .25rem; }
 .nav .btn[aria-current="page"] { background: var(--text); color: var(--bg); }
+.nav ul a[aria-current="page"] { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .3em; }
 .nav .btn { margin-left: auto; padding: .6rem 1.2rem; font-size: .8rem; }
 
 /* buttons */
