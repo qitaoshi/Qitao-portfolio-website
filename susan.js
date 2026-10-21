@@ -12,9 +12,9 @@ const link = document.getElementById("now-link");
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 // a page can restyle the table and cards with these CSS variables on #susan; the fallbacks are this site's look
 const css = (k, d) => getComputedStyle(host).getPropertyValue(k).trim() || d;
-const PAPER = css("--susan-paper", "#f3f5f1"), INK = css("--susan-ink", "#0e1a3c");
-const TITLE_FONT = css("--susan-title-font", '400 {s}px "Bagel Fat One", sans-serif'), TAG_FONT = css("--susan-tag-font", '700 26px "Public Sans", sans-serif');
+const PAPER = css("--susan-paper", "#f3f5f1");
 
+const N = picks.length, STEP = (2 * Math.PI) / N;
 let idx = 0;
 let spinTo = null; // set once the 3D scene is ready
 
@@ -25,6 +25,7 @@ function panel(i) {
   title.textContent = p.title;
   stack.replaceChildren(...p.stack.split(",").map((t) => Object.assign(document.createElement("li"), { textContent: t.trim() })));
   link.href = p.href;
+  link.textContent = p.cta;
 }
 function select(i) {
   panel(i);
@@ -32,8 +33,8 @@ function select(i) {
 }
 picks.forEach((b, i) => b.addEventListener("click", () => select(i)));
 host.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowRight") select((idx + 1) % 4);
-  if (e.key === "ArrowLeft") select((idx + 3) % 4);
+  if (e.key === "ArrowRight") select((idx + 1) % N);
+  if (e.key === "ArrowLeft") select((idx + N - 1) % N);
 });
 
 const shadowed = (g) => (g.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; }), g);
@@ -93,7 +94,7 @@ function build() {
   edge.position.y = GLASS_H / 2;
   props.add(glass, edge);
 
-  // four cards standing on small stands, one per project or recipe. The face is drawn on a canvas like the cards on the page.
+  // one card per pick, standing on small stands and spaced evenly round the table. The face is drawn on a canvas like the cards on the page.
   const CW = 2.2, CH = 1.65;
   const standMat = new THREE.MeshStandardMaterial({ color: 0x2a1f18, roughness: 0.6 });
   const roundRect = (g, x, y, w, h, r) => { g.beginPath(); g.roundRect(x, y, w, h, r); };
@@ -102,42 +103,27 @@ function build() {
     const c = document.createElement("canvas"); c.width = W; c.height = H;
     const g = c.getContext("2d");
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
-    const draw = (img) => {
+    const draw = (img) => { // photo only: the panel beside the table carries the title and stack
       g.clearRect(0, 0, W, H);
       roundRect(g, 0, 0, W, H, 36); g.fillStyle = PAPER; g.fill();
       if (img) {
-        g.save(); roundRect(g, 24, 24, W - 48, 380, 22); g.clip();
-        const k = Math.max((W - 48) / img.width, 380 / img.height);
-        const focus = Number(b.dataset.focus ?? 0.5); // how far down the photo the food sits, so the 2:1 strip doesn't cut it
-        g.drawImage(img, W / 2 - (img.width * k) / 2, 24 - (img.height * k - 380) * focus, img.width * k, img.height * k);
+        g.save(); roundRect(g, 20, 20, W - 40, H - 40, 26); g.clip();
+        const k = Math.max((W - 40) / img.width, (H - 40) / img.height);
+        const focus = Number(b.dataset.focus ?? 0.5); // how far down the photo the food sits, so the crop doesn't cut it
+        g.drawImage(img, W / 2 - (img.width * k) / 2, 20 - (img.height * k - (H - 40)) * focus, img.width * k, img.height * k);
         g.restore();
-      }
-      g.fillStyle = INK; g.textBaseline = "alphabetic";
-      let size = 50; // shrink long titles to fit instead of squashing the letters
-      const title = (n) => (g.font = TITLE_FONT.replace("{s}", n));
-      title(size);
-      while (size > 30 && g.measureText(b.dataset.title).width > W - 56) title(--size);
-      g.fillText(b.dataset.title, 28, 478, W - 56);
-      g.font = TAG_FONT;
-      let x = 28;
-      for (const tag of b.dataset.stack.split(",").map((v) => v.trim())) {
-        const w = g.measureText(tag).width + 32;
-        if (x + w > W - 28) break; // no room left on the card: drop the extra tags
-        roundRect(g, x, 508, w, 44, 22); g.strokeStyle = INK; g.globalAlpha = 0.45; g.lineWidth = 2; g.stroke(); g.globalAlpha = 1;
-        g.fillStyle = INK; g.fillText(tag, x + 16, 539);
-        x += w + 10;
       }
       t.needsUpdate = true;
       if (img) kick(); // not before the motion loop below exists
     };
     draw(null);
     const img = new Image();
-    img.onload = () => document.fonts.load(TITLE_FONT.replace("{s}", 50)).then(() => draw(img));
+    img.onload = () => draw(img);
     img.src = b.dataset.img;
     return t;
   };
   const cards = picks.map((b, i) => {
-    const th = (i * Math.PI) / 2;
+    const th = i * STEP;
     const g = new THREE.Group();
     g.position.set(3.5 * Math.sin(th), GLASS_H, 3.5 * Math.cos(th));
     g.scale.setScalar(0.8); // smaller cards hide less of the table behind them
@@ -172,9 +158,9 @@ function build() {
   });
   const dish = (name, slots) => load(name).then((model) => slots.forEach((s) => place(model.clone(), ...s)));
   const loaded = [
-    dish("teapot", [[45, 2.5, -0.3], [315, 2.5, Math.PI + 0.3]]),
-    dish("chopsticks", [[225, 2.0, 0.3]]),
-    dish("teacup", [[72, 3.4], [288, 3.4]]),
+    dish("teapot", [[36, 2.4, -0.3], [324, 2.4, Math.PI + 0.3]]),
+    dish("chopsticks", [[180, 2.0, 0.3]]),
+    dish("teacup", [[108, 3.2], [252, 3.2]]),
     load("susan").then((model) => {
       // Blender glass with its rounded edge, plus the gold plate and hub baked under it
       const pane = model.getObjectByName("Glass");
@@ -278,18 +264,18 @@ function build() {
       const hit = ray.intersectObjects(cards, true)[0];
       if (hit) { let o = hit.object; while (o.userData.i === undefined) o = o.parent; spinTo(o.userData.i); panel(o.userData.i); return; }
     }
-    k = Math.round(-(angle + vel * 12) / (Math.PI / 2));
-    target = (-k * Math.PI) / 2;
-    panel(((k % 4) + 4) % 4);
+    k = Math.round(-(angle + vel * 12) / STEP);
+    target = -k * STEP;
+    panel(((k % N) + N) % N);
     kick();
   };
   el.addEventListener("pointerup", end);
   el.addEventListener("pointercancel", end);
 
   return (i) => {
-    const cur = ((k % 4) + 4) % 4;
-    k += ((((i - cur + 2) % 4) + 4) % 4) - 2; // shortest way round
-    target = (-k * Math.PI) / 2;
+    const cur = ((k % N) + N) % N;
+    k += ((((i - cur + Math.floor(N / 2)) % N) + N) % N) - Math.floor(N / 2); // shortest way round
+    target = -k * STEP;
     kick();
   };
 }
