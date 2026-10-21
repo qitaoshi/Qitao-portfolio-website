@@ -13,7 +13,7 @@
   <script>document.documentElement.className = "js";</script>
   <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
   <script src="script.js?v=4" defer></script>
-  <script type="module" src="susan.js?v=3"></script>
+  <script type="module" src="susan.js?v=4"></script>
   <!-- fetch the 3D libraries and models in parallel instead of one after another -->
   <link rel="modulepreload" href="vendor/three.module.min.js">
   <link rel="modulepreload" href="vendor/loaders/GLTFLoader.js">
@@ -51,7 +51,7 @@
       </div>
 
       <div class="stage">
-        <div class="susan" id="susan" tabindex="0" role="group" aria-label="Lazy Susan with five dishes. Drag it, or use the left and right arrow keys."></div>
+        <div class="susan" id="susan" tabindex="0" role="group"></div>
         <div class="picker" role="group" aria-label="Choose a project">
           <button class="pick" aria-pressed="true" data-title="Tennis Match Projection Model" data-stack="Python, Pandas, Scikit-Learn" data-href="tennis.html" data-cta="View case study" data-img="img/tennis.jpg">Tennis model</button>
           <button class="pick" aria-pressed="false" data-title="Side Quests" data-stack="Dart, Flutter, Firebase" data-href="side-quests.html" data-cta="View case study" data-img="img/side-quests.jpg">Side Quests</button>

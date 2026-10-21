@@ -15,6 +15,7 @@ const css = (k, d) => getComputedStyle(host).getPropertyValue(k).trim() || d;
 const PAPER = css("--susan-paper", "#f3f5f1");
 
 const N = picks.length, STEP = (2 * Math.PI) / N;
+host.ariaLabel = `Lazy Susan with ${N} dishes. Drag it, or use the left and right arrow keys.`;
 let idx = 0;
 let spinTo = null; // set once the 3D scene is ready
 
@@ -169,7 +170,7 @@ function build() {
       props.remove(glass); props.add(pane, model.getObjectByName("GoldPlate"), model.getObjectByName("Hub"));
     }),
   ];
-  Promise.all(loaded).then(() => { // reveal all at once
+  Promise.allSettled(loaded).then(() => { // reveal all at once; a model that failed to load is just left out
     props.visible = true;
     { // intro: the table lowers in, then the dishes drop onto it one by one. Plays even with reduced motion (a one-time 2s drop, tap to skip) since many PCs have OS animations off by default.
       const objs = [...cards.map((g) => g.children[0]), ...props.children.filter((o) => Math.hypot(o.position.x, o.position.z) > 1)];
