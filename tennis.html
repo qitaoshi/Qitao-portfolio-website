@@ -4,13 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="light">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#d5c8b2">
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#d5c8b2">
+  <meta name="theme-color" content="#d5c8b2">
   <title>Tennis Match Projection Model | Qitao Shi</title>
   <meta name="description" content="A model that predicts ATP match outcomes from player stats, surface and recent form. Trained on historical match data and served through a simple web app for live what-if predictions.">
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=40">
+  <link rel="stylesheet" href="style.css?v=41">
   <script>document.documentElement.className = "js";</script>
   <script src="script.js?v=4" defer></script>
 </head>
@@ -41,7 +40,7 @@
     </div>
 
     <div class="recipe-body">
-      <section style="padding:0">
+      <section>
         <h2>Ingredients</h2>
         <ul class="ingredients">
           <li><img src="img/stack/python.svg" alt="" loading="lazy">Python</li>
@@ -50,7 +49,7 @@
           <li><img src="img/stack/tennis-data.svg" alt="" loading="lazy">Historical ATP match data</li>
         </ul>
       </section>
-      <section style="padding:0">
+      <section>
         <h2>Method</h2>
         <ol class="method">
           <li>Gather historical ATP match results, then trim out walkovers and retirements so only completed matches remain.</li>
