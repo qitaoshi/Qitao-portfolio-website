@@ -347,7 +347,9 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 .project .recipe-body { gap: clamp(3rem, 11vw, 7.5rem); padding-block: 2rem 5rem; }
 .project .recipe-body h2, .project .notes h2, .project .more-projects h2 { font-size: 1.25rem; margin-bottom: 0; }
 .project .section-head { margin-bottom: 3rem; }
-.project .recipe-body section > h2 { margin-bottom: 3rem; line-height: 38px; } /* matches the toggle's height so both columns start level */
+.project .recipe-body section > h2 { margin-bottom: 3rem; }
+/* same 40px row as the list toggle so Ingredients and Method line up */
+.project .section-head, .project .recipe-body section > h2 { min-height: 2.5rem; display: flex; align-items: center; }
 .project .view-toggle { font-weight: 400; }
 .project .ingredients li { font-size: .8rem; }
 .project .method { gap: 2.5rem; }
