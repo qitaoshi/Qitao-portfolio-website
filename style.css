@@ -1,7 +1,7 @@
 @font-face { font-family: "Bagel Fat One"; src: url(fonts/bagel-fat-one.woff2) format("woff2"); font-display: swap; }
 @font-face { font-family: "Public Sans"; src: url(fonts/public-sans.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
 
-/* Palette from the design document: warm beige ground, navy text, amber accent, near-black for borders and the footer.
+/* Palette from the design document: warm beige ground, navy text, amber accent, near-black for borders.
    Amber is used for fills and underlines, never as text on the beige ground. */
 :root {
   color-scheme: light;
@@ -10,7 +10,7 @@
   --text: #232649;
   --muted: #45475f;
   --line: rgb(42 38 38 / .35);
-  --accent: #eba445;
+  --accent: #66bf64;
   --on-accent: #232649;
   --card: var(--thermal);
   --ink-faint: rgb(35 38 73 / .35);
@@ -18,6 +18,8 @@
   --ink-tint: rgb(35 38 73 / .08);
   --shadow: 0 28px 60px rgb(35 31 29 / .25);
   --shadow-card: 0 14px 30px rgb(0 0 0 / .22);
+  /* tickets: drop-shadow follows the outline, so the torn teeth cast a shadow too; two layers read as paper hanging off the rail */
+  --shadow-ticket: drop-shadow(0 2px 2px rgb(35 31 29 / .18)) drop-shadow(0 14px 14px rgb(35 31 29 / .22));
   --font-display: "Bagel Fat One", system-ui, sans-serif;
   --font-body: "Public Sans", system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; /* printed order tickets */
@@ -59,7 +61,7 @@ body::before {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 /* embossed paper relief: noise lit from the top-left (tiled before lighting so tile edges don't seam), kept to the shaded sides only so the page colour stays put.
-   z-index -1 keeps it behind all content; cards and the footer cover it with their own backgrounds */
+   z-index -1 keeps it behind all content; cards cover it with their own backgrounds */
 body::after {
   content: "";
   position: fixed;
@@ -82,7 +84,8 @@ h1, h2, h3, .brand { font-family: var(--font-display); font-weight: 400; }
 .nav { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 2rem; min-height: var(--nav-h); padding-block: .75rem; }
 .brand { font-size: 1.35rem; }
 .nav ul { display: flex; gap: 1.25rem; font-weight: 600; font-size: .9rem; }
-.nav ul a, .lines a { display: inline-block; padding: .7rem .25rem; }
+.nav ul a { display: inline-block; padding: .7rem .25rem; }
+.nav .btn[aria-current="page"] { background: var(--text); color: var(--bg); }
 .nav .btn { margin-left: auto; padding: .6rem 1.2rem; font-size: .8rem; }
 
 /* buttons */
@@ -183,13 +186,16 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 }
 .order {
   position: relative; padding: 1.25rem 1.1rem 1.5rem; background: var(--thermal-paper); color: var(--text); scroll-margin-top: 1rem;
-  box-shadow: inset 0 9px 7px -7px var(--steel-lo), var(--shadow-card); /* top edge in the channel's shadow */
+  box-shadow: inset 0 9px 7px -7px var(--steel-lo); /* top edge in the channel's shadow */
+  filter: var(--shadow-ticket);
 }
-.order::after, .card::after { content: ""; position: absolute; left: 0; right: 0; top: calc(100% - 1px); height: 12px; background: var(--thermal); -webkit-mask: var(--tear); mask: var(--tear); }
-.order:nth-child(1), .card:nth-child(1) { --tear: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='12'><path d='M0 0H16L8 12Z'/></svg>") repeat-x top / 16px 12px; }
-.order:nth-child(2), .card:nth-child(2) { --tear: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'><path d='M0 0H100V5L97 9L94 4L90 10L86 6L82 11L78 5L74 8L70 3L66 9L62 6L58 11L54 5L50 8L46 4L42 10L38 6L34 9L30 3L26 8L22 5L18 10L14 4L10 9L6 6L3 10L0 7Z'/></svg>") no-repeat top / 100% 100%; }
-.order:nth-child(3), .card:nth-child(3) { --tear: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='7'><path d='M0 0H14A7 7 0 0 1 0 0Z'/></svg>") repeat-x top / 14px 7px; }
-.order:nth-child(4) { --tear: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'><path d='M0 0H100V8L95 4L91 9L84 3L79 7L73 5L66 10L60 4L55 8L47 3L41 9L35 6L28 10L22 4L15 8L9 5L4 9L0 6Z'/></svg>") no-repeat top / 100% 100%; }
+/* torn edge: one zigzag on every ticket, cut from the same paper (grain and shaded sides) so the teeth match the body.
+   Teeth are twice as wide as deep, and `round` fits a whole number of them across so none is clipped at the ends */
+.order::after, .card::after {
+  content: ""; position: absolute; left: 0; right: 0; top: calc(100% - 1px); height: 10px; background: var(--thermal-paper);
+  --tear: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='10'><path d='M0 0H20L10 10Z'/></svg>") top / 20px 10px round no-repeat;
+  -webkit-mask: var(--tear); mask: var(--tear);
+}
 .order .order-no, .card .order-no {
   display: flex; justify-content: space-between; gap: 1rem; padding-bottom: .7rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--ink-faint);
   font: 600 .75rem/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
@@ -204,21 +210,6 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 .order .cta { margin-top: 1rem; gap: .5rem; }
 .order .btn { padding: .6rem 1rem; font-size: .7rem; }
 
-/* footer: contact as a kitchen order ticket */
-footer { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--surface); }
-.ticket {
-  position: relative; max-width: 540px; margin-inline: auto; padding: 1.75rem 1.75rem 2.25rem; background: var(--thermal-paper); color: var(--text);
-  border-radius: 6px 6px 0 0; rotate: -.6deg; box-shadow: var(--shadow-card);
-}
-.ticket::after { /* torn paper edge */
-  content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 10px;
-  background: linear-gradient(135deg, var(--thermal) 25%, transparent 25%) -10px 0, linear-gradient(225deg, var(--thermal) 25%, transparent 25%) -10px 0; background-size: 20px 20px;
-}
-.ticket h2 { font-size: 1.1rem; padding-bottom: .9rem; margin-bottom: .9rem; border-bottom: 2px dashed var(--ink-faint); }
-.mail { font-family: var(--font-display); font-size: clamp(1.4rem, 3.6vw, 2.25rem); overflow-wrap: anywhere; }
-.lines { margin-top: 1rem; }
-.lines li { display: flex; align-items: baseline; gap: .6rem; font-weight: 600; }
-.lines li::after { content: ""; order: 1; flex: 1; border-bottom: 2px dotted var(--ink-faint); }
 
 /* inner pages */
 .page-head { padding-block: 3rem 1rem; }
@@ -262,7 +253,7 @@ footer { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--surface); }
   .js .reveal { opacity: 1; translate: none; transition: none; }
 }
 
-@media (pointer: coarse) { .pick, .nav .btn, .view-toggle, .brand, .mail { min-height: 44px; } .view-toggle, .brand, .mail { display: inline-flex; align-items: center; } }
+@media (pointer: coarse) { .pick, .nav .btn, .view-toggle, .brand { min-height: 44px; } .view-toggle, .brand { display: inline-flex; align-items: center; } }
 
 /* below 768px everything collapses to one column */
 @media (max-width: 768px) {
@@ -279,7 +270,7 @@ footer { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--surface); }
 /* project cards on the home page: loose order tickets on the pass, same paper and tears as the projects rail */
 .card {
   position: relative; padding: 1.25rem 1.1rem 1.5rem; background: var(--thermal-paper); color: var(--text);
-  box-shadow: var(--shadow-card);
+  filter: var(--shadow-ticket);
 }
 .card:nth-child(2) { rotate: -.6deg; }
 .card:nth-child(3) { rotate: .5deg; }
@@ -385,3 +376,10 @@ footer { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--surface); }
   .nav ul a { padding-inline: 0; } /* tap height stays 44px; only the side padding goes */
   .nav .btn { padding: .5rem .75rem; font-size: .72rem; }
 }
+
+/* about: one readable column of short sections */
+.about section { max-width: 60ch; padding-block: 1.5rem; }
+.about section:last-child { padding-bottom: 5rem; }
+.about h2 { font-size: 1.75rem; margin-bottom: .75rem; }
+.about section p + p { margin-top: 1rem; }
+.about section a { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .2em; }

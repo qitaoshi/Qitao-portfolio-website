@@ -2,6 +2,7 @@ const { test, expect } = require("@playwright/test");
 
 const pages = {
   "index.html": /Qitao Shi/,
+  "about.html": /About/,
   "projects.html": /Projects/,
   "ray-tracer.html": /Ray Tracer/,
   "salt-bread.html": /Salt Bread/,
