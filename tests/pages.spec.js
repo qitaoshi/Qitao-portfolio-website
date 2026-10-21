@@ -3,6 +3,13 @@ const { test, expect } = require("@playwright/test");
 const pages = {
   "index.html": /Qitao Shi/,
   "about.html": /About/,
+  "food.html": /Food/,
+  "pizza.html": /Pizza/,
+  "dumplings.html": /Dumplings/,
+  "focaccia.html": /Focaccia/,
+  "croissants.html": /Croissant/,
+  "chicken-katsu.html": /Katsu/,
+  "seared-pork.html": /Pork/,
   "projects.html": /Projects/,
   "ray-tracer.html": /Ray Tracer/,
   "salt-bread.html": /Salt Bread/,
