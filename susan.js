@@ -6,7 +6,6 @@ import { GLTFLoader } from "./vendor/loaders/GLTFLoader.js";
 
 const host = document.getElementById("susan");
 const picks = [...document.querySelectorAll(".pick")];
-const title = document.getElementById("now-title");
 const link = document.getElementById("now-link");
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 // a page can restyle the table and cards with these CSS variables on #susan; the fallbacks are this site's look
@@ -19,15 +18,11 @@ let idx = 0;
 let spinTo = null; // set once the 3D scene is ready
 
 function panel(i) {
-  const changed = i !== idx;
   idx = i;
   const p = picks[i].dataset;
   picks.forEach((b, j) => b.setAttribute("aria-pressed", j === i));
-  title.textContent = p.title;
   link.href = p.href;
   link.textContent = p.cta;
-  // the new dish's name settles in instead of swapping, so the change reads as a change
-  if (changed && !reduce) title.animate([{ opacity: 0, filter: "blur(4px)", translate: "0 4px" }, { opacity: 1, filter: "none", translate: "0 0" }], { duration: 220, easing: "cubic-bezier(.23, 1, .32, 1)" });
 }
 function select(i) {
   panel(i);
@@ -105,7 +100,7 @@ function build() {
     const c = document.createElement("canvas"); c.width = W; c.height = H;
     const g = c.getContext("2d");
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
-    const draw = (img) => { // photo only: the panel beside the table carries the title
+    const draw = (img) => { // photo only: the picker beside the table names the dish
       g.clearRect(0, 0, W, H);
       roundRect(g, 0, 0, W, H, 36); g.fillStyle = PAPER; g.fill();
       if (img) {
@@ -128,13 +123,13 @@ function build() {
     const th = i * STEP;
     const g = new THREE.Group();
     g.position.set(3.5 * Math.sin(th), GLASS_H, 3.5 * Math.cos(th));
-    g.scale.setScalar(0.8); // smaller cards hide less of the table behind them
+    g.scale.setScalar(0.8);
     g.userData.i = i;
     const bill = new THREE.Group(); // counter-rotated every frame so the card always faces the viewer, never edge-on or from behind
     const stand = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.07, 0.4), standMat);
     stand.position.set(0, 0.035, -0.05);
-    const lean = new THREE.Group(); // card leans back a little against its stand
-    lean.position.set(0, 0.07, 0); lean.rotation.x = -0.12;
+    const lean = new THREE.Group(); // card leans back toward the camera so the photo isn't squashed by the 40 degree view
+    lean.position.set(0, 0.07, 0); lean.rotation.x = -0.38;
     const front = new THREE.Mesh(new THREE.PlaneGeometry(CW, CH), new THREE.MeshStandardMaterial({ map: faceTex(b), roughness: 0.6, alphaTest: 0.5 }));
     front.position.y = CH / 2;
     for (const m of [stand, front]) m.castShadow = m.receiveShadow = true;
@@ -214,9 +209,11 @@ function build() {
     turn.rotation.y = angle;
     cards.forEach((g) => (g.children[0].rotation.y = -angle));
     cards.forEach((g, i) => {
-      const ty = GLASS_H + (i === idx ? 0.1 : 0); // the chosen dish lifts a little
-      const d = ty - g.position.y;
+      // the chosen dish lifts and grows so its photo reads; the rest stay small so they hide less of the table
+      const ty = GLASS_H + (i === idx ? 0.15 : 0), ts = i === idx ? 1.6 : 0.8;
+      const d = ty - g.position.y, ds = ts - g.scale.x;
       if (Math.abs(d) > 0.0005) { g.position.y += reduce ? d : d * (1 - Math.exp(-dt * 9)); moving = true; } else g.position.y = ty;
+      if (Math.abs(ds) > 0.0005) { g.scale.setScalar(g.scale.x + (reduce ? ds : ds * (1 - Math.exp(-dt * 9)))); moving = true; } else g.scale.setScalar(ts);
     });
     renderer.render(scene, camera);
     if (moving) raf = requestAnimationFrame(frame);
