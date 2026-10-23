@@ -9,7 +9,7 @@
   <meta name="description" content="Computer science student who builds software and cooks. Projects are served like recipes.">
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=49">
+  <link rel="stylesheet" href="style.css?v=50">
   <script>document.documentElement.className = "js";</script>
   <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
   <script src="script.js?v=5" defer></script>
@@ -40,21 +40,21 @@
       <div class="hero-copy">
         <h1 style="--i:0">I build software and cook dinner.</h1>
         <p class="sub" style="--i:1">CS student. Spin the table to see what I've built and baked.</p>
-        <div class="picker" style="--i:2" role="group" aria-label="Choose a project">
-          <button class="pick" aria-pressed="true" data-href="tennis.html" data-cta="View case study" data-img="img/tennis.jpg">Tennis model</button>
-          <button class="pick" aria-pressed="false" data-href="side-quests.html" data-cta="View case study" data-img="img/side-quests.jpg">Side Quests</button>
-          <button class="pick" aria-pressed="false" data-href="ray-tracer.html" data-cta="View case study" data-img="img/ray-tracer.jpg">Ray Tracer</button>
-          <button class="pick" aria-pressed="false" data-href="wayform.html" data-cta="View case study" data-img="img/wayform.jpg" data-focus="0">Wayform</button>
-          <button class="pick" aria-pressed="false" data-href="salt-bread.html" data-cta="View recipe" data-img="img/salt-bread.jpg" data-focus="0.8">Salt bread</button>
-        </div>
-        <div class="cta" style="--i:3">
-          <a class="btn btn-solid" id="now-link" href="tennis.html">View case study</a>
+        <div class="cta" style="--i:2">
           <a class="btn btn-accent" href="mailto:qitaoshi@gmail.com">Get in touch</a>
         </div>
       </div>
 
       <div class="stage">
         <div class="susan" id="susan" tabindex="0" role="group"></div>
+        <div class="picker" role="group" aria-label="Choose a project">
+          <button class="pick" aria-pressed="true" data-href="tennis.html" data-cta="View case study" data-img="img/tennis.jpg">Tennis model</button>
+          <button class="pick" aria-pressed="false" data-href="side-quests.html" data-cta="View case study" data-img="img/side-quests.jpg">Side Quests</button>
+          <button class="pick" aria-pressed="false" data-href="ray-tracer.html" data-cta="View case study" data-img="img/ray-tracer.jpg">Ray Tracer</button>
+          <button class="pick" aria-pressed="false" data-href="wayform.html" data-cta="View case study" data-img="img/wayform.jpg" data-focus="0">Wayform</button>
+          <button class="pick" aria-pressed="false" data-href="salt-bread.html" data-cta="View recipe" data-img="img/salt-bread.jpg" data-focus="0.8">Salt bread</button>
+        </div>
+        <a class="more" id="now-link" href="tennis.html">View case study</a>
       </div>
     </div>
 

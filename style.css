@@ -142,7 +142,8 @@ p, li { text-wrap: pretty; } /* no single word stranded on a last line */
 .stage { width: min(100%, 780px); margin: 0 auto; }
 .susan { aspect-ratio: 4 / 3; cursor: grab; touch-action: pan-y; border-radius: var(--radius); }
 /* picker: a quiet text switcher like the nav, so it doesn't compete with the real buttons below */
-.picker { display: flex; flex-wrap: wrap; gap: .25rem 1.4rem; margin-top: 1.75rem; }
+.picker { display: flex; flex-wrap: wrap; justify-content: center; gap: .25rem 1.4rem; margin-top: .75rem; }
+.stage > .more { display: table; margin: .25rem auto 0; } /* opens whichever dish is chosen */
 .pick {
   padding: .5rem 0; border: 0; background: none; color: var(--muted);
   font: 600 .95rem/1 var(--font-body); cursor: pointer;
@@ -280,8 +281,7 @@ main > .kitchen { padding-block: 2rem 5rem; }
   .hero { grid-template-columns: 1fr; gap: 0; }
   .hero-copy { display: contents; }
   .stage { order: 2; margin-top: 1rem; }
-  .picker { order: 3; margin-top: 1rem; justify-content: center; }
-  .hero .cta { order: 4; margin-top: 1.25rem; }
+  .hero .cta { order: 3; margin-top: 1.25rem; }
   .kitchen { gap: 1rem; }
   .kitchen figure { flex-basis: calc((100% - 1rem) / 2); }
 }
