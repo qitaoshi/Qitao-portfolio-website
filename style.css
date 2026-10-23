@@ -44,7 +44,7 @@
 
 * { box-sizing: border-box; }
 html, body { overflow-x: clip; }
-html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
+html { scrollbar-gutter: stable; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--bg);
@@ -88,8 +88,15 @@ p, li { text-wrap: pretty; } /* no single word stranded on a last line */
 .brand { font-size: 1.35rem; }
 .nav nav { margin-left: auto; }
 .nav ul { display: flex; gap: 1.25rem; font-weight: 600; font-size: .9rem; }
-.nav ul a { display: inline-block; padding: .7rem .25rem; }
-.nav ul a[aria-current="page"] { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .3em; }
+.nav ul a { position: relative; display: inline-block; padding: .7rem .25rem; }
+/* the current page's underline is its own bar, so it can slide to the next page's link when you navigate */
+.nav ul a[aria-current="page"]::after { content: ""; position: absolute; left: .25rem; right: .25rem; bottom: .35rem; height: 2px; background: var(--accent); view-transition-name: nav-current; }
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  .nav { view-transition-name: nav; } /* the bar stays put while the page underneath cross-fades */
+  ::view-transition-group(nav-current) { animation-duration: .35s; animation-timing-function: var(--ease-out); }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .18s; }
+}
 
 /* buttons */
 .btn {
@@ -208,8 +215,8 @@ main > .kitchen { padding-block: 2rem 5rem; }
 .order .levels figcaption { font-size: .7rem; letter-spacing: .04em; white-space: nowrap; } /* white art backgrounds drop into the tinted panel */
 .order h2, .order h3 { font-size: 1.35rem; margin: .9rem 0 .4rem; }
 .order p { color: var(--muted); font-size: .9rem; line-height: 1.55; margin-bottom: .8rem; }
-.order .cta { margin-top: 1rem; gap: .5rem; }
-.order .btn { padding: .6rem 1rem; font-size: .7rem; }
+.order .stack { margin: 0; font: 600 .72rem/1.5 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; } /* printed on the docket, not a row of pills */
+.order .stack + .more { margin-top: .5rem; }
 
 
 /* inner pages */
@@ -437,6 +444,7 @@ main > .kitchen { padding-block: 2rem 5rem; }
   .brand { font-size: 1.15rem; }
   .nav ul { gap: .9rem; font-size: .85rem; }
   .nav ul a { padding-inline: 0; } /* tap height stays 44px; only the side padding goes */
+  .nav ul a[aria-current="page"]::after { left: 0; right: 0; }
 }
 
 /* about: one readable column of short sections */
