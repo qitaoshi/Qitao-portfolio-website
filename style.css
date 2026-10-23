@@ -90,14 +90,8 @@ p, li { text-wrap: pretty; } /* no single word stranded on a last line */
 .nav ul { display: flex; gap: 1.25rem; font-weight: 600; font-size: .9rem; }
 .nav ul a { position: relative; display: inline-block; padding: .7rem .25rem; }
 .nav ul a[aria-current="page"] { text-decoration: none; } /* hover too: the bar below is the underline */
-/* the current page's underline is its own bar, so it can slide to the next page's link when you navigate */
-.nav ul a[aria-current="page"]::after { content: ""; position: absolute; left: .25rem; right: .25rem; bottom: .35rem; height: 2px; background: var(--accent); view-transition-name: nav-current; }
-@media (prefers-reduced-motion: no-preference) {
-  @view-transition { navigation: auto; }
-  .nav { view-transition-name: nav; } /* the bar stays put while the page underneath cross-fades */
-  ::view-transition-group(nav-current) { animation-duration: .35s; animation-timing-function: var(--ease-out); }
-  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .18s; }
-}
+/* the current page's underline is a fixed bar under the link; the nav never animates between pages */
+.nav ul a[aria-current="page"]::after { content: ""; position: absolute; left: .25rem; right: .25rem; bottom: .35rem; height: 2px; background: var(--accent); }
 
 /* buttons */
 .btn {
