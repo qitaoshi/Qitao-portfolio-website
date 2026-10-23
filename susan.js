@@ -19,12 +19,15 @@ let idx = 0;
 let spinTo = null; // set once the 3D scene is ready
 
 function panel(i) {
+  const changed = i !== idx;
   idx = i;
   const p = picks[i].dataset;
   picks.forEach((b, j) => b.setAttribute("aria-pressed", j === i));
   title.textContent = p.title;
   link.href = p.href;
   link.textContent = p.cta;
+  // the new dish's name settles in instead of swapping, so the change reads as a change
+  if (changed && !reduce) title.animate([{ opacity: 0, filter: "blur(4px)", translate: "0 4px" }, { opacity: 1, filter: "none", translate: "0 0" }], { duration: 220, easing: "cubic-bezier(.23, 1, .32, 1)" });
 }
 function select(i) {
   panel(i);
