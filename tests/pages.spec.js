@@ -45,7 +45,7 @@ test("projects rail drags with a mouse without clicking through", async ({ page 
   await page.goto("projects.html");
   const rail = page.locator(".rail");
   // start the drag on a button: dragging must scroll, not follow the link
-  const btn = page.locator("#tennis .btn-accent");
+  const btn = page.locator("#tennis .btn-solid");
   const b = await btn.boundingBox();
   await page.mouse.move(b.x + 10, b.y + 10);
   await page.mouse.down();
@@ -54,6 +54,6 @@ test("projects rail drags with a mouse without clicking through", async ({ page 
   await expect(page).toHaveURL(/projects\.html$/);
   await expect.poll(() => rail.evaluate((r) => r.scrollLeft)).toBeGreaterThan(100);
   // a plain click still follows the link
-  await page.locator("#side-quests .btn-accent").click();
+  await page.locator("#side-quests .btn-solid").click();
   await expect(page).toHaveURL(/side-quests\.html$/);
 });

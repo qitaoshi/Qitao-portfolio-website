@@ -9,9 +9,9 @@
   <meta name="description" content="A model that predicts ATP match outcomes from player stats, surface and recent form. Trained on historical match data and served through a simple web app for live what-if predictions.">
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=43">
+  <link rel="stylesheet" href="style.css?v=44">
   <script>document.documentElement.className = "js";</script>
-  <script src="script.js?v=4" defer></script>
+  <script src="script.js?v=5" defer></script>
 </head>
 <body>
   <header class="wrap nav">
@@ -29,7 +29,6 @@
   <main class="wrap project">
     <div class="project-head">
       <h1>Tennis Match Projection Model</h1>
-      <p class="kicker">Machine Learning · Python</p>
       <p class="intro">A model that predicts ATP match outcomes from player stats, surface and recent form. Trained on historical match data and served through a simple web app for live what-if predictions.</p>
       <ul class="chips"><li>Serves: tennis fans</li><li>Difficulty: Hard</li></ul>
       <div class="cta"><a class="btn btn-solid" href="#">GitHub</a></div>
@@ -62,16 +61,25 @@
     </div>
 
     <div class="notes">
+      <p class="order-no"><span>Order 01</span><span>Machine learning</span></p>
       <h2>Chef's Notes</h2>
       <p>Always split the matches by date, never at random. Letting future results slip into the training data makes the model look far better than it really is. Surface matters more than you would expect: a player's clay record says little about how they will go on grass.</p>
     </div>
     <section class="more-projects">
-      <div class="section-head"><h2>More Projects</h2><a class="view-toggle" href="projects.html">See all →</a></div>
+      <div class="section-head"><h2>More Projects</h2><a class="more" href="projects.html">See all →</a></div>
       <div class="more-grid">
-        <a class="more-card" href="side-quests.html"><img src="img/projects/side-quests-feed.jpg" alt="" loading="lazy"><span>Side Quests</span><small>Mobile</small></a>
+        <a class="more-card" href="side-quests.html"><img src="img/projects/side-quests-today.jpg" alt="" loading="lazy"><span>Side Quests</span><small>Mobile</small></a>
         <a class="more-card" href="ray-tracer.html"><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><span>Ray Tracer</span><small>Graphics</small></a>
-        <a class="more-card" href="wayform.html"><img src="img/wayform.jpg" alt="" loading="lazy"><span>Wayform</span><small>Developer tools</small></a>      </div>
+        <a class="more-card" href="wayform.html"><img src="img/projects/wayform-plan.jpg" alt="" loading="lazy"><span>Wayform</span><small>Developer tools</small></a>      </div>
     </section>
   </main>
+  <footer class="wrap footer">
+    <p class="brand">Qitao Shi</p>
+    <ul>
+      <li><a href="mailto:qitaoshi@gmail.com">Email</a></li>
+      <li><a href="https://github.com/qitaoshi">GitHub</a></li>
+      <li><a href="https://www.instagram.com/quokachi_cook/">Instagram</a></li>
+    </ul>
+  </footer>
 </body>
 </html>

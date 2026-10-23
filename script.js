@@ -11,8 +11,9 @@ const io = new IntersectionObserver(
 );
 document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
-// Ingredients: a button beside the heading switches between the picture grid and a plain list.
-document.querySelectorAll(".ingredients").forEach((list) => {
+// Recipe ingredients: a button beside the heading switches between the picture grid and a plain list.
+// (Project pages list a few logos in one row, which needs no second view.)
+document.querySelectorAll(".recipe .ingredients").forEach((list) => {
   const heading = list.parentElement.querySelector("h2");
   const head = document.createElement("div");
   const btn = document.createElement("button");

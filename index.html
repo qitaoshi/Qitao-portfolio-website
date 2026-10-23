@@ -9,11 +9,11 @@
   <meta name="description" content="Computer science student who builds software and cooks. Projects are served like recipes.">
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=43">
+  <link rel="stylesheet" href="style.css?v=44">
   <script>document.documentElement.className = "js";</script>
   <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
-  <script src="script.js?v=4" defer></script>
-  <script type="module" src="susan.js?v=4"></script>
+  <script src="script.js?v=5" defer></script>
+  <script type="module" src="susan.js?v=5"></script>
   <!-- fetch the 3D libraries and models in parallel instead of one after another -->
   <link rel="modulepreload" href="vendor/three.module.min.js">
   <link rel="modulepreload" href="vendor/loaders/GLTFLoader.js">
@@ -42,9 +42,15 @@
         <p class="sub" style="--i:1">Computer science student. Drag the Lazy Susan to see what I have built and baked.</p>
         <div class="now" style="--i:2" aria-live="polite">
           <h2 id="now-title">Tennis Match Projection Model</h2>
-          <ul class="tags" id="now-stack"><li>Python</li><li>Pandas</li><li>Scikit-Learn</li></ul>
         </div>
-        <div class="cta" style="--i:3">
+        <div class="picker" style="--i:3" role="group" aria-label="Choose a project">
+          <button class="pick" aria-pressed="true" data-title="Tennis Match Projection Model" data-href="tennis.html" data-cta="View case study" data-img="img/tennis.jpg">Tennis model</button>
+          <button class="pick" aria-pressed="false" data-title="Side Quests" data-href="side-quests.html" data-cta="View case study" data-img="img/side-quests.jpg">Side Quests</button>
+          <button class="pick" aria-pressed="false" data-title="Ray Tracer" data-href="ray-tracer.html" data-cta="View case study" data-img="img/ray-tracer.jpg">Ray Tracer</button>
+          <button class="pick" aria-pressed="false" data-title="Wayform" data-href="wayform.html" data-cta="View case study" data-img="img/wayform.jpg" data-focus="0">Wayform</button>
+          <button class="pick" aria-pressed="false" data-title="Salt Bread (Shio Pan)" data-href="salt-bread.html" data-cta="View recipe" data-img="img/salt-bread.jpg" data-focus="0.8">Salt bread</button>
+        </div>
+        <div class="cta" style="--i:4">
           <a class="btn btn-solid" id="now-link" href="tennis.html">View case study</a>
           <a class="btn btn-accent" href="mailto:qitaoshi@gmail.com">Get in touch</a>
         </div>
@@ -52,47 +58,35 @@
 
       <div class="stage">
         <div class="susan" id="susan" tabindex="0" role="group"></div>
-        <div class="picker" role="group" aria-label="Choose a project">
-          <button class="pick" aria-pressed="true" data-title="Tennis Match Projection Model" data-stack="Python, Pandas, Scikit-Learn" data-href="tennis.html" data-cta="View case study" data-img="img/tennis.jpg">Tennis model</button>
-          <button class="pick" aria-pressed="false" data-title="Side Quests" data-stack="Dart, Flutter, Firebase" data-href="side-quests.html" data-cta="View case study" data-img="img/side-quests.jpg">Side Quests</button>
-          <button class="pick" aria-pressed="false" data-title="Ray Tracer" data-stack="C#" data-href="ray-tracer.html" data-cta="View case study" data-img="img/ray-tracer.jpg">Ray Tracer</button>
-          <button class="pick" aria-pressed="false" data-title="Wayform" data-stack="TypeScript, Node.js, MCP" data-href="wayform.html" data-cta="View case study" data-img="img/wayform.jpg" data-focus="0">Wayform</button>
-          <button class="pick" aria-pressed="false" data-title="Salt Bread (Shio Pan)" data-stack="Bread, Japanese, Baking" data-href="salt-bread.html" data-cta="View recipe" data-img="img/salt-bread.jpg" data-focus="0.8">Salt bread</button>
-        </div>
       </div>
     </div>
 
     <section id="projects">
       <div class="wrap">
         <h2 class="reveal">What’s Cooking</h2>
-        <div class="projects">
-          <article class="card feature">
+        <div class="rail">
+          <article class="order reveal">
             <p class="order-no"><span>Order 01</span><span>Machine learning</span></p>
-            <a class="frame browser" href="tennis.html"><img src="img/tennis.jpg" alt="The Projector, a web app showing a predicted tennis match winner" width="1400" height="958"></a>
+            <img src="img/tennis.jpg" alt="The Projector, a web app showing a predicted tennis match winner" width="1400" height="958" loading="lazy">
             <h3>Tennis Match Projection Model</h3>
-            <p>Predicts ATP match outcomes from player stats, surface and recent form.</p>
-            <ul class="tags"><li>Python</li><li>Pandas</li><li>Scikit-Learn</li></ul>
             <a class="more" href="tennis.html">View case study</a>
           </article>
-          <article class="card">
+          <article class="order reveal">
             <p class="order-no"><span>Order 02</span><span>Mobile</span></p>
-            <a class="frame levels" href="side-quests.html" aria-label="Side Quests: level artwork, a seedling grows into a tree"><figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure><figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure><figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure><figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure></a>
+            <div class="levels" role="img" aria-label="Side Quests level artwork: a seedling grows into a tree"><figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure><figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure><figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure><figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure></div>
             <h3>Side Quests</h3>
-            <ul class="tags"><li>Dart</li><li>Flutter</li><li>Firebase</li></ul>
             <a class="more" href="side-quests.html">View case study</a>
           </article>
-          <article class="card">
+          <article class="order reveal">
             <p class="order-no"><span>Order 03</span><span>Graphics</span></p>
-            <a class="frame" href="ray-tracer.html"><img src="img/ray-tracer.jpg" alt="A ray traced rabbit inside a red, green and blue box" width="1100" height="813"></a>
+            <img src="img/ray-tracer.jpg" alt="A ray traced rabbit inside a red, green and blue box" width="1100" height="813" loading="lazy">
             <h3>Ray Tracer</h3>
-            <ul class="tags"><li>C#</li></ul>
             <a class="more" href="ray-tracer.html">View case study</a>
           </article>
-          <article class="card">
+          <article class="order reveal">
             <p class="order-no"><span>Order 04</span><span>Developer tools</span></p>
-            <a class="frame" href="wayform.html"><img src="img/wayform.jpg" alt="The Wayform landing page: Agents are good. They could be better." width="1400" height="958" loading="lazy"></a>
+            <img src="img/wayform.jpg" alt="The Wayform landing page: Agents are good. They could be better." width="1400" height="958" loading="lazy">
             <h3>Wayform</h3>
-            <ul class="tags"><li>TypeScript</li><li>Node.js</li><li>MCP</li></ul>
             <a class="more" href="wayform.html">View case study</a>
           </article>
         </div>
@@ -108,8 +102,17 @@
           <figure><a href="salt-bread.html"><img src="img/salt-bread.jpg" style="object-position:50% 100%" alt="Three salt bread rolls in a bowl" width="901" height="1200" loading="lazy"></a><figcaption><a href="salt-bread.html">Salt bread</a></figcaption></figure>
           <figure><a href="seared-pork.html"><img src="img/pork.jpg" alt="Seared pork with orange sauce on a white plate" width="900" height="895" loading="lazy"></a><figcaption><a href="seared-pork.html">Seared pork with orange sauce</a></figcaption></figure>
         </div>
+        <a class="more" href="food.html">All recipes</a>
       </div>
     </section>
   </main>
+  <footer class="wrap footer">
+    <p class="brand">Qitao Shi</p>
+    <ul>
+      <li><a href="mailto:qitaoshi@gmail.com">Email</a></li>
+      <li><a href="https://github.com/qitaoshi">GitHub</a></li>
+      <li><a href="https://www.instagram.com/quokachi_cook/">Instagram</a></li>
+    </ul>
+  </footer>
 </body>
 </html>

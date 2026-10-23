@@ -7,7 +7,6 @@ import { GLTFLoader } from "./vendor/loaders/GLTFLoader.js";
 const host = document.getElementById("susan");
 const picks = [...document.querySelectorAll(".pick")];
 const title = document.getElementById("now-title");
-const stack = document.getElementById("now-stack");
 const link = document.getElementById("now-link");
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 // a page can restyle the table and cards with these CSS variables on #susan; the fallbacks are this site's look
@@ -24,7 +23,6 @@ function panel(i) {
   const p = picks[i].dataset;
   picks.forEach((b, j) => b.setAttribute("aria-pressed", j === i));
   title.textContent = p.title;
-  stack.replaceChildren(...p.stack.split(",").map((t) => Object.assign(document.createElement("li"), { textContent: t.trim() })));
   link.href = p.href;
   link.textContent = p.cta;
 }
@@ -104,7 +102,7 @@ function build() {
     const c = document.createElement("canvas"); c.width = W; c.height = H;
     const g = c.getContext("2d");
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
-    const draw = (img) => { // photo only: the panel beside the table carries the title and stack
+    const draw = (img) => { // photo only: the panel beside the table carries the title
       g.clearRect(0, 0, W, H);
       roundRect(g, 0, 0, W, H, 36); g.fillStyle = PAPER; g.fill();
       if (img) {

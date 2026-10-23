@@ -1,8 +1,8 @@
 @font-face { font-family: "Bagel Fat One"; src: url(fonts/bagel-fat-one.woff2) format("woff2"); font-display: swap; }
 @font-face { font-family: "Public Sans"; src: url(fonts/public-sans.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
 
-/* Palette from the design document: warm beige ground, navy text, amber accent, near-black for borders.
-   Amber is used for fills and underlines, never as text on the beige ground. */
+/* Palette from the design document: warm beige ground, navy text, green accent, near-black for borders.
+   Green is for underlines and at most one filled button per page, never text on the beige ground. */
 :root {
   color-scheme: light;
   --bg: #d5c8b2;
@@ -104,12 +104,12 @@ h1, h2, h3 { line-height: 1.15; } /* body's 1.6 leaves wrapped titles gaping */
 .btn, .pick, .view-toggle { touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .btn:active, .pick:active, .view-toggle:active { transform: scale(.97); }
 @media (hover: hover) and (pointer: fine) {
+  .pick[aria-pressed="false"]:hover { border-color: var(--text); }
   a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .3em; }
   .btn:hover { text-decoration: none; background: var(--text); color: var(--bg); }
   .btn-solid:hover { background: transparent; color: var(--text); }
   .btn-accent:hover { background: transparent; color: var(--text); }
-  .pick:hover { border-color: var(--text); }
-  .view-toggle:hover { background: var(--text); color: var(--bg); }
+  .view-toggle:hover { text-decoration-color: var(--text); }
 }
 .btn-accent { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
@@ -125,43 +125,33 @@ h1, h2, h3 { line-height: 1.15; } /* body's 1.6 leaves wrapped titles gaping */
 .hero .sub { margin-top: 1.25rem; max-width: 34ch; font-size: 1.125rem; color: var(--muted); }
 .now { margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--line); max-width: 30rem; }
 .now h2 { font-size: 1.6rem; margin-bottom: .6rem; }
-.cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.75rem; }
+.cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
 
 /* lazy susan (3D, see susan.js) */
 .stage { width: min(100%, 780px); margin: 0 auto; }
 .susan { aspect-ratio: 4 / 3; cursor: grab; touch-action: pan-y; border-radius: var(--radius); }
-.picker { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-top: .75rem; }
+.picker { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
 .pick {
   padding: .45rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-btn); background: transparent; color: var(--text);
   font: 600 .8rem/1 var(--font-body); cursor: pointer; transition: background-color .2s var(--ease-out), color .2s var(--ease-out), border-color .2s var(--ease-out), transform .1s var(--ease-out);
 }
-.pick[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.pick[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: var(--bg); }
 
 /* sections */
 section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem; }
 
-/* projects: tickets in two columns, the feature and Side Quests left, the other two right, so the columns end about level */
-.projects { columns: 2; column-gap: 2.5rem; }
-.projects .card { break-inside: avoid; margin-bottom: 2.5rem; }
-.projects .card:nth-child(3) { break-before: column; }
-.card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; }
-.card .frame { position: relative; display: block; overflow: hidden; border-radius: 4px; }
-.card .browser { box-shadow: none; }
-.card h3 { margin: 1rem 0 .6rem; font-size: 1.4rem; }
-.card p { margin-bottom: .75rem; color: var(--muted); max-width: 46ch; }
-.card.feature h3 { font-size: 2rem; }
-.card.feature img { aspect-ratio: 4 / 3; }
-
-/* kitchen: photo row */
-.kitchen { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; }
-.kitchen figure { margin: 0; }
+/* kitchen: photo row; a short last row is centred instead of leaving holes */
+.kitchen { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; }
+.kitchen figure { flex: 0 0 calc((100% - 4.5rem) / 4); margin: 0; }
+main > .kitchen { padding-block: 2rem 5rem; }
 .kitchen img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius); }
 /* photos too tall to crop square without cutting food: shown whole over a blurred copy of themselves (page sets --photo) */
 .kitchen .whole { position: relative; display: block; overflow: hidden; border-radius: var(--radius); background: var(--photo) center / cover; }
 .kitchen .whole::before { content: ""; position: absolute; inset: -24px; background: inherit; filter: blur(18px) brightness(.92); }
 .kitchen .whole img { position: relative; object-fit: contain; border-radius: 0; }
-.kitchen figcaption { margin-top: .6rem; font-size: .9rem; color: var(--muted); }
+.kitchen figcaption { margin-top: .6rem; font-size: .95rem; font-weight: 600; }
+.kitchen + .more { margin-top: 1.5rem; }
 
 /* projects: order tickets pushed into an aluminium channel rail, like a restaurant pass.
    The rail face is 22px; tickets start right under its lip, and a shadow on their top edge reads as tucked in */
@@ -179,7 +169,7 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
     gap: 1rem; margin-inline: calc(-1 * var(--pad)); padding: var(--rail-h) var(--pad) 3rem; scroll-padding-inline: var(--pad);
   }
   .rail::-webkit-scrollbar { display: none; }
-  .order { flex: 0 0 min(82%, 340px); scroll-snap-align: center; }
+  .order { flex: 0 0 min(76%, 320px); scroll-snap-align: center; } /* a third of the next ticket shows, so it reads as a row */
   @media (pointer: fine) { .rail { cursor: grab; } }
   .rail.dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; } /* snap off while dragging so the row follows the mouse */
 }
@@ -195,21 +185,21 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 }
 /* torn edge: one zigzag on every ticket, cut from the same paper (grain and shaded sides) so the teeth match the body.
    Teeth are twice as wide as deep, and `round` fits a whole number of them across so none is clipped at the ends */
-.order::after, .card::after {
+.order::after, .project .notes::after {
   content: ""; position: absolute; left: 0; right: 0; top: calc(100% - 1px); height: 10px; background: var(--thermal-paper);
   --tear: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='10'><path d='M0 0H20L10 10Z'/></svg>") top / 20px 10px round no-repeat;
   -webkit-mask: var(--tear); mask: var(--tear);
 }
-.order .order-no, .card .order-no {
+.order .order-no, .notes .order-no {
   display: flex; justify-content: space-between; gap: 1rem; padding-bottom: .7rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--ink-faint);
   font: 600 .75rem/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
 }
 /* same media height on every ticket so the titles line up */
 .order > img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 4px; }
-.order .levels { grid-template-columns: repeat(4, minmax(0, 1fr)); align-content: center; aspect-ratio: 16 / 10; padding: 0 .75rem; border-radius: 4px; background: var(--ink-tint); box-shadow: none; }
+.order .levels { grid-template-columns: repeat(4, minmax(0, 1fr)); align-content: center; aspect-ratio: 16 / 10; padding: .5rem .75rem; border-radius: 4px; background: var(--ink-tint); box-shadow: none; }
 .order .levels img { mix-blend-mode: multiply; }
-.order .levels figcaption { font-size: .65rem; letter-spacing: .04em; white-space: nowrap; } /* white art backgrounds drop into the tinted panel */
-.order h2 { font-size: 1.35rem; margin: .9rem 0 .4rem; }
+.order .levels figcaption { font-size: .7rem; letter-spacing: .04em; white-space: nowrap; } /* white art backgrounds drop into the tinted panel */
+.order h2, .order h3 { font-size: 1.35rem; margin: .9rem 0 .4rem; }
 .order p { color: var(--muted); font-size: .9rem; line-height: 1.55; margin-bottom: .8rem; }
 .order .cta { margin-top: 1rem; gap: .5rem; }
 .order .btn { padding: .6rem 1rem; font-size: .7rem; }
@@ -265,7 +255,6 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 /* below 768px everything collapses to one column */
 @media (max-width: 768px) {
   .entry, .recipe-body { grid-template-columns: 1fr; }
-  .projects { columns: auto; }
   /* phones: four across is too tight for captions, so 4 and 8 go in pairs and 7 goes in threes with the last one centred */
   .ingredients:has(> li:last-child:nth-child(4)), .ingredients:has(> li:last-child:nth-child(8)) { --cols: 2; }
   .ingredients:has(> li:last-child:nth-child(7)) { --cols: 3; }
@@ -274,30 +263,22 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
   .hero { grid-template-columns: 1fr; gap: 0; }
   .hero-copy { display: contents; }
   .stage { order: 2; margin-top: 1rem; }
-  .now { order: 3; margin-top: 1.25rem; }
+  .now, .picker { order: 3; }
+  .now { margin-top: 1.25rem; }
   .hero .cta { order: 4; margin-top: 1.25rem; }
-  .kitchen { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kitchen { gap: 1rem; }
+  .kitchen figure { flex-basis: calc((100% - 1rem) / 2); }
 }
 
-/* project cards on the home page: loose order tickets on the pass, same paper and tears as the projects rail */
-.card {
-  position: relative; padding: 1.25rem 1.1rem 1.5rem; background: var(--thermal-paper); color: var(--text);
-  filter: var(--shadow-ticket);
-}
-.card:nth-child(2) { rotate: -.6deg; }
-.card:nth-child(3) { rotate: .5deg; }
-.card:nth-child(4) { rotate: -.4deg; }
-.card p { color: var(--muted); }
-.card .tags li { border-color: var(--ink-faint); }
-.card .order-no { max-width: none; } /* the docket header spans the ticket; the 46ch cap is for the blurb */
-.card .more, .kitchen .more { display: inline-block; margin-top: .75rem; padding-block: .5rem; font-weight: 700; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .3em; }
+.more { display: inline-block; margin-top: .75rem; padding-block: .5rem; font-weight: 700; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .3em; }
 
 /* ingredients: grid / list toggle (button added by script.js) */
 .section-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
 .section-head h2 { margin: 0; }
 .view-toggle {
-  padding: .55rem 1.1rem; border: 0; border-radius: var(--radius-btn); background: var(--accent); color: var(--on-accent);
-  font: 600 .85rem/1 var(--font-body); cursor: pointer; transition: background-color .2s var(--ease-out), color .2s var(--ease-out), transform .1s var(--ease-out);
+  padding: .55rem .25rem; border: 0; background: none; color: var(--text); cursor: pointer;
+  font: 600 .85rem/1 var(--font-body); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .3em;
+  transition: transform .1s var(--ease-out);
 }
 .ingredients.as-list { display: block; }
 .ingredients.as-list li { flex-direction: row; gap: .9rem; padding: .45rem 0; border-bottom: 1px solid var(--line); text-align: left; font-size: 1rem; }
@@ -310,13 +291,9 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 .levels figure { margin: 0; text-align: center; }
 .levels img { width: 100%; border-radius: 0; }
 .levels figcaption { font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.card .levels { display: grid; padding: .5rem; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--ink-tint); box-shadow: none; }
-.card .levels img { mix-blend-mode: multiply; } /* white art backgrounds drop into the tinted panel, as on the projects rail */
-.card .levels img { aspect-ratio: 1; }
 
 /* project pages: stacked header with the photo underneath, like a recipe page */
 .project-head { padding-block: 3rem 2rem; }
-.project-head .kicker { color: var(--muted); font-size: clamp(1.15rem, 2.2vw, 1.5rem); }
 .project-head h1 { font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.08; margin-top: .25rem; }
 .project-head .intro { margin-top: 1.75rem; max-width: 46ch; font-size: 1.15rem; line-height: 1.55; }
 .chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.75rem; }
@@ -327,7 +304,7 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 .project-photo .levels { box-shadow: none; }
 .more-projects { padding-block: 2rem 4rem; }
 .more-projects h2 { font-size: 1.75rem; }
-.view-toggle { text-decoration: none; }
+.section-head .more { margin: 0; }
 .more-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; max-width: 760px; }
 .more-card { display: flex; flex-direction: column; gap: .25rem; color: inherit; text-decoration: none; }
 .more-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); margin-bottom: .5rem; background: var(--card); }
@@ -335,13 +312,14 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 
 /* project and recipe pages, after cabagges.world recipe pages: narrow centred column, light sans type, lots of air */
 .project { max-width: calc(1024px + 2 * var(--pad)); }
-.project h2 { font-family: var(--font-body); font-weight: 400; }
 .project .project-head { padding-block: 5rem 4rem; }
-.project .project-head .kicker { margin-top: .6rem; font-size: clamp(1rem, 1.6vw, 1.15rem); font-weight: 500; line-height: 1.3; } /* category sits under the title, not as an eyebrow above it */
 .project .project-head h1 { font-size: clamp(2.25rem, 5.5vw, 3.75rem); line-height: 1.05; overflow-wrap: anywhere; }
 .project .project-head .intro { margin-top: 3rem; max-width: 460px; font-size: 1.25rem; line-height: 1.3; }
 .project .chips { margin-top: 2.5rem; }
-.project .chips li { padding: .55rem .9rem; border: 1px solid var(--ink-rule); border-radius: 12px; color: var(--text); font-size: .85rem; font-weight: 400; }
+/* serves / difficulty read as facts, not as buttons */
+.project .chips { gap: .25rem .6rem; }
+.project .chips li { padding: 0; background: none; color: var(--muted); font-size: .95rem; font-weight: 500; }
+.project .chips li + li::before { content: "·"; margin-right: .6rem; }
 /* photos: one big slide at a time, whole pictures on a tinted mat.
    Swipeable without JS; script.js adds the arrows, thumbnails and zoom */
 .gallery { margin-top: 2.5rem; container-type: inline-size; }
@@ -391,7 +369,7 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 .zoom p { position: fixed; bottom: max(1rem, env(safe-area-inset-bottom)); left: 50%; translate: -50% 0; margin: 0; padding: .45rem .9rem; border-radius: 999px; background: var(--text); color: var(--bg); font-size: .85rem; white-space: nowrap; pointer-events: none; }
 @media (prefers-reduced-motion: no-preference) { .zoom img { transition: scale .35s var(--ease-out); } }
 .project .recipe-body { gap: clamp(3rem, 11vw, 7.5rem); padding-block: 2rem 5rem; }
-.project .recipe-body h2, .project .notes h2, .project .more-projects h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0; }
+.project .recipe-body h2, .project .notes h2, .project .more-projects h2 { font-size: 1.75rem; margin-bottom: 0; }
 .project .section-head { margin-bottom: 3rem; }
 .project .recipe-body section > h2 { margin-bottom: 3rem; }
 /* same 40px row as the list toggle so Ingredients and Method line up */
@@ -399,36 +377,42 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 .project .view-toggle { font-weight: 400; }
 .project .ingredients li { font-size: .8rem; }
 .recipe .ingredients li { font-size: .9rem; } /* quantities are worth reading, unlike logo names */
-.project .method { gap: 2.5rem; }
+.project .method { gap: 2.5rem; max-width: 46rem; }
 .project .method li { grid-template-columns: 2.25rem 1fr; gap: 1rem; font-size: 1.25rem; line-height: 1.3; }
 .project .method li::before { content: counter(step, decimal-leading-zero); display: block; width: auto; height: auto; background: none; color: var(--muted); font: 600 .85rem/1.9 var(--font-mono); }
-.project .notes { padding-block: 0 5rem; }
-.project .notes h2 { margin-bottom: 1.5rem; }
-.project .notes p { font-size: 1.25rem; line-height: 1.3; }
+/* chef's notes: one order ticket at the end of the page, same paper and tear as the rail */
+.project .notes { position: relative; margin-bottom: 5rem; padding: 1.25rem 1.5rem 1.75rem; background: var(--thermal-paper); filter: var(--shadow-ticket); }
+.project .notes h2 { margin-bottom: 1rem; }
+.project .notes p:not(.order-no) { font-size: 1.15rem; line-height: 1.45; }
 .project .more-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: none; gap: 2rem; }
 .project .more-card { font-size: .875rem; }
 .project .more-card img { aspect-ratio: 3 / 4; border-radius: 24px; margin-bottom: .75rem; }
 /* desktop: chips and GitHub sit right of the intro instead of stacking under it */
 @media (min-width: 900px) {
   .project .project-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 3rem; }
-  .project .project-head > h1, .project .project-head > .kicker, .project .project-head > :last-child { grid-column: 1 / -1; }
-  .project .project-head .intro { grid-column: 1; grid-row: 3 / 5; }
-  .project .chips { grid-column: 2; grid-row: 3; align-self: end; justify-content: flex-end; max-width: 26rem; margin-top: 3rem; }
-  .project .project-head .cta { grid-column: 2; grid-row: 4; justify-self: end; align-self: start; margin-top: 1rem; }
+  .project .project-head > h1, .project .project-head > :last-child { grid-column: 1 / -1; }
+  .project .project-head .intro { grid-column: 1; grid-row: 2 / 4; }
+  .project .chips { grid-column: 2; grid-row: 2; align-self: end; flex-direction: column; align-items: flex-end; gap: .15rem; margin-top: 3rem; }
+  .project .chips li + li::before { content: none; } /* stacked, so no separators */
+  .project .project-head .cta { grid-column: 2; grid-row: 3; justify-self: end; align-self: start; margin-top: 1rem; }
 }
-/* two columns only: ingredients ride alongside the longer method */
+.project:not(.recipe) .recipe-body { grid-template-columns: minmax(0, 1fr); gap: 3rem; }
+.project:not(.recipe) .ingredients { display: flex; flex-wrap: wrap; gap: .75rem 2rem; }
+.project:not(.recipe) .ingredients li { flex-direction: row; gap: .6rem; font-size: 1rem; text-align: left; }
+.project:not(.recipe) .ingredients img { width: 2rem; max-width: none; }
+.project:not(.recipe) .recipe-body section > h2 { margin-bottom: 1.25rem; }
+/* recipes, two columns: product photos beside the method */
 @media (min-width: 769px) {
-  .project .recipe-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); }
-  .project .recipe-body > section:first-child { position: sticky; top: calc(var(--nav-h) + 1.5rem); align-self: start; }
-  /* recipes: sticky makes a stacking context, so the product photos' multiply blend would show white boxes */
-  .recipe .recipe-body > section:first-child { position: static; }
+  .recipe .recipe-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); }
   /* the ingredients column is narrow here too, so recipes take the phone column counts */
   .recipe .ingredients:has(> li:last-child:nth-child(4)), .recipe .ingredients:has(> li:last-child:nth-child(8)) { --cols: 2; }
   .recipe .ingredients:has(> li:last-child:nth-child(7)) { --cols: 3; }
   .recipe .ingredients > li:last-child:nth-child(7) { grid-column: 2; }
 }
 @media (max-width: 768px) {
-  .project .more-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .project .more-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; } /* three other projects, so three across */
+  .project .more-card { font-size: .8rem; }
+  .project .more-card img { border-radius: 14px; }
   .project .project-head { padding-block: 2rem 2.5rem; }
   .project .project-head .intro { margin-top: 1.5rem; font-size: 1.1rem; }
   .project .chips { margin-top: 1.5rem; }
@@ -436,8 +420,8 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
   .project .section-head, .project .recipe-body section > h2 { margin-bottom: 1.5rem; }
   .project .method { gap: 1.5rem; }
   .project .method li { grid-template-columns: 1.5rem 1fr; gap: .5rem; font-size: 1.05rem; line-height: 1.45; }
-  .project .notes { padding-bottom: 3rem; }
-  .project .notes p { font-size: 1.05rem; line-height: 1.45; }
+  .project .notes { margin-bottom: 3rem; }
+  .project .notes p:not(.order-no) { font-size: 1.05rem; }
   /* nav fits one row on phones instead of dropping Resume onto its own line */
   .nav { gap: .5rem .75rem; }
   .brand { font-size: 1.15rem; }
@@ -452,3 +436,12 @@ section > .wrap > h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2.5rem;
 .about h2 { font-size: 1.75rem; margin-bottom: .75rem; }
 .about section p + p { margin-top: 1rem; }
 .about section a { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .2em; }
+
+section .rail { padding-bottom: 1.5rem; } /* home: the next section's own padding does the spacing */
+
+/* footer: every page ends on the same sign-off and contact links */
+.footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 2rem; padding-block: 2rem 3rem;
+  background: linear-gradient(var(--line), var(--line)) var(--pad) 0 / calc(100% - 2 * var(--pad)) 1px no-repeat; } /* rule lines up with the page margins, not the padding */
+.footer .brand { font-size: 1.2rem; }
+.footer ul { display: flex; gap: 1.5rem; font-weight: 600; font-size: .9rem; }
+.footer ul a { display: inline-block; padding-block: .7rem; }
