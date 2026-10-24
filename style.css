@@ -1,31 +1,33 @@
 @font-face { font-family: "Bagel Fat One"; src: url(fonts/bagel-fat-one.woff2) format("woff2"); font-display: swap; }
 @font-face { font-family: "Public Sans"; src: url(fonts/public-sans.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
 
-/* Palette from the design document: warm beige ground, navy text, green accent, near-black for borders.
-   Green is for underlines and at most one filled button per page, never text on the beige ground. */
+/* Oat & navy: lighter paper, navy ink and a deep leaf-green action.
+   Green marks underlines and the primary button; white keeps its label readable. */
 :root {
   color-scheme: light;
-  --bg: #d5c8b2;
-  --surface: #231f1d;
-  --text: #232649;
-  --muted: #45475f;
-  --line: rgb(42 38 38 / .35);
-  --accent: #66bf64;
-  --on-accent: #232649;
+  --bg: #e5dbc9;
+  --surface: #d8cbb6;
+  --text: #262d40;
+  --muted: #505568;
+  --line: rgb(38 45 64 / .35);
+  --accent: #376b40;
+  --on-accent: #ffffff;
   --card: var(--thermal);
-  --ink-faint: rgb(35 38 73 / .35);
-  --ink-rule: rgb(35 38 73 / .1);
-  --ink-tint: rgb(35 38 73 / .08);
-  --shadow: 0 28px 60px rgb(35 31 29 / .25);
+  --susan-table: #263447;
+  --susan-paper: #f3f5f1;
+  --ink-faint: rgb(38 45 64 / .35);
+  --ink-rule: rgb(38 45 64 / .1);
+  --ink-tint: rgb(38 45 64 / .08);
+  --shadow: 0 28px 60px rgb(0 0 0 / .25);
   --shadow-card: 0 14px 30px rgb(0 0 0 / .22);
   /* tickets: drop-shadow follows the outline, so the torn teeth cast a shadow too; two layers read as paper hanging off the rail */
-  --shadow-ticket: drop-shadow(0 2px 2px rgb(35 31 29 / .18)) drop-shadow(0 14px 14px rgb(35 31 29 / .22));
+  --shadow-ticket: drop-shadow(0 2px 2px rgb(0 0 0 / .18)) drop-shadow(0 14px 14px rgb(0 0 0 / .22));
   --font-display: "Bagel Fat One", system-ui, sans-serif;
   --font-body: "Public Sans", system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; /* printed order tickets */
   /* thermal docket paper: warm off-white, darker toward the curling side edges, faint fibre grain */
-  --thermal: oklch(97% 0.014 85);
-  --thermal-shade: oklch(90% 0.018 80);
+  --thermal: #f7f3ea;
+  --thermal-shade: #e7dece;
   --thermal-paper:
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .25  0 0 0 .12 0'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>"),
     linear-gradient(90deg, var(--thermal-shade), transparent 7% 93%, var(--thermal-shade)),
@@ -442,7 +444,10 @@ main > .kitchen { padding-block: 2rem 5rem; }
   .nav ul a[aria-current="page"]::after { left: 0; right: 0; }
 }
 
-/* about: one readable column of short sections */
+/* about: photo beside one readable column of short sections */
+.about-body { display: grid; grid-template-columns: minmax(0, 18rem) minmax(0, 60ch); gap: 3rem; align-items: start; }
+.about-photo { display: block; width: 100%; height: auto; margin-top: 1.5rem; border-radius: var(--radius); }
+@media (max-width: 768px) { .about-body { grid-template-columns: 1fr; gap: 0; } .about-photo { max-width: 18rem; } } /* after the desktop grid so it wins */
 .about section { max-width: 60ch; padding-block: 1.5rem; }
 .about section:last-child { padding-bottom: 5rem; }
 .about h2 { font-size: 1.75rem; margin-bottom: .75rem; }
