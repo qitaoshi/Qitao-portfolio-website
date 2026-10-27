@@ -10,9 +10,9 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin> <!-- nav links are right-aligned, so a late font swap would shove them sideways -->
-  <link rel="stylesheet" href="style.css?v=54">
+  <link rel="stylesheet" href="style.css?v=60">
   <script>document.documentElement.className = "js";</script>
-  <script src="script.js?v=5" defer></script>
+  <script src="script.js?v=6" defer></script>
 </head>
 <body>
   <header class="wrap nav">
@@ -30,12 +30,12 @@
   <main class="wrap project">
     <div class="project-head">
       <h1>Tennis Match Projection Model</h1>
-      <p class="intro">A model that predicts ATP match outcomes from player stats, surface and recent form. Trained on historical match data and served through a simple web app for live what-if predictions.</p>
+      <p class="intro">A pre-match pricer for ATP tennis: two players in, fair odds out for every standard market, from match winner to total games. A web app tracks whether it can match the Betfair Exchange on matches it has never seen.</p>
       <ul class="chips"><li>Serves: tennis fans</li><li>Difficulty: Hard</li></ul>
-      <div class="cta"><a class="btn btn-solid" href="#">GitHub</a></div>
-      <div class="project-photo"><div class="browser"><img src="img/tennis.jpg" alt="The Projector, a web app showing a predicted tennis match winner" width="1400" height="958"></div>
-        <img src="img/projects/tennis-calibration.jpg" alt="Chart of predicted against observed match win rates on 7,598 held-out matches, closely following the diagonal" width="1600" height="1200" loading="lazy">
-        <img src="img/projects/tennis-ece.jpg" alt="Bar chart of calibration error for each betting market before and after recalibration" width="1600" height="1200" loading="lazy">
+      <div class="cta"><a class="btn btn-solid" href="https://github.com/qitaoshi/tennis-model-v2">GitHub</a></div>
+      <div class="project-photo"><div class="browser"><img src="img/tennis.jpg" alt="The web app on terracotta, asking is the model as sharp as the market, with a Phase 1 status panel and a board of five betting markets not yet called" width="1400" height="958"></div>
+        <img src="img/projects/tennis-calibration.jpg" alt="Chart of predicted against observed match win rates on 7,598 held-out predictions, with the dots close to the diagonal" width="1600" height="1200" loading="lazy">
+        <img src="img/projects/tennis-ece.jpg" alt="Dot chart of calibration error by market, model against bookmakers: the model is lower in four of five markets and higher only on game handicap" width="1600" height="1200" loading="lazy">
       </div>
     </div>
 
@@ -52,11 +52,11 @@
       <section>
         <h2>Method</h2>
         <ol class="method">
-          <li>Gather historical ATP match results, then trim out walkovers and retirements so only completed matches remain.</li>
-          <li>Season each match with player stats: ranking, surface win rate and form over the last ten matches. Load it all into Pandas and stir until the columns line up.</li>
-          <li>Split the data by date, keeping the most recent season aside for tasting. Train a Scikit-Learn model on the older matches until its predictions stop improving.</li>
-          <li>Taste-test against the held-back season. If the predicted favourites win about as often as the model says they should, it is ready.</li>
-          <li>Plate it in a simple web app: pick two players and a surface, and serve up the projected winner with its odds.</li>
+          <li>Gather ATP and Challenger results from 2010 on, trim out walkovers and retirements, and split them by date into fitting, tuning, test and holdout windows.</li>
+          <li>Season each player with serve and return rates from matches strictly before the one being priced, plus a surface Elo, a court-speed index for the venue and a prior for players with little data.</li>
+          <li>Turn the two chances of winning a point on serve into game, set and match odds with closed-form scoring maths, then recalibrate each market with Scikit-Learn so the stated chances match how often things happen.</li>
+          <li>Taste-test on the holdout matches, read only once: across 6,202 matches the stated chances were off by 0.3 percentage points on average.</li>
+          <li>Plate it in a Next.js web app that scores every market against Betfair Exchange prices on new matches, and calls each one only after 1,000 scored matches.</li>
         </ol>
       </section>
     </div>

@@ -1,5 +1,6 @@
 @font-face { font-family: "Bagel Fat One"; src: url(fonts/bagel-fat-one.woff2) format("woff2"); font-display: swap; }
 @font-face { font-family: "Public Sans"; src: url(fonts/public-sans.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Comfortaa"; src: url(fonts/comfortaa.woff2) format("woff2"); font-weight: 700; font-display: swap; }
 
 /* Oat & navy: lighter paper, navy ink and a deep leaf-green action.
    Green marks underlines and the primary button; white keeps its label readable. */
@@ -24,6 +25,7 @@
   --shadow-ticket: drop-shadow(0 2px 2px rgb(0 0 0 / .18)) drop-shadow(0 14px 14px rgb(0 0 0 / .22));
   --font-display: "Bagel Fat One", system-ui, sans-serif;
   --font-body: "Public Sans", system-ui, sans-serif;
+  --font-nav: "Comfortaa", system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; /* printed order tickets */
   /* thermal docket paper: warm off-white, darker toward the curling side edges, faint fibre grain */
   --thermal: #f7f3ea;
@@ -89,7 +91,7 @@ p, li { text-wrap: pretty; } /* no single word stranded on a last line */
 .nav { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 2rem; min-height: var(--nav-h); padding-block: .75rem; }
 .brand { font-size: 1.35rem; }
 .nav nav { margin-left: auto; }
-.nav ul { display: flex; gap: 1.25rem; font-weight: 600; font-size: .9rem; }
+.nav ul { display: flex; gap: 1.25rem; font: 700 .875rem/1.6 var(--font-nav); }
 .nav ul a { position: relative; display: inline-block; padding: .7rem .25rem; }
 .nav ul a[aria-current="page"] { text-decoration: none; } /* hover too: the bar below is the underline */
 /* the current page's underline is a fixed bar under the link; the nav never animates between pages */
@@ -113,7 +115,7 @@ p, li { text-wrap: pretty; } /* no single word stranded on a last line */
   .kitchen figure:hover figcaption a { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .3em; }
   .more:hover { text-decoration-color: var(--text); }
   /* home tickets: pulling one down off the rail */
-  .order:has(> .more:hover) { transform: translateY(4px); }
+  .order:has(.ticket-link:hover) { transform: translateY(4px); }
   a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .3em; }
   .btn:hover { text-decoration: none; background: var(--text); color: var(--bg); }
   .btn-solid:hover { background: transparent; color: var(--text); }
@@ -213,8 +215,10 @@ main > .kitchen { padding-block: 2rem 5rem; }
 .order .levels figcaption { font-size: .7rem; letter-spacing: .04em; white-space: nowrap; } /* white art backgrounds drop into the tinted panel */
 .order h2, .order h3 { font-size: 1.35rem; margin: .9rem 0 .4rem; }
 .order p { color: var(--muted); font-size: .9rem; line-height: 1.55; margin-bottom: .8rem; }
-.order .stack { margin: 0; font: 600 .72rem/1.5 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; } /* printed on the docket, not a row of pills */
-.order .stack + .more { margin-top: .5rem; }
+/* the stack prints as the docket's line items: one per row between dashed tear-off rules, totalled at the foot */
+.order .stack { list-style: none; margin: .9rem 0 0; padding: .55rem 0; border-block: 2px dashed var(--ink-faint); font: 600 .75rem/1.8 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; counter-reset: items; }
+.order .stack li { counter-increment: items; }
+.order .stack::after { content: "Items: " counter(items); display: block; margin-top: .4rem; padding-top: .4rem; border-top: 1px solid var(--ink-rule); text-align: right; color: var(--muted); }
 
 
 /* inner pages */
@@ -251,17 +255,23 @@ main > .kitchen { padding-block: 2rem 5rem; }
 .notes { padding-block: 1rem 4rem; max-width: 60ch; }
 
 /* motion: only when the visitor allows it */
-.js .reveal { opacity: 0; translate: 0 24px; transition: opacity .7s var(--ease-out), translate .7s var(--ease-out); }
+/* --d is set by script.js so items entering together cascade instead of landing at once */
+.js .reveal { opacity: 0; translate: 0 24px; transition: opacity .7s var(--ease-out) var(--d, 0s), translate .7s var(--ease-out) var(--d, 0s); }
 .js .reveal.in { opacity: 1; translate: none; }
 @keyframes rise { from { opacity: 0; translate: 0 20px; } }
 @media (prefers-reduced-motion: no-preference) {
   .hero-copy > * { animation: rise .8s var(--ease-out) backwards; animation-delay: calc(var(--i, 0) * 70ms); }
+  /* pages crossfade into each other; the nav is pulled out of the fade so it never moves or flickers */
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .2s; }
 }
+.nav { view-transition-name: site-nav; }
+::view-transition-group(site-nav), ::view-transition-old(site-nav), ::view-transition-new(site-nav) { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .js .reveal, .js .rail .order { opacity: 1; translate: none; transition: none; }
   .kitchen figure:hover img { scale: none; }
-  .order:has(> .more:hover) { transform: none; }
+  .order:has(.ticket-link:hover) { transform: none; }
 }
 
 @media (pointer: coarse) { .pick, .view-toggle, .brand { min-height: 44px; } .view-toggle, .brand { display: inline-flex; align-items: center; } }
@@ -282,8 +292,8 @@ main > .kitchen { padding-block: 2rem 5rem; }
   .kitchen figure { flex-basis: calc((100% - 1rem) / 2); }
 }
 
-.order > .more::before { content: ""; position: absolute; inset: 0; } /* whole ticket clicks through */
-.js .rail .order { transition: opacity .7s var(--ease-out), translate .7s var(--ease-out), transform .25s var(--ease-out); } /* keeps the reveal, adds the hover pull */
+.order .ticket-link::before { content: ""; position: absolute; inset: 0; } /* whole ticket clicks through */
+.js .rail .order { transition: opacity .7s var(--ease-out) var(--d, 0s), translate .7s var(--ease-out) var(--d, 0s), transform .25s var(--ease-out); } /* keeps the reveal, adds the hover pull */
 .more { display: inline-block; margin-top: .75rem; padding-block: .5rem; font-weight: 700; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: .3em; }
 
 /* ingredients: grid / list toggle (button added by script.js) */
@@ -381,7 +391,17 @@ main > .kitchen { padding-block: 2rem 5rem; }
 /* dark chips so these stay readable over a light picture */
 .zoom .icon-btn { position: fixed; top: max(1rem, env(safe-area-inset-top)); right: 1rem; border-color: var(--bg); background: var(--text); color: var(--bg); }
 .zoom p { position: fixed; bottom: max(1rem, env(safe-area-inset-bottom)); left: 50%; translate: -50% 0; margin: 0; padding: .45rem .9rem; border-radius: 999px; background: var(--text); color: var(--bg); font-size: .85rem; white-space: nowrap; pointer-events: none; }
-@media (prefers-reduced-motion: no-preference) { .zoom img { transition: scale .35s var(--ease-out); } }
+/* fades in and settles from slightly small; closing is quicker so it gets out of the way */
+@media (prefers-reduced-motion: no-preference) {
+  .zoom img { transition: scale .35s var(--ease-out); }
+  .zoom, .zoom::backdrop { transition: opacity .15s var(--ease-out), overlay .15s allow-discrete, display .15s allow-discrete; }
+  .zoom:not([open]), .zoom:not([open])::backdrop { opacity: 0; }
+  .zoom[open], .zoom[open]::backdrop { transition-duration: .2s; }
+  @starting-style {
+    .zoom[open], .zoom[open]::backdrop { opacity: 0; }
+    .zoom[open] img { scale: .96; }
+  }
+}
 .project .recipe-body { gap: clamp(3rem, 11vw, 7.5rem); padding-block: 2rem 5rem; }
 .project .recipe-body h2, .project .notes h2, .project .more-projects h2 { font-size: 1.75rem; margin-bottom: 0; }
 .project .section-head { margin-bottom: 3rem; }
@@ -460,5 +480,5 @@ section .rail { padding-bottom: 1.5rem; } /* home: the next section's own paddin
 .footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 2rem; padding-block: 2rem 3rem;
   background: linear-gradient(var(--line), var(--line)) var(--pad) 0 / calc(100% - 2 * var(--pad)) 1px no-repeat; } /* rule lines up with the page margins, not the padding */
 .footer .brand { font-size: 1.2rem; }
-.footer ul { display: flex; gap: 1.5rem; font-weight: 600; font-size: .9rem; }
+.footer ul { display: flex; gap: 1.5rem; font: 700 .875rem/1.6 var(--font-nav); }
 .footer ul a { display: inline-block; padding-block: .7rem; }

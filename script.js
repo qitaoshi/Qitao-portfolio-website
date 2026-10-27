@@ -1,31 +1,37 @@
-// Fade sections in as they scroll into view. (The Lazy Susan lives in susan.js.)
-const io = new IntersectionObserver(
-  (entries) =>
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        e.target.classList.add("in");
-        io.unobserve(e.target);
-      }
-    }),
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    let visible = 0;
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.style.setProperty("--d", `${Math.min(visible++, 5) * 60}ms`);
+      entry.target.classList.add("in");
+      revealObserver.unobserve(entry.target);
+    });
+  },
   { threshold: 0.15 }
 );
-document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
 
-// Recipe ingredients: a button beside the heading switches between the picture grid and a plain list.
-// (Project pages list a few logos in one row, which needs no second view.)
 document.querySelectorAll(".recipe .ingredients").forEach((list) => {
   const heading = list.parentElement.querySelector("h2");
-  const head = document.createElement("div");
-  const btn = document.createElement("button");
-  head.className = "section-head";
-  btn.type = "button";
-  btn.className = "view-toggle";
-  btn.textContent = "View as list";
-  btn.addEventListener("click", () => {
-    btn.textContent = list.classList.toggle("as-list") ? "View as grid" : "View as list";
+  const headingRow = document.createElement("div");
+  const toggleButton = document.createElement("button");
+  headingRow.className = "section-head";
+  toggleButton.type = "button";
+  toggleButton.className = "view-toggle";
+  toggleButton.textContent = "View as list";
+  const toggleListView = () => {
+    toggleButton.textContent = list.classList.toggle("as-list") ? "View as grid" : "View as list";
+  };
+  toggleButton.addEventListener("click", () => {
+    if (document.startViewTransition && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.startViewTransition(toggleListView);
+    } else {
+      toggleListView();
+    }
   });
-  heading.replaceWith(head);
-  head.append(heading, btn);
+  heading.replaceWith(headingRow);
+  headingRow.append(heading, toggleButton);
 });
 
 // Only when the row actually scrolls (narrow windows); touch already scrolls natively.
