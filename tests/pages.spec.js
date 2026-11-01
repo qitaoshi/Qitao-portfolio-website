@@ -1,3 +1,4 @@
+// TODO: build this page list from disk
 const { test, expect } = require("@playwright/test");
 
 const pages = {
@@ -48,7 +49,7 @@ test("projects rail drags with a mouse without clicking through", async ({ page 
   await page.setViewportSize({ width: 1000, height: 900 });
   await page.goto("projects.html");
   const rail = page.locator(".rail");
-  // start the drag on the ticket's link: dragging must scroll, not follow it
+  // drag from the link, should scroll not navigate
   const btn = page.locator("#tennis .ticket-link");
   const b = await btn.boundingBox();
   await page.mouse.move(b.x + 10, b.y + 10);

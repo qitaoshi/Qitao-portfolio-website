@@ -1,9 +1,12 @@
+// fade-in on scroll, staggered
 const revealObserver = new IntersectionObserver(
   (entries) => {
-    let visible = 0;
+    let staggerIndex = 0;
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      entry.target.style.setProperty("--d", `${Math.min(visible++, 5) * 60}ms`);
+      const delay = Math.min(staggerIndex, 5) * 60;
+      staggerIndex++;
+      entry.target.style.setProperty("--d", `${delay}ms`);
       entry.target.classList.add("in");
       revealObserver.unobserve(entry.target);
     });
@@ -12,6 +15,7 @@ const revealObserver = new IntersectionObserver(
 );
 document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
 
+// grid / list switch for the ingredients on recipe pages
 document.querySelectorAll(".recipe .ingredients").forEach((list) => {
   const heading = list.parentElement.querySelector("h2");
   const headingRow = document.createElement("div");
@@ -20,11 +24,18 @@ document.querySelectorAll(".recipe .ingredients").forEach((list) => {
   toggleButton.type = "button";
   toggleButton.className = "view-toggle";
   toggleButton.textContent = "View as list";
+
   const toggleListView = () => {
-    toggleButton.textContent = list.classList.toggle("as-list") ? "View as grid" : "View as list";
+    const isList = list.classList.toggle("as-list");
+    if (isList) {
+      toggleButton.textContent = "View as grid";
+    } else {
+      toggleButton.textContent = "View as list";
+    }
   };
   toggleButton.addEventListener("click", () => {
-    if (document.startViewTransition && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const canAnimate = document.startViewTransition && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (canAnimate) {
       document.startViewTransition(toggleListView);
     } else {
       toggleListView();
@@ -34,45 +45,45 @@ document.querySelectorAll(".recipe .ingredients").forEach((list) => {
   headingRow.append(heading, toggleButton);
 });
 
-// Only when the row actually scrolls (narrow windows); touch already scrolls natively.
+// drag-to-scroll for rails, mouse only
 document.querySelectorAll(".rail").forEach((rail) => {
   let startX = 0;
   let startLeft = 0;
   let moved = false;
   let dragging = false;
-  rail.addEventListener("pointerdown", (e) => {
-    if (e.pointerType !== "mouse" || e.button !== 0 || rail.scrollWidth <= rail.clientWidth) return;
+  rail.addEventListener("pointerdown", (event) => {
+    if (event.pointerType !== "mouse" || event.button !== 0 || rail.scrollWidth <= rail.clientWidth) return;
     dragging = true;
     moved = false;
-    startX = e.clientX;
+    startX = event.clientX;
     startLeft = rail.scrollLeft;
   });
-  rail.addEventListener("pointermove", (e) => {
+  rail.addEventListener("pointermove", (event) => {
     if (!dragging) return;
-    const dx = e.clientX - startX;
-    if (!moved && Math.abs(dx) < 5) return; // a small wobble is still a click
+    const dx = event.clientX - startX;
+    if (!moved && Math.abs(dx) < 5) return; // small wobble still counts as a click
     if (!moved) {
       moved = true;
-      rail.setPointerCapture(e.pointerId);
+      rail.setPointerCapture(event.pointerId);
       rail.classList.add("dragging");
     }
     rail.scrollLeft = startLeft - dx;
   });
-  const end = () => {
+  const endDrag = () => {
     if (!dragging) return;
     dragging = false;
-    rail.classList.remove("dragging"); // snapping comes back on and settles on the nearest ticket
+    rail.classList.remove("dragging"); // scroll-snap comes back and settles on the nearest ticket
   };
-  rail.addEventListener("pointerup", end);
-  rail.addEventListener("pointercancel", end);
-  // a drag that ends over a link or button shouldn't also click it
-  rail.addEventListener("click", (e) => {
+  rail.addEventListener("pointerup", endDrag);
+  rail.addEventListener("pointercancel", endDrag);
+  // dragging over a link shouldn't also click it
+  rail.addEventListener("click", (event) => {
     if (!moved) return;
-    e.preventDefault();
-    e.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
     moved = false;
   }, true);
-  rail.addEventListener("dragstart", (e) => e.preventDefault()); // no ghost image when grabbing a screenshot
+  rail.addEventListener("dragstart", (event) => event.preventDefault()); // stops the ghost image when dragging a photo
 });
 
 const ICONS = {
@@ -91,20 +102,23 @@ function iconButton(name, label) {
 }
 
 let zoomView, zoomPic, zoomHint;
-// phones: a 2.5x tap-zoom of a 343px picture is still too small to read, so the dialog shows it at full size and scrolls instead
+// phones: show full size and scroll instead
 const fullSize = matchMedia("(max-width: 768px)");
 function setZoomed(on) {
   zoomView.classList.toggle("zoomed", on && !fullSize.matches);
   if (fullSize.matches) {
     zoomHint.textContent = "Move to look around.";
+  } else if (on) {
+    zoomHint.textContent = "Move to look around. Click to zoom out.";
   } else {
-    zoomHint.textContent = on ? "Move to look around. Click to zoom out." : "Click the picture to look closer.";
+    zoomHint.textContent = "Click the picture to look closer.";
   }
 }
-function aim(e) {
-  const r = zoomPic.getBoundingClientRect(); // scale doesn't change this box
-  const x = Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1);
-  const y = Math.min(Math.max((e.clientY - r.top) / r.height, 0), 1);
+// point the zoom origin at the cursor
+function aim(event) {
+  const rect = zoomPic.getBoundingClientRect(); // scaling doesn't change this box
+  const x = Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1);
+  const y = Math.min(Math.max((event.clientY - rect.top) / rect.height, 0), 1);
   zoomPic.style.transformOrigin = `${x * 100}% ${y * 100}%`;
 }
 function openZoom(img) {
@@ -117,17 +131,24 @@ function openZoom(img) {
     const close = iconButton("close", "Close");
     zoomView.append(zoomPic, close, zoomHint);
     document.body.append(zoomView);
-    zoomPic.addEventListener("pointerdown", (e) => { aim(e); setZoomed(!zoomView.classList.contains("zoomed")); });
-    zoomPic.addEventListener("pointermove", (e) => { if (zoomView.classList.contains("zoomed")) aim(e); });
+    zoomPic.addEventListener("pointerdown", (event) => {
+      aim(event);
+      setZoomed(!zoomView.classList.contains("zoomed"));
+    });
+    zoomPic.addEventListener("pointermove", (event) => {
+      if (zoomView.classList.contains("zoomed")) aim(event);
+    });
     close.addEventListener("click", () => zoomView.close());
-    zoomView.addEventListener("click", (e) => { if (e.target === zoomView) zoomView.close(); }); // click on the dark area
+    zoomView.addEventListener("click", (event) => {
+      if (event.target === zoomView) zoomView.close(); // clicked the dark area
+    });
     zoomView.addEventListener("close", () => setZoomed(false));
   }
   zoomPic.src = img.currentSrc || img.src;
   zoomPic.alt = img.alt;
   setZoomed(false);
   zoomView.showModal();
-  // full-size view opens on the middle of the picture, not its top-left corner
+  // open full-size view centered
   if (fullSize.matches) {
     zoomPic.decode().catch(() => {}).then(() => {
       zoomView.scrollTo(
@@ -138,24 +159,26 @@ function openZoom(img) {
   }
 }
 
+// project page galleries: thumbnails, counter, prev/next, zoom
 document.querySelectorAll(".project-photo").forEach((track) => {
   const slides = [...track.children];
   const gallery = document.createElement("div");
   gallery.className = "gallery";
   track.before(gallery);
   gallery.append(track);
-  track.setAttribute("role", "region"); // screen readers ignore aria-label on a plain div
+  track.setAttribute("role", "region"); // aria-label gets ignored on a plain div
   track.setAttribute("aria-label", "Project images");
   track.tabIndex = 0; // so arrow keys can scroll it
 
-  // only single pictures zoom; the Side Quests level art is four images in one panel
+  // single images only, level art is four in one
   const zoomableImage = (slide) => {
     if (slide.matches("img")) return slide;
     const images = slide.querySelectorAll("img");
-    return images.length === 1 ? images[0] : null;
+    if (images.length === 1) return images[0];
+    return null;
   };
-  slides.forEach((s) => {
-    const img = zoomableImage(s);
+  slides.forEach((slide) => {
+    const img = zoomableImage(slide);
     if (!img) return;
     img.dataset.zoom = "";
     img.addEventListener("click", () => openZoom(img));
@@ -176,9 +199,10 @@ document.querySelectorAll(".project-photo").forEach((track) => {
   gallery.append(bar);
 
   const goToSlide = (index) => {
+    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
     track.scrollTo({
       left: slides[index].offsetLeft - track.offsetLeft,
-      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+      behavior: reduceMotion ? "auto" : "smooth"
     });
   };
   const thumbnailButtons = slides.map((slide, index) => {
@@ -207,15 +231,17 @@ document.querySelectorAll(".project-photo").forEach((track) => {
   prev.addEventListener("click", () => goToSlide(Math.max(currentSlide - 1, 0)));
   next.addEventListener("click", () => goToSlide(Math.min(currentSlide + 1, slides.length - 1)));
   zoom.addEventListener("click", () => openZoom(zoomableImage(slides[currentSlide])));
-  // keep the counter right however the row was scrolled (arrows, swipe, trackpad)
-  const seen = new IntersectionObserver((entries) => {
+  // keep counter synced however it scrolled
+  const slideObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) showSlide(slides.indexOf(entry.target));
     });
   }, { root: track, threshold: 0.6 });
-  slides.forEach((s) => seen.observe(s));
+  slides.forEach((slide) => slideObserver.observe(slide));
   showSlide(0);
 });
 
-// Looping clips (the ray tracer turntable) only play for visitors who allow motion; everyone else sees the poster frame.
-if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("video[loop]").forEach((v) => v.play().catch(() => {}));
+// autoplay loops unless reduced motion
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  document.querySelectorAll("video[loop]").forEach((video) => video.play().catch(() => {}));
+}
