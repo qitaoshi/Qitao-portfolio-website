@@ -32,10 +32,14 @@ for (const [path, title] of Object.entries(pages)) {
   });
 }
 
-test("internal links resolve", async ({ page, request }) => {
-  await page.goto("index.html");
-  const hrefs = await page.$$eval("a[href$='.html']", (as) => [...new Set(as.map((a) => a.href))]);
-  for (const href of hrefs) {
+test("internal links resolve on every page", async ({ page, request }) => {
+  const seen = new Set();
+  for (const path of Object.keys(pages)) {
+    await page.goto(path);
+    expect(await page.locator("a[href='#'], a[href='']").count(), `placeholder link on ${path}`).toBe(0);
+    for (const href of await page.$$eval("a[href$='.html']", (as) => as.map((a) => a.href))) seen.add(href);
+  }
+  for (const href of seen) {
     expect((await request.get(href)).status(), href).toBe(200);
   }
 });
@@ -56,4 +60,35 @@ test("projects rail drags with a mouse without clicking through", async ({ page 
   // a plain click still follows the link
   await page.locator("#side-quests .ticket-link").click();
   await expect(page).toHaveURL(/side-quests\.html$/);
+});
+
+test("recipe ingredients switch between grid and list", async ({ page }) => {
+  await page.goto("salt-bread.html");
+  const ingredients = page.locator(".recipe .ingredients");
+  await page.getByRole("button", { name: "View as list" }).click();
+  await expect(ingredients).toHaveClass(/as-list/);
+  await page.getByRole("button", { name: "View as grid" }).click();
+  await expect(ingredients).not.toHaveClass(/as-list/);
+});
+
+test("gallery navigation and zoom follow the selected image", async ({ page }) => {
+  await page.goto("wayform.html");
+  await page.getByRole("button", { name: "Next image" }).click();
+  await expect(page.locator(".gallery-nav output")).toHaveText("2 / 3");
+  await page.getByRole("button", { name: "Enlarge image" }).click();
+  const dialog = page.getByRole("dialog", { name: "Enlarged image" });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator("img")).toHaveAttribute("src", /wayform-plan\.jpg$/);
+  await dialog.getByRole("button", { name: "Close" }).click();
+  await expect(dialog).not.toBeVisible();
+});
+
+test("the home picker updates its link from click and keyboard selection", async ({ page }) => {
+  await page.goto("index.html");
+  await expect(page.locator("#susan canvas")).toBeVisible();
+  await page.getByRole("button", { name: "Salt bread" }).click();
+  await expect(page.locator("#now-link")).toHaveAttribute("href", "salt-bread.html");
+  await page.locator("#susan").focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator("#now-link")).toHaveAttribute("href", "side-quests.html");
 });

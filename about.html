@@ -3,16 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#e5dbc9">
   <title>About | Qitao Shi</title>
-  <meta name="description" content="Qitao Shi is a computer science student who builds software and cooks.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin> <!-- nav links are right-aligned, so a late font swap would shove them sideways -->
-  <link rel="stylesheet" href="style.css?v=60">
+  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin> <!-- body text: preloaded so paragraphs don't reflow when it swaps in late -->
+  <link rel="stylesheet" href="style.css?v=77">
   <script>document.documentElement.className = "js";</script>
-  <script src="script.js?v=6" defer></script>
+  <script src="script.js?v=8" defer></script>
 </head>
 <body>
   <header class="wrap nav">
@@ -33,10 +30,12 @@
     </div>
 
     <div class="about-body">
+    <p class="order-no"><span>Qitao Shi</span><span>Melbourne</span></p>
     <img class="about-photo" src="img/about.jpg" alt="Qitao Shi in a black suit, smiling under a stone archway" width="1000" height="1250">
     <div>
     <section>
-      <p>I'm Qitao Shi, a computer science student who builds software and cooks dinner.</p>
+      <p class="lead">Hey, I'm Qitao, a final-year computer science student at the University of Melbourne.</p>
+      <p>I love the creativity of cooking and building software. With both, I get to make whatever I want. They feel pretty similar to me.</p>
     </section>
 
     <section>
@@ -47,12 +46,21 @@
 
     <section>
       <h2>Cooking</h2>
-      <p>Most of my baking is bread: <a href="salt-bread.html">salt bread</a>, <a href="focaccia.html">focaccia</a> and <a href="croissants.html">croissants</a>. I also fold <a href="dumplings.html">dumplings</a> by hand. The <a href="food.html">food page</a> has every recipe, and I post what I cook on Instagram as <a href="https://www.instagram.com/quokachi_cook/">@quokachi_cook</a>.</p>
+      <p>I started cooking at a young age. Instead of cartoons, I would regularly watch Food Network and MasterChef. Later, I worked at Breadtop, where I learnt to bake bread and make pastries.</p>
+      <p>I remember being obsessed with croissants, but I couldn't get them right in Darwin because the butter melted almost instantly. Once I moved to Melbourne, I finally nailed them. You can try my <a href="croissants.html">croissant recipe</a>.</p>
+      <p>You'll also find <a href="salt-bread.html">salt bread</a>, <a href="focaccia.html">focaccia</a> and <a href="dumplings.html">dumplings</a> on my <a href="food.html">food page</a>. I share what I cook on Instagram as <a href="https://www.instagram.com/quokachi_cook/">@quokachi_cook</a>.</p>
     </section>
 
     <section>
-      <h2>Get in touch</h2>
-      <p>Email me at <a href="mailto:qitaoshi@gmail.com">qitaoshi@gmail.com</a>.</p>
+      <h2>Say Hello</h2>
+      <p>This portfolio is for my peers and people working in tech. If you'd like a recipe, want to learn more about my side projects or just want to say hi, get in touch.</p>
+      <div class="about-contact">
+        <a class="btn btn-accent" href="mailto:qitaoshi@gmail.com">Email me</a>
+        <ul>
+          <li><a href="https://github.com/qitaoshi">GitHub</a></li>
+          <li><a href="https://www.instagram.com/quokachi_cook/">Instagram</a></li>
+        </ul>
+      </div>
     </section>
     </div>
     </div>

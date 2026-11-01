@@ -3,16 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#e5dbc9">
   <title>Tennis Match Projection Model | Qitao Shi</title>
-  <meta name="description" content="A model that predicts ATP match outcomes from player stats, surface and recent form. Trained on historical match data and served through a simple web app for live what-if predictions.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin> <!-- nav links are right-aligned, so a late font swap would shove them sideways -->
-  <link rel="stylesheet" href="style.css?v=60">
+  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=78">
   <script>document.documentElement.className = "js";</script>
-  <script src="script.js?v=6" defer></script>
+  <script src="script.js?v=9" defer></script>
 </head>
 <body>
   <header class="wrap nav">
@@ -30,11 +27,13 @@
   <main class="wrap project">
     <div class="project-head">
       <h1>Tennis Match Projection Model</h1>
-      <p class="intro">A pre-match pricer for ATP tennis: two players in, fair odds out for every standard market, from match winner to total games. A web app tracks whether it can match the Betfair Exchange on matches it has never seen.</p>
+      <p class="intro">A pre-match pricer for ATP tennis: two players in, fair odds out for every standard market, from match winner to total games. A web app shows its full projection for one real match beside the bookmakers' prices, with the model's track record a tab away.</p>
       <ul class="chips"><li>Serves: tennis fans</li><li>Difficulty: Hard</li></ul>
       <div class="cta"><a class="btn btn-solid" href="https://github.com/qitaoshi/tennis-model-v2">GitHub</a></div>
-      <div class="project-photo"><div class="browser"><img src="img/tennis.jpg" alt="The web app on terracotta, asking is the model as sharp as the market, with a Phase 1 status panel and a board of five betting markets not yet called" width="1400" height="958"></div>
-        <img src="img/projects/tennis-calibration.jpg" alt="Chart of predicted against observed match win rates on 7,598 held-out predictions, with the dots close to the diagonal" width="1600" height="1200" loading="lazy">
+      <div class="project-photo"><div class="browser"><img src="img/tennis-match.jpg" alt="The tennis model web app on Sinner v Medvedev: the model gives Sinner 76% against the bookmakers' 72.5%, with serve, games and key reads below" width="2450" height="1000"></div>
+        <img src="img/projects/tennis-projections.jpg" alt="Projections tab: key reads on the match, a total games distribution with the actual 17 games marked, and set score odds from the model and the market" width="2450" height="1540" loading="lazy">
+        <img src="img/projects/tennis-markets.jpg" alt="Markets and value tab: match winner, set betting and total sets, each with the model's chance, the market's, the gap, the best price and its EV" width="2450" height="1430" loading="lazy">
+        <img src="img/projects/tennis-form.jpg" alt="Form and serve tab: each player's last 12 months of serve and return stats and their last 10 matches before the tournament" width="2450" height="1160" loading="lazy">
         <img src="img/projects/tennis-ece.jpg" alt="Dot chart of calibration error by market, model against bookmakers: the model is lower in four of five markets and higher only on game handicap" width="1600" height="1200" loading="lazy">
       </div>
     </div>
@@ -56,7 +55,7 @@
           <li>Season each player with serve and return rates from matches strictly before the one being priced, plus a surface Elo, a court-speed index for the venue and a prior for players with little data.</li>
           <li>Turn the two chances of winning a point on serve into game, set and match odds with closed-form scoring maths, then recalibrate each market with Scikit-Learn so the stated chances match how often things happen.</li>
           <li>Taste-test on the holdout matches, read only once: across 6,202 matches the stated chances were off by 0.3 percentage points on average.</li>
-          <li>Plate it in a Next.js web app that scores every market against Betfair Exchange prices on new matches, and calls each one only after 1,000 scored matches.</li>
+          <li>Plate it in a Next.js web app: Sinner v Medvedev in Shanghai, priced only from matches before it, with every market set beside the bookmakers' prices and the value in each.</li>
         </ol>
       </section>
     </div>
@@ -65,13 +64,14 @@
       <p class="order-no"><span>Order 01</span><span>Machine learning</span></p>
       <h2>Chef's Notes</h2>
       <p>Always split the matches by date, never at random. Letting future results slip into the training data makes the model look far better than it really is. Surface matters more than you would expect: a player's clay record says little about how they will go on grass.</p>
+      <ul class="stack" aria-label="Holdout results" data-total="Markets priced: 5"><li><span>Holdout matches</span><span>6,202</span></li><li><span>Average miss</span><span>0.3 pts</span></li><li><span>Calls a market after</span><span>1,000 scored</span></li></ul>
     </div>
     <section class="more-projects">
       <div class="section-head"><h2>More Projects</h2><a class="more" href="projects.html">See all →</a></div>
-      <div class="more-grid">
-        <a class="more-card" href="side-quests.html"><img src="img/projects/side-quests-today.jpg" alt="" loading="lazy"><span>Side Quests</span><small>Mobile</small></a>
-        <a class="more-card" href="ray-tracer.html"><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><span>Ray Tracer</span><small>Graphics</small></a>
-        <a class="more-card" href="wayform.html"><img src="img/projects/wayform-plan.jpg" alt="" loading="lazy"><span>Wayform</span><small>Developer tools</small></a>      </div>
+      <div class="rail">
+        <article class="order"><p class="order-no"><span>Order 02</span><span>Mobile</span></p><div class="levels" role="img" aria-label="Side Quests level artwork: a seedling grows into a tree"><figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure><figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure><figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure><figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure></div><h3><a class="ticket-link" href="side-quests.html">Side Quests</a></h3></article>
+        <article class="order"><p class="order-no"><span>Order 03</span><span>Graphics</span></p><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="ray-tracer.html">Ray Tracer</a></h3></article>
+        <article class="order"><p class="order-no"><span>Order 04</span><span>Developer tools</span></p><img src="img/projects/wayform-plan.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="wayform.html">Wayform</a></h3></article>      </div>
     </section>
   </main>
   <footer class="wrap footer">

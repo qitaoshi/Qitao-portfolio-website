@@ -3,16 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#e5dbc9">
   <title>Side Quests | Qitao Shi</title>
-  <meta name="description" content="A mobile app that gets friends off their phones and out on small real-world challenges, like visiting a local park or picking up a new hobby. Complete quests together to earn points and level up. Built in a team at VicHack.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin> <!-- nav links are right-aligned, so a late font swap would shove them sideways -->
-  <link rel="stylesheet" href="style.css?v=60">
+  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=78">
   <script>document.documentElement.className = "js";</script>
-  <script src="script.js?v=6" defer></script>
+  <script src="script.js?v=9" defer></script>
 </head>
 <body>
   <header class="wrap nav">
@@ -70,13 +67,14 @@
       <p class="order-no"><span>Order 02</span><span>Mobile</span></p>
       <h2>Chef's Notes</h2>
       <p>None of us had used Flutter or Firebase before VicHack, so much of the hackathon went into learning them on the fly, and getting six people set up on GitHub took longer than expected. Location tracking was the hardest part to get right and the part we were proudest of. The app went on to win three VicHack awards: Best Video Submission, Best Social Impact Project and Best Social Media Post.</p>
+      <ul class="stack" aria-label="VicHack awards" data-total="VicHack awards: 3"><li>Best Video Submission</li><li>Best Social Impact Project</li><li>Best Social Media Post</li></ul>
     </div>
     <section class="more-projects">
       <div class="section-head"><h2>More Projects</h2><a class="more" href="projects.html">See all →</a></div>
-      <div class="more-grid">
-        <a class="more-card" href="tennis.html"><img src="img/projects/tennis-card.jpg" alt="" loading="lazy"><span>Tennis Match Projection Model</span><small>Machine Learning, Python</small></a>
-        <a class="more-card" href="ray-tracer.html"><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><span>Ray Tracer</span><small>Graphics</small></a>
-        <a class="more-card" href="wayform.html"><img src="img/projects/wayform-plan.jpg" alt="" loading="lazy"><span>Wayform</span><small>Developer tools</small></a>      </div>
+      <div class="rail">
+        <article class="order"><p class="order-no"><span>Order 01</span><span>Machine learning</span></p><img src="img/projects/tennis-card.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="tennis.html">Tennis Match Projection Model</a></h3></article>
+        <article class="order"><p class="order-no"><span>Order 03</span><span>Graphics</span></p><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="ray-tracer.html">Ray Tracer</a></h3></article>
+        <article class="order"><p class="order-no"><span>Order 04</span><span>Developer tools</span></p><img src="img/projects/wayform-plan.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="wayform.html">Wayform</a></h3></article>      </div>
     </section>
   </main>
   <footer class="wrap footer">

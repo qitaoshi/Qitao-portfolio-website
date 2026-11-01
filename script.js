@@ -216,3 +216,6 @@ document.querySelectorAll(".project-photo").forEach((track) => {
   slides.forEach((s) => seen.observe(s));
   showSlide(0);
 });
+
+// Looping clips (the ray tracer turntable) only play for visitors who allow motion; everyone else sees the poster frame.
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("video[loop]").forEach((v) => v.play().catch(() => {}));

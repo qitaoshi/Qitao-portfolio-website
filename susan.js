@@ -7,39 +7,43 @@ import { GLTFLoader } from "./vendor/loaders/GLTFLoader.js";
 const host = document.getElementById("susan");
 const picks = [...document.querySelectorAll(".pick")];
 const link = document.getElementById("now-link");
-const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-// a page can restyle the table and cards with these CSS variables on #susan; the fallbacks are this site's look
-const css = (k, d) => getComputedStyle(host).getPropertyValue(k).trim() || d;
-const PAPER = css("--susan-paper", "#f3f5f1");
+const prefersReducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const cssValue = (name, fallback) => getComputedStyle(host).getPropertyValue(name).trim() || fallback;
+const cardPaper = cssValue("--susan-paper", "#f3f5f1");
 
-const N = picks.length, STEP = (2 * Math.PI) / N;
-host.ariaLabel = `Lazy Susan with ${N} dishes. Drag it, or use the left and right arrow keys.`;
-let idx = 0;
-let spinTo = null; // set once the 3D scene is ready
+const pickCount = picks.length;
+const anglePerPick = (2 * Math.PI) / pickCount;
+host.ariaLabel = `Lazy Susan with ${pickCount} dishes. Drag it, or use the left and right arrow keys.`;
+let selectedPick = 0;
+let spinToPick = null; // set once the 3D scene is ready
 
-function panel(i) {
-  idx = i;
+function showPick(i) {
+  selectedPick = i;
   const p = picks[i].dataset;
   picks.forEach((b, j) => b.setAttribute("aria-pressed", j === i));
+  const row = picks[i].parentElement; // phones: the picker is a scrolling row, so keep the chosen dish in view
+  if (row.scrollWidth > row.clientWidth) {
+    row.scrollTo({
+      left: picks[i].offsetLeft - (row.clientWidth - picks[i].offsetWidth) / 2,
+      behavior: prefersReducedMotion ? "auto" : "smooth"
+    });
+  }
   link.href = p.href;
   link.textContent = p.cta;
 }
 function select(i) {
-  panel(i);
-  spinTo?.(i);
+  showPick(i);
+  spinToPick?.(i);
 }
 picks.forEach((b, i) => b.addEventListener("click", () => select(i)));
 host.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowRight") select((idx + 1) % N);
-  if (e.key === "ArrowLeft") select((idx + N - 1) % N);
+  if (e.key === "ArrowRight") select((selectedPick + 1) % pickCount);
+  if (e.key === "ArrowLeft") select((selectedPick + pickCount - 1) % pickCount);
 });
 
-const shadowed = (g) => (g.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; }), g);
-
 function build() {
-  const D = 4; // glass radius
-  const GLASS_H = 0.22; // thick enough that the glass top reads as the lazy susan
-  const R = 2.7; // plate ring radius
+  const glassRadius = 4;
+  const glassHeight = 0.22; // thick enough that the glass top reads as the lazy susan
 
   const small = matchMedia("(max-width: 768px)").matches; // phones: fewer pixels and a smaller shadow map keep the GPU from stalling
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
@@ -70,8 +74,8 @@ function build() {
   scene.add(key, new THREE.HemisphereLight(0xffffff, 0x2a2a2a, 0.5));
 
   // plain dark table under the glass: glass needs something to refract, but no pattern to distract from it
-  const table = new THREE.Mesh(new THREE.CylinderGeometry(4.4, 4.4, 0.2, 96), new THREE.MeshStandardMaterial({ color: css("--susan-table", "#101c3f"), roughness: 0.7 }));
-  table.position.y = -0.22; // just under the glass, like a real banquet table
+  const table = new THREE.Mesh(new THREE.CylinderGeometry(4.4, 4.4, 0.2, 96), new THREE.MeshStandardMaterial({ color: cssValue("--susan-table", "#101c3f"), roughness: 0.7 }));
+  table.position.y = -0.22;
   table.receiveShadow = true;
   scene.add(table);
 
@@ -82,103 +86,161 @@ function build() {
   turn.add(props);
 
   const glassMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 1, ior: 1.5, thickness: 0.08, roughness: 0.05, specularIntensity: 1, envMapIntensity: 1.5, attenuationColor: 0xa8dcc8, attenuationDistance: 0.4 });
-  const glass = new THREE.Mesh(new THREE.CylinderGeometry(D, D, GLASS_H, 128), glassMat);
-  glass.position.y = GLASS_H / 2;
+  const glass = new THREE.Mesh(new THREE.CylinderGeometry(glassRadius, glassRadius, glassHeight, 128), glassMat);
+  glass.position.y = glassHeight / 2;
   glass.receiveShadow = true;
   // polished edge: the bright line along the rim in the reference photo
-  const edge = new THREE.Mesh(new THREE.TorusGeometry(D, 0.05, 16, 160), new THREE.MeshPhysicalMaterial({ color: 0xf2fffb, roughness: 0.05, transparent: true, opacity: 0.85, emissive: 0x9fe0cc, emissiveIntensity: 0.25 }));
+  const edge = new THREE.Mesh(new THREE.TorusGeometry(glassRadius, 0.05, 16, 160), new THREE.MeshPhysicalMaterial({ color: 0xf2fffb, roughness: 0.05, transparent: true, opacity: 0.85, emissive: 0x9fe0cc, emissiveIntensity: 0.25 }));
   edge.rotation.x = Math.PI / 2;
-  edge.position.y = GLASS_H / 2;
+  edge.position.y = glassHeight / 2;
   props.add(glass, edge);
 
-  // one card per pick, standing on small stands and spaced evenly round the table. The face is drawn on a canvas like the cards on the page.
-  const CW = 2.2, CH = 1.65;
+  const cardWidth = 2.2, cardHeight = 1.65;
+  const cardRingRadius = 2.9, restingScale = 0.85, selectedScale = 1.5;
   const standMat = new THREE.MeshStandardMaterial({ color: 0x2a1f18, roughness: 0.6 });
   const roundRect = (g, x, y, w, h, r) => { g.beginPath(); g.roundRect(x, y, w, h, r); };
-  const faceTex = (b) => {
-    const W = 800, H = Math.round((W * CH) / CW);
-    const c = document.createElement("canvas"); c.width = W; c.height = H;
-    const g = c.getContext("2d");
-    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
-    const draw = (img) => { // photo only: the picker beside the table names the dish
-      g.clearRect(0, 0, W, H);
-      roundRect(g, 0, 0, W, H, 36); g.fillStyle = PAPER; g.fill();
-      if (img) {
-        g.save(); roundRect(g, 20, 20, W - 40, H - 40, 26); g.clip();
-        const k = Math.max((W - 40) / img.width, (H - 40) / img.height);
-        const focus = Number(b.dataset.focus ?? 0.5); // how far down the photo the food sits, so the crop doesn't cut it
-        g.drawImage(img, W / 2 - (img.width * k) / 2, 20 - (img.height * k - (H - 40)) * focus, img.width * k, img.height * k);
-        g.restore();
+  const labelHeight = 84, cardInk = cssValue("--text", "#262d40"), cardFont = '700 40px Comfortaa, system-ui, sans-serif';
+  const makeCardTexture = (pick) => {
+    const canvasWidth = 800;
+    const canvasHeight = Math.round((canvasWidth * cardHeight) / cardWidth);
+    const canvas = document.createElement("canvas");
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    const context = canvas.getContext("2d");
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = 8;
+
+    const drawCard = (image) => {
+      context.clearRect(0, 0, canvasWidth, canvasHeight);
+      roundRect(context, 0, 0, canvasWidth, canvasHeight, 36);
+      context.fillStyle = cardPaper;
+      context.fill();
+      const photoHeight = canvasHeight - 40 - labelHeight;
+      if (image) {
+        context.save();
+        roundRect(context, 20, 20, canvasWidth - 40, photoHeight, 26);
+        context.clip();
+        const scale = Math.max((canvasWidth - 40) / image.width, photoHeight / image.height);
+        const focus = Number(pick.dataset.focus ?? 0.5); // keeps the subject in the cropped photo
+        context.drawImage(image, canvasWidth / 2 - (image.width * scale) / 2, 20 - (image.height * scale - photoHeight) * focus, image.width * scale, image.height * scale);
+        context.restore();
       }
-      t.needsUpdate = true;
-      if (img) kick(); // not before the motion loop below exists
+
+      context.strokeStyle = cardInk;
+      context.globalAlpha = 0.35;
+      context.lineWidth = 3;
+      context.setLineDash([12, 9]);
+      context.beginPath();
+      context.moveTo(32, 20 + photoHeight + 12);
+      context.lineTo(canvasWidth - 32, 20 + photoHeight + 12);
+      context.stroke();
+      context.setLineDash([]);
+      context.globalAlpha = 1;
+      const labelY = 20 + photoHeight + labelHeight / 2 + 4;
+      context.fillStyle = cardInk;
+      context.font = cardFont;
+      context.textBaseline = "middle";
+      context.textAlign = "left";
+      context.fillText((pick.dataset.order ?? "").toUpperCase(), 32, labelY);
+      context.textAlign = "right";
+      context.fillText(pick.textContent.trim().toUpperCase(), canvasWidth - 32, labelY);
+      texture.needsUpdate = true;
+      if (image) kick(); // the first draw runs before the motion loop is ready
     };
-    draw(null);
-    const img = new Image();
-    img.onload = () => draw(img);
-    img.src = b.dataset.img;
-    return t;
+    drawCard(null);
+    const image = new Image();
+    image.onload = () => document.fonts.load(cardFont).finally(() => drawCard(image)); // canvas text does not wait for fonts
+    image.src = pick.dataset.img;
+    return texture;
   };
-  const cards = picks.map((b, i) => {
-    const th = i * STEP;
-    const g = new THREE.Group();
-    g.position.set(3.5 * Math.sin(th), GLASS_H, 3.5 * Math.cos(th));
-    g.scale.setScalar(0.8);
-    g.userData.i = i;
+  const cards = picks.map((pick, index) => {
+    const angle = index * anglePerPick;
+    const card = new THREE.Group();
+    card.position.set(cardRingRadius * Math.sin(angle), glassHeight, cardRingRadius * Math.cos(angle));
+    card.scale.setScalar(restingScale);
+    card.userData.i = index;
     const bill = new THREE.Group(); // counter-rotated every frame so the card always faces the viewer, never edge-on or from behind
     const stand = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.07, 0.4), standMat);
     stand.position.set(0, 0.035, -0.05);
     const lean = new THREE.Group(); // card leans back toward the camera so the photo isn't squashed by the 40 degree view
     lean.position.set(0, 0.07, 0); lean.rotation.x = -0.38;
-    const front = new THREE.Mesh(new THREE.PlaneGeometry(CW, CH), new THREE.MeshStandardMaterial({ map: faceTex(b), roughness: 0.6, alphaTest: 0.5 }));
-    front.position.y = CH / 2;
+    // unlit and not tone mapped: the key light and ACES curve were washing the photos out, so they show their true colours
+    const front = new THREE.Mesh(new THREE.PlaneGeometry(cardWidth, cardHeight), new THREE.MeshBasicMaterial({ map: makeCardTexture(pick), alphaTest: 0.5, toneMapped: false }));
+    front.position.y = cardHeight / 2;
     for (const m of [stand, front]) m.castShadow = m.receiveShadow = true;
     lean.add(front);
     bill.add(stand, lean);
-    g.add(bill);
-    turn.add(g);
-    return g;
+    card.add(bill);
+    turn.add(card);
+    return card;
   });
 
-  // table setting: Blender models placed in the diagonal slots between the cards
-  const place = (obj, deg, r, yaw = 0) => {
-    const th = (deg * Math.PI) / 180;
-    obj.position.set(r * Math.sin(th), GLASS_H, r * Math.cos(th));
-    obj.rotation.y = yaw;
-    props.add(obj);
+  const propRadius = 1.75, propScale = 1.2, backPick = Math.floor(pickCount / 2);
+  const placeProp = (object, degrees, radius, yaw = 0, scale = propScale) => {
+    const angle = (degrees * Math.PI) / 180;
+    object.position.set(radius * Math.sin(angle), glassHeight, radius * Math.cos(angle));
+    object.rotation.y = yaw;
+    object.scale.multiplyScalar(scale);
+    props.add(object);
   };
   const loader = new GLTFLoader();
   const aniso = renderer.capabilities.getMaxAnisotropy();
-  const load = (name) => loader.loadAsync(new URL(`models/${name}.glb`, import.meta.url).href).then((g) => {
-    g.scene.traverse((o) => { if (o.isMesh) for (const t of Object.values(o.material)) if (t?.isTexture) t.anisotropy = aniso; }); // sharp patterns at a grazing angle
-    return shadowed(g.scene);
+  const load = (name) => loader.loadAsync(new URL(`models/${name}.glb`, import.meta.url).href).then(({ scene: model }) => {
+    model.traverse((object) => {
+      if (!object.isMesh) return;
+      object.castShadow = object.receiveShadow = true;
+      // Keep angled textures sharp without changing the models themselves.
+      for (const texture of Object.values(object.material)) {
+        if (texture?.isTexture) texture.anisotropy = aniso;
+      }
+    });
+    return model;
   });
-  const dish = (name, slots) => load(name).then((model) => slots.forEach((s) => place(model.clone(), ...s)));
+  const gapAngle = (k) => ((k + 0.5) * 360) / pickCount; // the gap after card k, so props never land on a card whatever the count
   const loaded = [
-    dish("teapot", [[36, 2.4, -0.3], [324, 2.4, Math.PI + 0.3]]),
-    dish("chopsticks", [[180, 2.0, 0.3]]),
-    dish("teacup", [[108, 3.2], [252, 3.2]]),
+    // just a teapot and chopsticks, in the two back gaps the camera sees at rest; a prop in every gap crowded the cards
+    load("teapot").then((model) => placeProp(model.clone(), gapAngle(backPick), propRadius, Math.PI + 0.3)),
+    // every card is served on the chopsticks model's plate instead of standing on a bare easel
+    load("chopsticks").then((model) => {
+      placeProp(model.clone(), gapAngle(backPick - 1), propRadius, Math.PI - 0.5); // the whole set, before its plate is taken for the cards
+      const plate = model.getObjectByName("ChopPlate");
+      plate.position.set(0, 0, 0);
+      plate.scale.multiplyScalar(1.5 / new THREE.Box3().setFromObject(plate).getSize(new THREE.Vector3()).x);
+      const box = new THREE.Box3().setFromObject(plate);
+      const center = box.getCenter(new THREE.Vector3());
+      plate.position.set(-center.x, -box.min.y, -center.z + 0.25); // forward enough to remain visible behind the card
+      cards.forEach((card) => {
+        const [stand, lean] = card.children[0].children;
+        stand.visible = false;
+        lean.position.y = box.max.y - box.min.y;
+        card.children[0].add(plate.clone());
+      });
+    }),
     load("susan").then((model) => {
       // Blender glass with its rounded edge, plus the gold plate and hub baked under it
       const pane = model.getObjectByName("Glass");
-      pane.material = glassMat; pane.castShadow = false; pane.receiveShadow = true;
-      pane.scale.y = GLASS_H / 0.14; // the model is 0.14 thick
-      props.remove(glass); props.add(pane, model.getObjectByName("GoldPlate"), model.getObjectByName("Hub"));
+      pane.material = glassMat;
+      pane.castShadow = false;
+      pane.receiveShadow = true;
+      pane.scale.y = glassHeight / 0.14; // the model is 0.14 thick
+      props.remove(glass);
+      props.add(pane, model.getObjectByName("GoldPlate"), model.getObjectByName("Hub"));
     }),
   ];
-  Promise.allSettled(loaded).then(() => { // reveal all at once; a model that failed to load is just left out
+  // Reveal the table after all model requests settle, including failed ones.
+  Promise.allSettled(loaded).then(() => {
     props.visible = true;
-    { // intro: the table lowers in, then the dishes drop onto it one by one. Plays even with reduced motion (a one-time 2s drop, tap to skip) since many PCs have OS animations off by default.
-      const objs = [...cards.map((g) => g.children[0]), ...props.children.filter((o) => Math.hypot(o.position.x, o.position.z) > 1)];
-      intro = { t0: performance.now(), dishes: objs.map((o) => ({ o, y: o.position.y })) };
-      turn.position.y = 6;
-      intro.dishes.forEach(({ o }) => (o.visible = false));
-    }
+    const objects = [...cards.map((card) => card.children[0]), ...props.children.filter((object) => Math.hypot(object.position.x, object.position.z) > 1)];
+    intro = { t0: performance.now(), dishes: objects.map((object) => ({ o: object, y: object.position.y })) };
+    turn.position.y = 6;
+    intro.dishes.forEach(({ o }) => (o.visible = false));
     kick();
   });
 
   // motion
-  let angle = 0, target = 0, k = 0, dragging = false, raf = 0, last = 0, intro = null;
+  let angle = 0, target = 0, rotationIndex = 0;
+  let dragging = false, raf = 0, last = 0, intro = null;
   const bounce = (t) => 1 - Math.abs(Math.cos(t * 9)) * (1 - t) ** 2; // damped bounce, 0 to 1
   const introEnd = () => { // also the skip: put everything back where it belongs
     turn.position.y = 0;
@@ -201,19 +263,39 @@ function build() {
     const dt = Math.min(Math.max((now - last) / 1000 || 0.016, 0.001), 0.05); // rAF time can read earlier than performance.now(), so never let dt go negative
     last = now;
     let moving = dragging;
-    if (intro) { introStep(now); moving = true; }
+    if (intro) {
+      introStep(now);
+      moving = true;
+    }
     if (!dragging) {
-      const d = target - angle;
-      if (Math.abs(d) > 0.0005) { angle += reduce ? d : d * (1 - Math.exp(-dt * 7)); moving = true; } else angle = target;
+      const remainingAngle = target - angle;
+      if (Math.abs(remainingAngle) > 0.0005) {
+        angle += prefersReducedMotion ? remainingAngle : remainingAngle * (1 - Math.exp(-dt * 7));
+        moving = true;
+      } else {
+        angle = target;
+      }
     }
     turn.rotation.y = angle;
-    cards.forEach((g) => (g.children[0].rotation.y = -angle));
-    cards.forEach((g, i) => {
+    cards.forEach((card) => (card.children[0].rotation.y = -angle));
+    cards.forEach((card, i) => {
       // the chosen dish lifts and grows so its photo reads; the rest stay small so they hide less of the table
-      const ty = GLASS_H + (i === idx ? 0.15 : 0), ts = i === idx ? 1.6 : 0.8;
-      const d = ty - g.position.y, ds = ts - g.scale.x;
-      if (Math.abs(d) > 0.0005) { g.position.y += reduce ? d : d * (1 - Math.exp(-dt * 9)); moving = true; } else g.position.y = ty;
-      if (Math.abs(ds) > 0.0005) { g.scale.setScalar(g.scale.x + (reduce ? ds : ds * (1 - Math.exp(-dt * 9)))); moving = true; } else g.scale.setScalar(ts);
+      const targetY = glassHeight + (i === selectedPick ? 0.15 : 0);
+      const targetScale = i === selectedPick ? selectedScale : restingScale;
+      const remainingY = targetY - card.position.y;
+      const remainingScale = targetScale - card.scale.x;
+      if (Math.abs(remainingY) > 0.0005) {
+        card.position.y += prefersReducedMotion ? remainingY : remainingY * (1 - Math.exp(-dt * 9));
+        moving = true;
+      } else {
+        card.position.y = targetY;
+      }
+      if (Math.abs(remainingScale) > 0.0005) {
+        card.scale.setScalar(card.scale.x + (prefersReducedMotion ? remainingScale : remainingScale * (1 - Math.exp(-dt * 9))));
+        moving = true;
+      } else {
+        card.scale.setScalar(targetScale);
+      }
     });
     renderer.render(scene, camera);
     if (moving) raf = requestAnimationFrame(frame);
@@ -235,11 +317,14 @@ function build() {
 
   // drag to spin, release to snap to the nearest dish. A click without movement picks the dish under the pointer.
   const ray = new THREE.Raycaster();
-  let startX = 0, lastX = 0, vel = 0, moved = 0;
+  let lastX = 0, velocity = 0, dragDistance = 0;
   const el = renderer.domElement;
   el.addEventListener("pointerdown", (e) => {
     if (intro) introEnd(); // a touch skips the intro
-    dragging = true; startX = lastX = e.clientX; vel = 0; moved = 0;
+    dragging = true;
+    lastX = e.clientX;
+    velocity = 0;
+    dragDistance = 0;
     el.setPointerCapture(e.pointerId);
     host.style.cursor = "grabbing";
     kick();
@@ -248,40 +333,48 @@ function build() {
     if (!dragging) return;
     const dx = e.clientX - lastX;
     lastX = e.clientX;
-    moved += Math.abs(dx);
-    vel = dx * 0.008;
-    angle += vel;
+    dragDistance += Math.abs(dx);
+    velocity = dx * 0.008;
+    angle += velocity;
     kick();
   });
   const end = (e) => {
     if (!dragging) return;
     dragging = false;
     host.style.cursor = "";
-    if (moved < 5) {
+    if (dragDistance < 5) {
       const r = el.getBoundingClientRect();
       ray.setFromCamera(new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), camera);
       const hit = ray.intersectObjects(cards, true)[0];
-      if (hit) { let o = hit.object; while (o.userData.i === undefined) o = o.parent; spinTo(o.userData.i); panel(o.userData.i); return; }
+      if (hit) {
+        let object = hit.object;
+        while (object.userData.i === undefined) object = object.parent;
+        spinToPick(object.userData.i);
+        showPick(object.userData.i);
+        return;
+      }
     }
-    k = Math.round(-(angle + vel * 12) / STEP);
-    target = -k * STEP;
-    panel(((k % N) + N) % N);
+    rotationIndex = Math.round(-(angle + velocity * 12) / anglePerPick);
+    target = -rotationIndex * anglePerPick;
+    showPick(((rotationIndex % pickCount) + pickCount) % pickCount);
     kick();
   };
   el.addEventListener("pointerup", end);
   el.addEventListener("pointercancel", end);
 
   return (i) => {
-    const cur = ((k % N) + N) % N;
-    k += ((((i - cur + Math.floor(N / 2)) % N) + N) % N) - Math.floor(N / 2); // shortest way round
-    target = -k * STEP;
+    const currentPick = ((rotationIndex % pickCount) + pickCount) % pickCount;
+    const halfTurn = Math.floor(pickCount / 2);
+    const shortestStep = ((i - currentPick + pickCount + halfTurn) % pickCount) - halfTurn;
+    rotationIndex += shortestStep;
+    target = -rotationIndex * anglePerPick;
     kick();
   };
 }
 
 // last on purpose: build() uses the helper consts above, which must exist before it runs
 try {
-  spinTo = build();
+  spinToPick = build();
 } catch {
   host.hidden = true; // no WebGL: the buttons under it still work
 }

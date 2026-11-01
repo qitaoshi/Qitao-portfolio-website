@@ -3,16 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#e5dbc9">
   <title>Wayform | Qitao Shi</title>
-  <meta name="description" content="A macOS app and CLI that gives coding agents shared memory: the plan, the decisions and the reasons behind them, carried across teammates and across Claude Code, Cursor and Codex.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin> <!-- nav links are right-aligned, so a late font swap would shove them sideways -->
-  <link rel="stylesheet" href="style.css?v=60">
+  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=78">
   <script>document.documentElement.className = "js";</script>
-  <script src="script.js?v=6" defer></script>
+  <script src="script.js?v=9" defer></script>
 </head>
 <body>
   <header class="wrap nav">
@@ -45,6 +42,7 @@
         <ul class="ingredients">
           <li><img src="img/stack/typescript.svg" alt="" loading="lazy">TypeScript</li>
           <li><img src="img/stack/nodejs.svg" alt="" loading="lazy">Node.js</li>
+          <li><img src="img/stack/mcp.svg" alt="" loading="lazy">MCP</li>
           <li><img src="img/stack/git.svg" alt="" loading="lazy">Git</li>
           <li><img src="img/stack/cloudflare-workers.svg" alt="" loading="lazy">Cloudflare Workers</li>
         </ul>
@@ -68,10 +66,10 @@
     </div>
     <section class="more-projects">
       <div class="section-head"><h2>More Projects</h2><a class="more" href="projects.html">See all →</a></div>
-      <div class="more-grid">
-        <a class="more-card" href="tennis.html"><img src="img/projects/tennis-card.jpg" alt="" loading="lazy"><span>Tennis Match Projection Model</span><small>Machine Learning, Python</small></a>
-        <a class="more-card" href="side-quests.html"><img src="img/projects/side-quests-today.jpg" alt="" loading="lazy"><span>Side Quests</span><small>Mobile</small></a>
-        <a class="more-card" href="ray-tracer.html"><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><span>Ray Tracer</span><small>Graphics</small></a>      </div>
+      <div class="rail">
+        <article class="order"><p class="order-no"><span>Order 01</span><span>Machine learning</span></p><img src="img/projects/tennis-card.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="tennis.html">Tennis Match Projection Model</a></h3></article>
+        <article class="order"><p class="order-no"><span>Order 02</span><span>Mobile</span></p><div class="levels" role="img" aria-label="Side Quests level artwork: a seedling grows into a tree"><figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure><figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure><figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure><figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure></div><h3><a class="ticket-link" href="side-quests.html">Side Quests</a></h3></article>
+        <article class="order"><p class="order-no"><span>Order 03</span><span>Graphics</span></p><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="ray-tracer.html">Ray Tracer</a></h3></article>      </div>
     </section>
   </main>
   <footer class="wrap footer">

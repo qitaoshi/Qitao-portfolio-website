@@ -3,16 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#e5dbc9">
   <title>Projects | Qitao Shi</title>
-  <meta name="description" content="Case studies from things Qitao has built and broken.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin> <!-- nav links are right-aligned, so a late font swap would shove them sideways -->
-  <link rel="stylesheet" href="style.css?v=60">
+  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=78">
   <script>document.documentElement.className = "js";</script>
-  <script src="script.js?v=6" defer></script>
+  <script src="script.js?v=9" defer></script>
 </head>
 <body>
   <header class="wrap nav">
@@ -36,7 +33,7 @@
     <div class="rail">
       <article class="order reveal" id="tennis">
         <p class="order-no"><span>Order 01</span><span>Machine learning</span></p>
-        <img src="img/tennis.jpg" alt="The tennis model web app, asking is the model as sharp as the market" width="1400" height="958">
+        <img src="img/projects/tennis-card.jpg" alt="The tennis model web app on Sinner v Medvedev: the model gives Sinner 76% against the bookmakers' 72.5%, with serve, games and key reads below" width="1472" height="920">
         <h2><a class="ticket-link" href="tennis.html">Tennis Match Projection Model</a></h2>
         <p>Predicts ATP match winners from form, surface and player stats.</p>
         <ul class="stack" aria-label="Built with"><li>Python</li><li>Pandas</li><li>Scikit-Learn</li></ul>
@@ -68,7 +65,7 @@
         <img src="img/wayform.jpg" alt="The Wayform landing page: Agents are good. They could be better." width="1400" height="958">
         <h2><a class="ticket-link" href="wayform.html">Wayform</a></h2>
         <p>Shared memory for coding agents, so a team's decisions carry across tools.</p>
-        <ul class="stack" aria-label="Built with"><li>TypeScript</li><li>Node.js</li><li>MCP</li><li>Git</li></ul>
+        <ul class="stack" aria-label="Built with"><li>TypeScript</li><li>Node.js</li><li>MCP</li><li>Cloudflare Workers</li><li>Git</li></ul>
       </article>
     </div>
   </main>

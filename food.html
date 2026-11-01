@@ -3,16 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#e5dbc9">
   <title>Food | Qitao Shi</title>
-  <meta name="description" content="Dishes Qitao has cooked and baked, with recipes.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin> <!-- nav links are right-aligned, so a late font swap would shove them sideways -->
-  <link rel="stylesheet" href="style.css?v=60">
+  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=78">
   <script>document.documentElement.className = "js";</script>
-  <script src="script.js?v=6" defer></script>
+  <script src="script.js?v=9" defer></script>
 </head>
 <body>
   <header class="wrap nav">
@@ -33,15 +30,52 @@
       <p>Things I've cooked and baked. Tap a dish to get the recipe.</p>
     </div>
 
-    <!-- add a dish: copy a figure and point both links at its recipe page -->
-    <div class="kitchen">
-      <figure class="reveal"><a href="salt-bread.html"><img src="img/salt-bread.jpg" style="object-position:50% 100%" alt="Three salt bread rolls in a bowl" width="901" height="1200" loading="lazy"></a><figcaption><a href="salt-bread.html">Salt bread (Shio Pan)</a></figcaption></figure>
-      <figure class="reveal"><a href="focaccia.html"><img src="img/focaccia.jpg" alt="Fresh focaccia on a plate" width="900" height="895" loading="lazy"></a><figcaption><a href="focaccia.html">Fresh focaccia</a></figcaption></figure>
-      <figure class="reveal"><a href="dumplings.html"><img src="img/dumplings.jpg" alt="Folded dumplings on baking paper" width="900" height="895" loading="lazy"></a><figcaption><a href="dumplings.html">Dumplings</a></figcaption></figure>
-      <figure class="reveal"><a href="seared-pork.html"><img src="img/pork.jpg" alt="Seared pork with orange sauce on a white plate" width="900" height="895" loading="lazy"></a><figcaption><a href="seared-pork.html">Seared pork with orange sauce</a></figcaption></figure>
-      <figure class="reveal"><a href="croissants.html"><img src="img/croissants.jpg" alt="A tray of golden croissants fresh from the oven" width="1200" height="900" loading="lazy"></a><figcaption><a href="croissants.html">Croissants</a></figcaption></figure>
-      <figure class="reveal"><a class="whole" href="chicken-katsu.html" style="--photo:url(img/katsu.jpg)"><img src="img/katsu.jpg" alt="Sliced chicken katsu with shredded cabbage, tonkatsu sauce and rice" width="960" height="1200" loading="lazy"></a><figcaption><a href="chicken-katsu.html">Chicken katsu</a></figcaption></figure>
-      <figure class="reveal"><a href="pizza.html"><img src="img/pizza.jpg" alt="A pepperoni pizza with basil on a wooden board" width="901" height="1200" loading="lazy"></a><figcaption><a href="pizza.html">Pepperoni pizza</a></figcaption></figure>
+    <!-- add a dish: copy a ticket, point its link at the recipe page and give it the next order number -->
+    <div class="rail">
+      <article class="order reveal">
+        <p class="order-no"><span>Order 05</span><span>Bread</span></p>
+        <img src="img/salt-bread.jpg" style="object-position:50% 85%" alt="Three salt bread rolls in a bowl" width="901" height="1200" loading="lazy">
+        <h2><a class="ticket-link" href="salt-bread.html">Salt Bread (Shio Pan)</a></h2>
+        <ul class="stack" aria-label="Time and yield" data-total="Ingredients: 9"><li>2.5 hrs including proofing</li><li>Makes 6</li></ul>
+      </article>
+      <article class="order reveal">
+        <p class="order-no"><span>Order 06</span><span>Bread</span></p>
+        <img src="img/focaccia.jpg" alt="Fresh focaccia on a plate" width="900" height="895" loading="lazy">
+        <h2><a class="ticket-link" href="focaccia.html">Fresh Focaccia</a></h2>
+        <ul class="stack" aria-label="Time and yield" data-total="Ingredients: 7"><li>24 hrs including cold proof</li><li>Serves 8</li></ul>
+      </article>
+      <article class="order reveal">
+        <p class="order-no"><span>Order 07</span><span>Dumplings</span></p>
+        <img src="img/dumplings.jpg" alt="Folded dumplings on baking paper" width="900" height="895" loading="lazy">
+        <h2><a class="ticket-link" href="dumplings.html">Dumplings</a></h2>
+        <ul class="stack" aria-label="Time and yield" data-total="Ingredients: 9"><li>1.5 hrs</li><li>Makes about 40</li></ul>
+      </article>
+      <article class="order reveal">
+        <p class="order-no"><span>Order 08</span><span>Dinner</span></p>
+        <img src="img/pork.jpg" alt="Seared pork with orange sauce on a white plate" width="900" height="895" loading="lazy">
+        <h2><a class="ticket-link" href="seared-pork.html">Seared Pork with Orange Sauce</a></h2>
+        <ul class="stack" aria-label="Time and yield" data-total="Ingredients: 9"><li>40 mins</li><li>Serves 2</li></ul>
+      </article>
+    </div>
+    <div class="rail">
+      <article class="order reveal">
+        <p class="order-no"><span>Order 09</span><span>Pastry</span></p>
+        <img src="img/croissants.jpg" alt="A tray of golden croissants fresh from the oven" width="1200" height="900" loading="lazy">
+        <h2><a class="ticket-link" href="croissants.html">Croissants</a></h2>
+        <ul class="stack" aria-label="Time and yield" data-total="Ingredients: 8"><li>2 days, mostly resting</li><li>Makes 12</li></ul>
+      </article>
+      <article class="order reveal">
+        <p class="order-no"><span>Order 10</span><span>Dinner</span></p>
+        <img style="object-position:50% 0" src="img/katsu.jpg" alt="Sliced chicken katsu with shredded cabbage, tonkatsu sauce and rice" width="960" height="1200" loading="lazy">
+        <h2><a class="ticket-link" href="chicken-katsu.html">Chicken Katsu</a></h2>
+        <ul class="stack" aria-label="Time and yield" data-total="Ingredients: 9"><li>40 mins</li><li>Serves 2</li></ul>
+      </article>
+      <article class="order reveal">
+        <p class="order-no"><span>Order 11</span><span>Dinner</span></p>
+        <img src="img/pizza.jpg" alt="A pepperoni pizza with basil on a wooden board" width="901" height="1200" loading="lazy">
+        <h2><a class="ticket-link" href="pizza.html">Pepperoni Pizza</a></h2>
+        <ul class="stack" aria-label="Time and yield" data-total="Ingredients: 9"><li>Overnight dough, 10 min bake</li><li>Makes 2</li></ul>
+      </article>
     </div>
   </main>
   <footer class="wrap footer">
