@@ -6,12 +6,13 @@
   <title>About | Qitao Shi</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin> <!-- body text: preloaded so paragraphs don't reflow when it swaps in late -->
-  <link rel="stylesheet" href="style.css?v=77">
+  <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=78">
+  <link rel="stylesheet" href="about.css?v=2">
   <script>document.documentElement.className = "js";</script>
-  <script src="script.js?v=8" defer></script>
+  <script src="script.js?v=9" defer></script>
 </head>
-<body>
+<body class="about-page">
   <header class="wrap nav">
     <a class="brand" href="index.html">Qitao Shi</a>
     <nav aria-label="Main">
@@ -24,47 +25,75 @@
     </nav>
   </header>
 
-  <main class="wrap about">
-    <div class="page-head">
-      <h1>About</h1>
-    </div>
-
-    <div class="about-body">
-    <p class="order-no"><span>Qitao Shi</span><span>Melbourne</span></p>
-    <img class="about-photo" src="img/about.jpg" alt="Qitao Shi in a black suit, smiling under a stone archway" width="1000" height="1250">
-    <div>
-    <section>
-      <p class="lead">Hey, I'm Qitao, a final-year computer science student at the University of Melbourne.</p>
-      <p>I love the creativity of cooking and building software. With both, I get to make whatever I want. They feel pretty similar to me.</p>
+  <main class="profile">
+    <section class="identity wrap" aria-labelledby="intro-title">
+      <div class="introduction">
+        <h1 id="intro-title">Hey, I'm Qitao.</h1>
+        <p>A final-year computer science student at the University of Melbourne. I build software and cook dinner.</p>
+      </div>
+      <div class="two-sides">
+        <div class="side coder">
+          <h2>Part coder.</h2>
+          <p>From predicting tennis matches to building apps with friends, I like having an idea and making it work.</p>
+          <a href="projects.html">See what I've built <span aria-hidden="true">↗</span></a>
+        </div>
+        <figure class="portrait">
+          <img src="img/about.jpg" alt="Qitao smiling under a stone archway" width="1000" height="1250" fetchpriority="high">
+        </figure>
+        <div class="side cook">
+          <h2>Part cook.</h2>
+          <p>I grew up watching Food Network and MasterChef instead of cartoons. Later, Breadtop taught me to bake bread and make pastries.</p>
+          <a href="food.html">See what's baking <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <p class="connection">I love the creativity of both. With cooking and software, I get to make whatever I want.</p>
     </section>
-
-    <section>
-      <h2>Software</h2>
-      <p>I've built a <a href="tennis.html">model that predicts ATP tennis matches</a> from player stats, surface and recent form, and a <a href="ray-tracer.html">ray tracer in C#</a> that renders 3D scenes from scratch.</p>
-      <p><a href="side-quests.html">Side Quests</a> is a Flutter app I built with a team of six at VicHack. It won three awards there. With Skanda, I co-built <a href="wayform.html">Wayform</a>, a macOS app and CLI that gives coding agents a shared memory of a team's decisions.</p>
-    </section>
-
-    <section>
-      <h2>Cooking</h2>
-      <p>I started cooking at a young age. Instead of cartoons, I would regularly watch Food Network and MasterChef. Later, I worked at Breadtop, where I learnt to bake bread and make pastries.</p>
-      <p>I remember being obsessed with croissants, but I couldn't get them right in Darwin because the butter melted almost instantly. Once I moved to Melbourne, I finally nailed them. You can try my <a href="croissants.html">croissant recipe</a>.</p>
-      <p>You'll also find <a href="salt-bread.html">salt bread</a>, <a href="focaccia.html">focaccia</a> and <a href="dumplings.html">dumplings</a> on my <a href="food.html">food page</a>. I share what I cook on Instagram as <a href="https://www.instagram.com/quokachi_cook/">@quokachi_cook</a>.</p>
-    </section>
-
-    <section>
-      <h2>Say Hello</h2>
-      <p>This portfolio is for my peers and people working in tech. If you'd like a recipe, want to learn more about my side projects or just want to say hi, get in touch.</p>
-      <div class="about-contact">
-        <a class="btn btn-accent" href="mailto:qitaoshi@gmail.com">Email me</a>
-        <ul>
-          <li><a href="https://github.com/qitaoshi">GitHub</a></li>
-          <li><a href="https://www.instagram.com/quokachi_cook/">Instagram</a></li>
-        </ul>
+    <section class="croissant-story" aria-labelledby="croissant-title">
+      <div class="wrap story-layout">
+        <div class="story-pictures">
+          <img class="croissant-photo" src="img/croissants.jpg" alt="A tray of golden croissants Qitao baked" width="1200" height="900" loading="lazy">
+          <img class="bread-photo" src="img/salt-bread.jpg" alt="Three homemade salt bread rolls in a bowl" width="901" height="1200" loading="lazy">
+        </div>
+        <div class="story-copy">
+          <h2 id="croissant-title">It took a move to Melbourne.</h2>
+          <p>I was obsessed with croissants, but I couldn't get them right in Darwin. The butter melted almost instantly.</p>
+          <p>Once I moved to Melbourne, I finally nailed them.</p>
+          <a href="croissants.html">Try my croissant recipe <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
     </section>
-    </div>
-    </div>
+    <section class="software-story wrap" aria-labelledby="software-title">
+      <div class="software-copy">
+        <h2 id="software-title">And on the software side…</h2>
+        <p>I've built a <a href="tennis.html">tennis prediction model</a> and a <a href="ray-tracer.html">ray tracer in C#</a>. At VicHack, I worked in a team of six on <a href="side-quests.html">Side Quests</a>, a Flutter app that won three awards.</p>
+        <p>With Skanda, I co-built <a href="wayform.html">Wayform</a>, a macOS app and CLI that gives coding agents a shared memory of a team's decisions.</p>
+        <a class="section-link" href="projects.html">Explore my projects <span aria-hidden="true">↗</span></a>
+      </div>
+      <a class="project-picture" href="tennis.html" aria-label="Read about the tennis prediction model">
+        <img src="img/projects/tennis-card.jpg" alt="The tennis model comparing Sinner and Medvedev's match chances" width="1472" height="920" loading="lazy">
+      </a>
+    </section>
+    <section class="hello wrap" aria-labelledby="hello-title">
+      <h2 id="hello-title">Foodies &amp; coders welcome.</h2>
+      <div>
+        <p>Want a recipe, curious about a side project, or just want to say hi? Get in touch.</p>
+        <a class="btn btn-accent" href="mailto:qitaoshi@gmail.com">Email me</a>
+        <a class="instagram" href="https://www.instagram.com/quokachi_cook/">Find me in the kitchen <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
   </main>
+  <script>
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const arrivals = new IntersectionObserver((entries, observer) => {
+        entries.forEach(({ target, isIntersecting }) => {
+          if (!isIntersecting) return;
+          target.animate([{ opacity: 0, transform: 'translateY(18px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 650, easing: 'ease-out' });
+          observer.unobserve(target);
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.connection, .story-pictures img, .story-copy > *, .software-copy > *, .project-picture, .hello > *').forEach(element => arrivals.observe(element));
+    }
+  </script>
   <footer class="wrap footer">
     <p class="brand">Qitao Shi</p>
     <ul>
