@@ -86,7 +86,7 @@ img::selection { background: transparent; }
 .nav { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 2rem; min-height: var(--nav-h); padding-block: .75rem; }
 .brand { font-size: 1.35rem; }
 .nav nav { margin-left: auto; }
-.nav ul, .footer ul { font: 700 .875rem/1.6 var(--font-nav); }
+.nav ul { font: 700 .875rem/1.6 var(--font-nav); }
 .nav ul { display: flex; gap: 1.25rem; }
 .nav ul a { position: relative; display: inline-block; padding: .7rem .25rem; }
 .nav ul a[aria-current="page"] { text-decoration: none; }
@@ -455,17 +455,9 @@ section .rail + .more { margin-top: 0; }
   .nav { gap: .5rem .75rem; }
   .brand { font-size: 1.15rem; }
   .nav ul { gap: .9rem; font-size: .75rem; }
-  .footer, .footer ul { column-gap: 1rem; } .footer ul { font-size: .75rem; } /* one row */
   .nav ul a { padding-inline: 0; } /* keep 44px tap height */
   .nav ul a[aria-current="page"]::after { left: 0; right: 0; }
 }
 
 section .rail { padding-bottom: 1.5rem; }
 #projects, #kitchen { padding-bottom: 0; } /* home rails */
-
-/* footer */
-.footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 2rem; padding-block: 2rem 3rem;
-  background: repeating-linear-gradient(90deg, var(--ink-faint) 0 6px, transparent 6px 10px) var(--pad) 0 / calc(100% - 2 * var(--pad)) 2px no-repeat; } /* dashed rule */
-.footer .brand { font-size: 1.2rem; }
-.footer ul { display: flex; gap: 1.5rem; }
-.footer ul a { display: inline-block; padding-block: .7rem; }
