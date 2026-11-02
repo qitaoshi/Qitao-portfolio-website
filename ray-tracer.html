@@ -27,9 +27,9 @@
   <main class="wrap project">
     <div class="project-head">
       <h1>Ray Tracer</h1>
-      <p class="intro">A program that turns a 3D scene into a realistic image. It follows rays of light as they travel and bounce, and works out the lighting, shadows and colour from what they hit.</p>
-      <ul class="chips"><li>Serves: anyone with a 3D scene</li><li>Difficulty: Hard</li></ul>
-      <div class="project-photo"><video src="img/projects/ray-tracer-turntable.mp4" poster="img/projects/ray-tracer-turntable-poster.jpg" muted loop playsinline preload="none" width="600" height="600" aria-label="A ray traced rabbit turning a full circle beside a mirrored sphere inside a red, green and blue box with a checkered floor, its reflection turning with it"></video>
+      <p class="intro">I built a program that turns a 3D scene into an image. It works out where light goes, what it hits, and how that changes the colours and shadows.</p>
+      <ul class="chips"><li>Computer graphics</li></ul>
+      <div class="project-photo"><img src="img/projects/ray-tracer-turntable.gif" alt="A ray traced rabbit turning beside a mirrored sphere inside a colourful box" width="600" height="600">
         <img src="img/projects/ray-tracer-spheres.jpg" alt="An early test render: a mirrored sphere and a glass sphere inside the coloured box, the glass showing the room upside down" width="800" height="800" loading="lazy">
         <img src="img/projects/ray-tracer-first.jpg" alt="The first render: a shiny green sphere and two triangles casting hard shadows on a red floor" width="400" height="400" loading="lazy">
       </div>
@@ -37,35 +37,35 @@
 
     <div class="recipe-body">
       <section>
-        <h2>Ingredients</h2>
+        <h2>Built with</h2>
         <ul class="ingredients">
           <li><img src="img/stack/csharp.svg" alt="" loading="lazy">C#</li>
         </ul>
       </section>
       <section>
-        <h2>Method</h2>
+        <h2>How it works</h2>
         <ol class="method">
           <li>Set up the scene: a camera, a light and a handful of objects, each with its own colour.</li>
           <li>For every pixel in the image, fire one ray from the camera out through that pixel into the scene.</li>
           <li>Find the closest object each ray hits. If it hits nothing, colour the pixel with the background.</li>
           <li>At each hit point, fire a second ray towards the light. If something blocks it, the point sits in shadow; if not, brighten it based on how directly the light falls on it.</li>
           <li>Where a ray lands on a mirror, bounce it off and take on the colour of whatever it hits next. Where it lands on glass, bend it as it passes through, which is why the room shows up upside down inside the glass sphere.</li>
-          <li>Repeat for every pixel, then write the finished colours out to an image file. Leave it to render; larger images take longer to bake.</li>
+          <li>Repeat for every pixel, then write the finished colours out to an image file. Larger images take longer to render.</li>
         </ol>
       </section>
     </div>
 
     <div class="notes">
-      <p class="order-no"><span>Order 03</span><span>Graphics</span></p>
-      <h2>Chef's Notes</h2>
-      <p>Start with a single sphere and one light before adding anything else. If the shadows come out speckled, nudge each shadow ray slightly off the surface before firing it, so it does not hit the point it started from. Rendering is slow, so test on a small image first.</p>
+      <p class="order-no"><span>Project 03</span><span>Graphics</span></p>
+      <h2>Notes</h2>
+      <p>Take the time to understand the maths, then build each part slowly. I started with a simple scene and added new features one at a time.</p>
     </div>
     <section class="more-projects">
       <div class="section-head"><h2>More Projects</h2><a class="more" href="projects.html">See all →</a></div>
       <div class="rail">
-        <article class="order"><p class="order-no"><span>Order 01</span><span>Machine learning</span></p><img src="img/projects/tennis-card.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="tennis.html">Tennis Match Projection Model</a></h3></article>
-        <article class="order"><p class="order-no"><span>Order 02</span><span>Mobile</span></p><div class="levels" role="img" aria-label="Side Quests level artwork: a seedling grows into a tree"><figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure><figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure><figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure><figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure></div><h3><a class="ticket-link" href="side-quests.html">Side Quests</a></h3></article>
-        <article class="order"><p class="order-no"><span>Order 04</span><span>Developer tools</span></p><img src="img/projects/wayform-plan.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="wayform.html">Wayform</a></h3></article>      </div>
+        <article class="order"><p class="order-no"><span>Project 01</span><span>Machine learning</span></p><img src="img/projects/tennis-card.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="tennis.html">Tennis Match Projection Model</a></h3></article>
+        <article class="order"><p class="order-no"><span>Project 02</span><span>Mobile</span></p><div class="levels" role="img" aria-label="Side Quests level artwork: a seedling grows into a tree"><figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure><figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure><figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure><figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure></div><h3><a class="ticket-link" href="side-quests.html">Side Quests</a></h3></article>
+        <article class="order"><p class="order-no"><span>Project 04</span><span>Developer tools</span></p><img src="img/projects/wayform-plan.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="wayform.html">Wayform</a></h3></article>      </div>
     </section>
   </main>
   <footer class="wrap footer">

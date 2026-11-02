@@ -240,8 +240,3 @@ document.querySelectorAll(".project-photo").forEach((track) => {
   slides.forEach((slide) => slideObserver.observe(slide));
   showSlide(0);
 });
-
-// autoplay loops unless reduced motion
-if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  document.querySelectorAll("video[loop]").forEach((video) => video.play().catch(() => {}));
-}

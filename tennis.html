@@ -27,8 +27,8 @@
   <main class="wrap project">
     <div class="project-head">
       <h1>Tennis Match Projection Model</h1>
-      <p class="intro">A pre-match pricer for ATP tennis: two players in, fair odds out for every standard market, from match winner to total games. A web app shows its full projection for one real match beside the bookmakers' prices, with the model's track record a tab away.</p>
-      <ul class="chips"><li>Serves: tennis fans</li><li>Difficulty: Hard</li></ul>
+      <p class="intro">As a big tennis fan, I wanted to build something that could predict future matches. This project has helped me learn more about probability and machine learning, and I'm still improving the model.</p>
+      <ul class="chips"><li>For tennis fans</li></ul>
       <div class="cta"><a class="btn btn-solid" href="https://github.com/qitaoshi/tennis-model-v2">GitHub</a></div>
       <div class="project-photo"><div class="browser"><img src="img/tennis-match.jpg" alt="The tennis model web app on Sinner v Medvedev: the model gives Sinner 76% against the bookmakers' 72.5%, with serve, games and key reads below" width="2450" height="1000"></div>
         <img src="img/projects/tennis-projections.jpg" alt="Projections tab: key reads on the match, a total games distribution with the actual 17 games marked, and set score odds from the model and the market" width="2450" height="1540" loading="lazy">
@@ -40,7 +40,7 @@
 
     <div class="recipe-body">
       <section>
-        <h2>Ingredients</h2>
+        <h2>Tools and data</h2>
         <ul class="ingredients">
           <li><img src="img/stack/python.svg" alt="" loading="lazy">Python</li>
           <li><img src="img/stack/pandas.svg" alt="" loading="lazy">Pandas</li>
@@ -49,29 +49,29 @@
         </ul>
       </section>
       <section>
-        <h2>Method</h2>
+        <h2>How it works</h2>
         <ol class="method">
-          <li>Gather ATP and Challenger results from 2010 on, trim out walkovers and retirements, and split them by date into fitting, tuning, test and holdout windows.</li>
-          <li>Season each player with serve and return rates from matches strictly before the one being priced, plus a surface Elo, a court-speed index for the venue and a prior for players with little data.</li>
-          <li>Turn the two chances of winning a point on serve into game, set and match odds with closed-form scoring maths, then recalibrate each market with Scikit-Learn so the stated chances match how often things happen.</li>
-          <li>Taste-test on the holdout matches, read only once: across 6,202 matches the stated chances were off by 0.3 percentage points on average.</li>
-          <li>Plate it in a Next.js web app: Sinner v Medvedev in Shanghai, priced only from matches before it, with every market set beside the bookmakers' prices and the value in each.</li>
+          <li>I collected past professional tennis results and removed matches that ended early.</li>
+          <li>For each player, I looked at how they served and returned in earlier matches. I also accounted for the playing surface and the venue.</li>
+          <li>I used those numbers to estimate each player's chance of winning, then checked whether the predictions matched real results.</li>
+          <li>I tested the model against 6,202 matches it had not used while learning, then used the results to see where it needed improvement.</li>
+          <li>I built a web app that shows the model's predictions beside bookmakers' odds for a real match.</li>
         </ol>
       </section>
     </div>
 
     <div class="notes">
-      <p class="order-no"><span>Order 01</span><span>Machine learning</span></p>
-      <h2>Chef's Notes</h2>
-      <p>Always split the matches by date, never at random. Letting future results slip into the training data makes the model look far better than it really is. Surface matters more than you would expect: a player's clay record says little about how they will go on grass.</p>
+      <p class="order-no"><span>Project 01</span><span>Machine learning</span></p>
+      <h2>What I learned</h2>
+      <p>Good data matters. A strong model with poor data can lose to a simpler model with reliable data. I'm still tuning this one to make its predictions better.</p>
       <ul class="stack" aria-label="Holdout results" data-total="Markets priced: 5"><li><span>Holdout matches</span><span>6,202</span></li><li><span>Average miss</span><span>0.3 pts</span></li><li><span>Calls a market after</span><span>1,000 scored</span></li></ul>
     </div>
     <section class="more-projects">
       <div class="section-head"><h2>More Projects</h2><a class="more" href="projects.html">See all →</a></div>
       <div class="rail">
-        <article class="order"><p class="order-no"><span>Order 02</span><span>Mobile</span></p><div class="levels" role="img" aria-label="Side Quests level artwork: a seedling grows into a tree"><figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure><figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure><figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure><figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure></div><h3><a class="ticket-link" href="side-quests.html">Side Quests</a></h3></article>
-        <article class="order"><p class="order-no"><span>Order 03</span><span>Graphics</span></p><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="ray-tracer.html">Ray Tracer</a></h3></article>
-        <article class="order"><p class="order-no"><span>Order 04</span><span>Developer tools</span></p><img src="img/projects/wayform-plan.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="wayform.html">Wayform</a></h3></article>      </div>
+        <article class="order"><p class="order-no"><span>Project 02</span><span>Mobile</span></p><div class="levels" role="img" aria-label="Side Quests level artwork: a seedling grows into a tree"><figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure><figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure><figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure><figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure></div><h3><a class="ticket-link" href="side-quests.html">Side Quests</a></h3></article>
+        <article class="order"><p class="order-no"><span>Project 03</span><span>Graphics</span></p><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="ray-tracer.html">Ray Tracer</a></h3></article>
+        <article class="order"><p class="order-no"><span>Project 04</span><span>Developer tools</span></p><img src="img/projects/wayform-plan.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="wayform.html">Wayform</a></h3></article>      </div>
     </section>
   </main>
   <footer class="wrap footer">

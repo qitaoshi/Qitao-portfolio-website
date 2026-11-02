@@ -27,18 +27,18 @@
   <main class="wrap project">
     <div class="project-head">
       <h1>Wayform</h1>
-      <p class="intro">A macOS app and CLI that gives coding agents shared memory: the plan, the decisions and the reasons behind them. A decision made in one teammate's Claude Code session is already loaded when another opens Cursor or Codex.</p>
-      <ul class="chips"><li>Serves: teams that build with AI agents</li><li>Co-built with Skanda</li></ul>
+      <p class="intro">A macOS app and CLI that gives coding agents shared memory: the plan, the decisions and the reasons for them. A decision taken in one of your Claude Code sessions is already loaded in the one that opens Cursor or Codex.</p>
+      <ul class="chips"><li>For teams using AI agents</li><li>Co-built with Skanda</li></ul>
       <div class="cta"><a class="btn btn-solid" href="https://wayform.dev/">Visit wayform.dev</a></div>
       <div class="project-photo"><div class="browser"><img src="img/wayform.jpg" alt="The Wayform landing page: Agents are good. They could be better." width="1400" height="958"></div>
-        <img src="img/projects/wayform-plan.jpg" alt="A Wayform plan for inviting a team, showing an inherited decision to use GitHub identity" width="1200" height="800" loading="lazy">
+        <img src="img/projects/wayform-plan.jpg" alt="Inviting a team: a Wayform plan showing an inherited decision to use GitHub identity" width="1200" height="800" loading="lazy">
         <img src="img/projects/wayform-decisions.jpg" alt="Two teammates in different agents: a decision saved from Claude Code is reused in a fresh Codex session" width="900" height="600" loading="lazy">
       </div>
     </div>
 
     <div class="recipe-body">
       <section>
-        <h2>Ingredients</h2>
+        <h2>Built with</h2>
         <ul class="ingredients">
           <li><img src="img/stack/typescript.svg" alt="" loading="lazy">TypeScript</li>
           <li><img src="img/stack/nodejs.svg" alt="" loading="lazy">Node.js</li>
@@ -48,28 +48,28 @@
         </ul>
       </section>
       <section>
-        <h2>Method</h2>
+        <h2>How it works</h2>
         <ol class="method">
-          <li>Write each settled decision as "we decided X because Y" into a private git repo the team owns. Commits are append-only, so git log doubles as the audit trail.</li>
-          <li>Serve that store through an MCP server, so Claude Code, Cursor and Codex all read and write the same decisions.</li>
+          <li>Write each settled decision as a “we decided X because Y” entry into a private git repo the team owns. Commits are append-only, so git log is the audit trail.</li>
+          <li>Serve that store by an MCP server, so Claude Code, Cursor and Codex all read and write the same decision.</li>
           <li>When a session starts, a hook loads every decision as context. A new chat already knows what the team ruled out.</li>
-          <li>Before a pull request opens, have the agent check the diff against the plan. Once it merges, the plan and its decisions join the shared memory.</li>
-          <li>If an action clashes with a recorded decision, stop and ask a person to make the call.</li>
+          <li>Do the same before a pull request opens, with the agent checking the diff against the plan, and put the plan and its decisions in the shared memory when it merges.</li>
+          <li>If an action conflicts with a recorded decision, stop and ask a person to make the call.</li>
         </ol>
       </section>
     </div>
 
     <div class="notes">
-      <p class="order-no"><span>Order 04</span><span>Developer tools</span></p>
-      <h2>Chef's Notes</h2>
-      <p>Keep the writes curated: a decision and its reason, not every thought the agent had. That is what keeps the memory worth loading into every session. And don't rebuild what git already does well. Borrowing its history and consistency meant no vendor database holds the team's decisions.</p>
+      <p class="order-no"><span>Project 04</span><span>Developer tools</span></p>
+      <h2>Notes</h2>
+      <p>Keep the writes curated: a decision and its reason rather than every thought the agent had. What keeps the memory worth loading into every session is that it does not build what git already does well. Its history and consistency meant no vendor database holds the team's decisions.</p>
     </div>
     <section class="more-projects">
       <div class="section-head"><h2>More Projects</h2><a class="more" href="projects.html">See all →</a></div>
       <div class="rail">
-        <article class="order"><p class="order-no"><span>Order 01</span><span>Machine learning</span></p><img src="img/projects/tennis-card.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="tennis.html">Tennis Match Projection Model</a></h3></article>
-        <article class="order"><p class="order-no"><span>Order 02</span><span>Mobile</span></p><div class="levels" role="img" aria-label="Side Quests level artwork: a seedling grows into a tree"><figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure><figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure><figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure><figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure></div><h3><a class="ticket-link" href="side-quests.html">Side Quests</a></h3></article>
-        <article class="order"><p class="order-no"><span>Order 03</span><span>Graphics</span></p><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="ray-tracer.html">Ray Tracer</a></h3></article>      </div>
+        <article class="order"><p class="order-no"><span>Project 01</span><span>Machine learning</span></p><img src="img/projects/tennis-card.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="tennis.html">Tennis Match Projection Model</a></h3></article>
+        <article class="order"><p class="order-no"><span>Project 02</span><span>Mobile</span></p><div class="levels" role="img" aria-label="Side Quests level artwork: a seedling grows into a tree"><figure><img src="img/side-quests/level-1.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 1</figcaption></figure><figure><img src="img/side-quests/level-2.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 2</figcaption></figure><figure><img src="img/side-quests/level-3.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 3</figcaption></figure><figure><img src="img/side-quests/level-4.jpg" alt="" width="600" height="600" loading="lazy"><figcaption>Level 4</figcaption></figure></div><h3><a class="ticket-link" href="side-quests.html">Side Quests</a></h3></article>
+        <article class="order"><p class="order-no"><span>Project 03</span><span>Graphics</span></p><img src="img/ray-tracer-render.jpg" alt="" loading="lazy"><h3><a class="ticket-link" href="ray-tracer.html">Ray Tracer</a></h3></article>      </div>
     </section>
   </main>
   <footer class="wrap footer">
