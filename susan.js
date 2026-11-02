@@ -6,6 +6,7 @@ import { RoomEnvironment } from "./vendor/RoomEnvironment.js";
 import { GLTFLoader } from "./vendor/loaders/GLTFLoader.js";
 
 const host = document.getElementById("susan");
+const fallback = host.querySelector(".susan-fallback");
 const picks = [...document.querySelectorAll(".pick")];
 const link = document.getElementById("now-link");
 const prefersReducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -15,7 +16,8 @@ const cardPaper = cssValue("--susan-paper", "#f3f5f1");
 const pickCount = picks.length;
 const anglePerPick = (2 * Math.PI) / pickCount;
 host.ariaLabel = `Lazy Susan with ${pickCount} dishes. Drag it, or use the left and right arrow keys.`;
-let selectedPick = 0;
+let selectedPick = picks.findIndex((pick) => pick.getAttribute("aria-pressed") === "true");
+if (selectedPick < 0) selectedPick = 0;
 let spinToPick = null; // set once the 3D scene is ready
 
 // rotationIndex can go negative, this keeps it inside 0..pickCount-1
@@ -255,7 +257,7 @@ function build() {
   });
 
   // motion
-  let angle = 0, target = 0, rotationIndex = 0;
+  let angle = -selectedPick * anglePerPick, target = angle, rotationIndex = selectedPick;
   let dragging = false, raf = 0, last = 0, intro = null;
   // damped bounce, goes 0 -> 1
   const bounce = (t) => {
@@ -333,6 +335,7 @@ function build() {
       }
     });
     renderer.render(scene, camera);
+    fallback.hidden = true;
     if (moving) raf = requestAnimationFrame(frame);
   };
   function kick() {
@@ -354,6 +357,8 @@ function build() {
   const raycaster = new THREE.Raycaster();
   let lastX = 0, velocity = 0, dragDistance = 0;
   const canvas = renderer.domElement;
+  canvas.addEventListener("webglcontextlost", (event) => { event.preventDefault(); fallback.hidden = false; });
+  canvas.addEventListener("webglcontextrestored", kick);
   canvas.addEventListener("pointerdown", (event) => {
     if (intro) introEnd(); // touching it skips the intro
     dragging = true;
@@ -416,5 +421,5 @@ function build() {
 try {
   spinToPick = build();
 } catch {
-  host.hidden = true; // no WebGL: the buttons under it still work
+  // The fallback stays visible if WebGL is unavailable.
 }

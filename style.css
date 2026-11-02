@@ -86,7 +86,7 @@ img::selection { background: transparent; }
 .nav { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 2rem; min-height: var(--nav-h); padding-block: .75rem; }
 .brand { font-size: 1.35rem; }
 .nav nav { margin-left: auto; }
-.nav ul { font: 700 .875rem/1.6 var(--font-nav); }
+.nav ul, .footer ul { font: 700 .875rem/1.6 var(--font-nav); }
 .nav ul { display: flex; gap: 1.25rem; }
 .nav ul a { position: relative; display: inline-block; padding: .7rem .25rem; }
 .nav ul a[aria-current="page"] { text-decoration: none; }
@@ -132,7 +132,10 @@ img::selection { background: transparent; }
 
 /* lazy susan (3D, see susan.js) */
 .stage { width: min(100%, 780px); margin: 0 auto; }
-.susan { aspect-ratio: 4 / 3; cursor: grab; touch-action: pan-y; border-radius: var(--radius); }
+.susan { position: relative; aspect-ratio: 4 / 3; cursor: grab; touch-action: pan-y; border-radius: var(--radius); }
+.susan-fallback { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 1rem; text-align: center; }
+.susan-fallback[hidden] { display: none; }
+.susan-fallback img { width: min(45vw, 280px); aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
 /* dish picker */
 /* two rows on desktop, two cols on phones */
 .picker { display: grid; grid-template-rows: auto auto; grid-auto-flow: column; justify-content: center; justify-items: start; gap: .25rem 1.4rem; margin-top: .75rem; }
@@ -455,9 +458,16 @@ section .rail + .more { margin-top: 0; }
   .nav { gap: .5rem .75rem; }
   .brand { font-size: 1.15rem; }
   .nav ul { gap: .9rem; font-size: .75rem; }
+  .footer, .footer ul { column-gap: 1rem; } .footer ul { font-size: .75rem; } /* one row */
   .nav ul a { padding-inline: 0; } /* keep 44px tap height */
   .nav ul a[aria-current="page"]::after { left: 0; right: 0; }
 }
 
 section .rail { padding-bottom: 1.5rem; }
 #projects, #kitchen { padding-bottom: 0; } /* home rails */
+
+/* footer */
+.footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 2rem; padding-block: 2rem 3rem; }
+.footer .brand { font-size: 1.2rem; }
+.footer ul { display: flex; gap: 1.5rem; }
+.footer ul a { display: inline-block; padding-block: .7rem; }

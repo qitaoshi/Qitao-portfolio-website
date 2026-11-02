@@ -7,11 +7,11 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/bagel-fat-one.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/public-sans.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=80">
+  <link rel="stylesheet" href="style.css?v=81">
   <script>document.documentElement.className = "js";</script>
   <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
   <script src="script.js?v=10" defer></script>
-  <script type="module" src="susan.js?v=20"></script>
+  <script type="module" src="susan.js?v=22"></script>
   <link rel="modulepreload" href="vendor/three.module.min.js">
   <link rel="modulepreload" href="vendor/loaders/GLTFLoader.js">
   <link rel="preload" href="models/susan.glb" as="fetch" crossorigin>
@@ -36,24 +36,26 @@
     <div class="wrap hero">
       <div class="hero-copy">
         <h1 style="--i:0">I build software and cook dinner.</h1>
-        <p class="sub" style="--i:1">Spin the table to see what I've built and baked.</p>
+        <p class="sub" style="--i:1">Spin the table to see what I've made recently.</p>
         <div class="cta" style="--i:2">
           <a class="btn btn-accent" href="mailto:qitaoshi@gmail.com">Get in touch</a>
         </div>
       </div>
 
       <div class="stage">
-        <div class="susan" id="susan" tabindex="0" role="group"></div>
+        <div class="susan" id="susan" tabindex="0" role="group">
+          <div class="susan-fallback"><img src="img/salt-bread-card.jpg" alt="Salt bread" width="1200" height="900"><p>Choose a dish below</p></div>
+        </div>
         <div class="picker" role="group" aria-label="Choose a dish">
           <!-- projects and dishes alternate, three each -->
-          <button class="pick" data-order="Project 01" aria-pressed="true" data-href="tennis.html" data-cta="View case study" data-img="img/projects/tennis-card.jpg" data-focus="0">Tennis model</button>
-          <button class="pick" data-order="Order 05" aria-pressed="false" data-href="salt-bread.html" data-cta="View recipe" data-img="img/salt-bread-card.jpg">Salt bread</button>
+          <button class="pick" data-order="Project 01" aria-pressed="false" data-href="tennis.html" data-cta="View case study" data-img="img/projects/tennis-card.jpg" data-focus="0">Tennis model</button>
+          <button class="pick" data-order="Order 05" aria-pressed="true" data-href="salt-bread.html" data-cta="View recipe" data-img="img/salt-bread-card.jpg">Salt bread</button>
           <button class="pick" data-order="Project 02" aria-pressed="false" data-href="side-quests.html" data-cta="View case study" data-img="img/side-quests.jpg">Side Quests</button>
           <button class="pick" data-order="Order 07" aria-pressed="false" data-href="dumplings.html" data-cta="View recipe" data-img="img/dumplings.jpg">Dumplings</button>
           <button class="pick" data-order="Project 04" aria-pressed="false" data-href="wayform.html" data-cta="View case study" data-img="img/wayform.jpg" data-focus="0">Wayform</button>
           <button class="pick" data-order="Order 09" aria-pressed="false" data-href="croissants.html" data-cta="View recipe" data-img="img/croissants.jpg">Croissants</button>
         </div>
-        <a class="more" id="now-link" href="tennis.html">View case study</a>
+        <a class="more" id="now-link" href="salt-bread.html">View recipe</a>
       </div>
     </div>
 
@@ -122,5 +124,13 @@
       </div>
     </section>
   </main>
+  <footer class="wrap footer">
+    <p class="brand">Qitao Shi</p>
+    <ul>
+      <li><a href="mailto:qitaoshi@gmail.com">Email</a></li>
+      <li><a href="https://github.com/qitaoshi">GitHub</a></li>
+      <li><a href="https://www.instagram.com/quokachi_cook/">Instagram</a></li>
+    </ul>
+  </footer>
 </body>
 </html>

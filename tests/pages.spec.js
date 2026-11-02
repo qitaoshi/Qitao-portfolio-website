@@ -87,9 +87,24 @@ test("gallery navigation and zoom follow the selected image", async ({ page }) =
 test("the home picker updates its link from click and keyboard selection", async ({ page }) => {
   await page.goto("index.html");
   await expect(page.locator("#susan canvas")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Salt bread" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#now-link")).toHaveText("View recipe");
+  await expect(page.locator("#now-link")).toHaveAttribute("href", "salt-bread.html");
   await page.getByRole("button", { name: "Salt bread" }).click();
   await expect(page.locator("#now-link")).toHaveAttribute("href", "salt-bread.html");
   await page.locator("#susan").focus();
   await page.keyboard.press("ArrowRight");
   await expect(page.locator("#now-link")).toHaveAttribute("href", "side-quests.html");
+});
+
+test("the home dish stays visible without WebGL", async ({ page }) => {
+  await page.addInitScript(() => {
+    const getContext = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (type, ...args) {
+      return type.startsWith("webgl") ? null : getContext.call(this, type, ...args);
+    };
+  });
+  await page.goto("index.html");
+  await expect(page.locator(".susan-fallback")).toBeVisible();
+  await expect(page.locator("#now-link")).toHaveAttribute("href", "salt-bread.html");
 });
