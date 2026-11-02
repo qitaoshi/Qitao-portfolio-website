@@ -27,7 +27,7 @@
   <main class="wrap project">
     <div class="project-head">
       <h1>Wayform</h1>
-      <p class="intro">A macOS app and CLI that gives coding agents shared memory: the plan, the decisions and the reasons for them. A decision taken in one of your Claude Code sessions is already loaded in the one that opens Cursor or Codex.</p>
+      <p class="intro">A macOS app and CLI that gives coding agents shared memory: the plan, the decisions and the reasons for them. A choice made in one of your Claude Code sessions is already loaded in the one that opens Cursor or Codex.</p>
       <ul class="chips"><li>For teams using AI agents</li><li>Co-built with Skanda</li></ul>
       <div class="cta"><a class="btn btn-solid" href="https://wayform.dev/">Visit wayform.dev</a></div>
       <div class="project-photo"><div class="browser"><img src="img/wayform.jpg" alt="The Wayform landing page: Agents are good. They could be better." width="1400" height="958"></div>
@@ -50,8 +50,8 @@
       <section>
         <h2>How it works</h2>
         <ol class="method">
-          <li>Write each settled decision as a “we decided X because Y” entry into a private git repo the team owns. Commits are append-only, so git log is the audit trail.</li>
-          <li>Serve that store by an MCP server, so Claude Code, Cursor and Codex all read and write the same decision.</li>
+          <li>For each settled decision you have a "we decided X because Y" entry to keep in a private git repo the team owns. The git commit is append-only, so git log is the audit trail.</li>
+          <li>Serve that store from an MCP server so that Claude Code, Cursor and Codex all read and write the same decision.</li>
           <li>When a session starts, a hook loads every decision as context. A new chat already knows what the team ruled out.</li>
           <li>Do the same before a pull request opens, with the agent checking the diff against the plan, and put the plan and its decisions in the shared memory when it merges.</li>
           <li>If an action conflicts with a recorded decision, stop and ask a person to make the call.</li>
@@ -62,7 +62,7 @@
     <div class="notes">
       <p class="order-no"><span>Project 04</span><span>Developer tools</span></p>
       <h2>Notes</h2>
-      <p>Keep the writes curated: a decision and its reason rather than every thought the agent had. What keeps the memory worth loading into every session is that it does not build what git already does well. Its history and consistency meant no vendor database holds the team's decisions.</p>
+      <p>Building Wayform taught me to keep shared memory focused. We saved each decision and why we made it, rather than every thought an agent had. I like that Git gives us a history we can inspect, while the team's decisions stay in a repo we own.</p>
     </div>
     <section class="more-projects">
       <div class="section-head"><h2>More Projects</h2><a class="more" href="projects.html">See all →</a></div>
