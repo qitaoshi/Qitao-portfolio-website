@@ -86,6 +86,7 @@ function build() {
   scene.add(table);
 
   const turn = new THREE.Group();
+  turn.visible = false; // wait for the intro's starting positions before rendering
   scene.add(turn);
   const props = new THREE.Group(); // hidden until the Blender models load
   props.visible = false;
@@ -253,6 +254,8 @@ function build() {
     intro.dishes.forEach(({ object }) => {
       object.visible = false;
     });
+    turn.visible = true;
+    if (prefersReducedMotion) introEnd();
     kick();
   });
 
@@ -357,7 +360,7 @@ function build() {
   const raycaster = new THREE.Raycaster();
   let lastX = 0, velocity = 0, dragDistance = 0;
   const canvas = renderer.domElement;
-  canvas.addEventListener("webglcontextlost", (event) => { event.preventDefault(); fallback.hidden = false; });
+  canvas.addEventListener("webglcontextlost", (event) => { event.preventDefault(); fallback.hidden = false; fallback.style.visibility = "visible"; });
   canvas.addEventListener("webglcontextrestored", kick);
   canvas.addEventListener("pointerdown", (event) => {
     if (intro) introEnd(); // touching it skips the intro
@@ -421,5 +424,5 @@ function build() {
 try {
   spinToPick = build();
 } catch {
-  // The fallback stays visible if WebGL is unavailable.
+  fallback.style.visibility = "visible";
 }

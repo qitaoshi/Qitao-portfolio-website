@@ -133,9 +133,10 @@ img::selection { background: transparent; }
 /* lazy susan (3D, see susan.js) */
 .stage { width: min(100%, 780px); margin: 0 auto; }
 .susan { position: relative; aspect-ratio: 4 / 3; cursor: grab; touch-action: pan-y; border-radius: var(--radius); }
-.susan-fallback { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 1rem; text-align: center; }
+.susan-fallback { position: absolute; inset: 0; }
+.js .susan-fallback { visibility: hidden; }
 .susan-fallback[hidden] { display: none; }
-.susan-fallback img { width: min(45vw, 280px); aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
+.susan-fallback img { display: block; width: 100%; height: 100%; object-fit: contain; }
 /* dish picker */
 /* two rows on desktop, two cols on phones */
 .picker { display: grid; grid-template-rows: auto auto; grid-auto-flow: column; justify-content: center; justify-items: start; gap: .25rem 1.4rem; margin-top: .75rem; }
